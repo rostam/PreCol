@@ -17,6 +17,8 @@ set(SOURCE_FILES
     src/neighbors.cpp
     src/OrderingHeuristics.cpp
     src/output_graph.cpp
+    src/potentialRequiredNonzeros.cpp
+    src/addReqElements.cpp
     src/PartialColoringRestricted.cpp
     src/PartialD2Coloring.cpp
     src/PartialD2ColoringRestricted.cpp

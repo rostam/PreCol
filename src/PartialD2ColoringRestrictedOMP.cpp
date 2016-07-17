@@ -63,19 +63,20 @@ int PartialD2ColoringRestrictedOMP2(Graph& G_b, const vector<unsigned int>& V) {
 
 int PartialD2ColoringRestrictedOMP3(Graph& G_b, const vector<unsigned int>& V) {
 #pragma omp parallel for
-    for(int i=1;i<10;i++) {
+    for(int i=0;i<10;i++) {
         cout << i;
         vector<unsigned int> v;
         int ratio=V.size()/10;
         int end = 0;
         if(i==9) {end = V.size();}
         else end = (i+1)*ratio;
-        for(int j=ratio*i;j<end;j++) {
-            v.push_back(j);
+        for(int k=0;k<10;k++) {
+            for (int j = ratio * k; j < end; j++) {
+                v.push_back(V[j]);
+            }
         }
         PartialD2ColoringRestrictedOMP2(G_b,v);
     }
-
 }
 
 int PartialD2ColoringRestrictedOMP(Graph& G_b, const vector<unsigned int>& V) {
@@ -85,5 +86,18 @@ int PartialD2ColoringRestrictedOMP(Graph& G_b, const vector<unsigned int>& V) {
         PartialD2ColoringRestrictedOMP3(G_b, V);
         double time_wall = toc();
         std::cout << "threads " << i << "\telapsed: " << time_wall << std::endl;
+        int max_color_col = *max_element(vertices(G_b).first,vertices(G_b).second,[&](Ver v1, Ver v2){
+            return get(vertex_color,G_b,v1) < get(vertex_color,G_b,v2);});
+        for(unsigned int k = 0;k<V.size();k++) {
+            vector<unsigned int> N_2;
+            //Get the distance-2 neighbors
+            N_2 = neighbors::N_2restricted(G_b, V[k]);
+            for_each(N_2.begin(), N_2.end(), [&](unsigned int n_2) {
+                if(get(vertex_color, G_b, n_2) == get(vertex_color, G_b, V[k])) {
+                    cout << "what";
+                }
+            });
+        }
+        cout << "Colors:_" << get(vertex_color,G_b,max_color_col) << endl;
     }
 }

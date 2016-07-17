@@ -19,6 +19,8 @@
 #include "StarBicoloringSchemeCombinedVertexCoverColoringRestricted.hpp"
 #include "output_graph.hpp"
 #include <helper.h>
+#include "potentialRequiredNonzeros.hpp"
+#include "addReqElements.hpp"
 
 /*! \mainpage PreCol - A Brief Description.
  * This software considers three computation ingredients needed in the field of
@@ -204,6 +206,21 @@ int main(int argc, char* argv[]) {
     cout << "Row Colors:_" << get(vertex_color,G_b,max_color_row) << endl;
     cout << "Column Colors:_" << get(vertex_color,G_b,max_color_col) << endl;
     end = clock();
+
+    vector <graph_traits<Graph>::edge_descriptor> edge_ordering;
+
+    //all edges A - \Rinit
+    for (tie(ei, ei_end) = edges(G_b); ei != ei_end; ++ei) {
+        if (get(edge_weight, G_b, *ei) == 0) {
+            edge_ordering.push_back(*ei);
+        }
+    }
+    int pot = potentialRequiredNonzerosD2(G_b, edge_ordering);
+    int add = addReqElements(G_b, edge_ordering);
+
+    cout << "Potentially Required:_" << pot <<  endl;
+    cout << "Additionally Required:_" << add - entries_pattern << endl;
+
     cout << "Time:_" << (end - start) / double(CLOCKS_PER_SEC) << endl;
 //            } else if (Extras == 2) {
 //                Graph G_c(mm.nrows());
