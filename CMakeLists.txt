@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 2.4)
 project(precol)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-include_diretories(inc/)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fopenmp")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fopenmp  -D_GLIBCXX_PARALLEL")
+include_directories(inc/)
 set(SOURCE_FILES
     src/Coloring.cpp
     src/ConvertGraph.cpp
@@ -19,6 +20,7 @@ set(SOURCE_FILES
     src/PartialColoringRestricted.cpp
     src/PartialD2Coloring.cpp
     src/PartialD2ColoringRestricted.cpp
+    src/PartialD2ColoringRestrictedOMP.cpp
     src/StarBicoloringScheme.cpp
     src/StarBicoloringSchemeCombinedVertexCoverColoring.cpp
     src/StarBicoloringSchemeCombinedVertexCoverColoringRestricted.cpp

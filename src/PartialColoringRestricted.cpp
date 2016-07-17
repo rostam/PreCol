@@ -1,12 +1,12 @@
 #include "PartialColoringRestricted.hpp"
 
 /** 
- * Compute a distance-2 coloring of a bipartite graph G_b restricted
+ * \brief Compute a distance-2 coloring of a bipartite graph G_b restricted
  * to required edges
  *
  * Input:
- * - G_b bipartite graph with required egdes given as weights edge_weight
- * - V   contained vertices are colored in the given ordering v_1, ..., v_n 
+ * \param G_b bipartite graph with required egdes given as weights edge_weight
+ * \param V   contained vertices are colored in the given ordering v_1, ..., v_n
  *
  * Output:
  * - G_b bipartite graph with colors as weights vertex_color

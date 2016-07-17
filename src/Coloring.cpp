@@ -10,6 +10,7 @@
 #include "OrderingHeuristics.hpp"
 #include "PartialD2Coloring.hpp"
 #include "PartialD2ColoringRestricted.hpp"
+#include "PartialD2ColoringRestrictedOMP.hpp"
 #include "StarBicoloringScheme.hpp"
 #include "StarBicoloringSchemeDynamicOrdering.hpp"
 #include "StarBicoloringSchemeCombinedVertexCoverColoring.hpp"
@@ -19,8 +20,17 @@
 #include "output_graph.hpp"
 #include <helper.h>
 
+/*! \mainpage PreCol - A Brief Description.
+ * This software considers three computation ingredients needed in the field of
+ * computational science: sparsification of a matrix, preconditioning, and coloring.
+ \image html logo.png
+ \section Downloads
+ <A HREF="precol.out"> PreCol for Linux</A><BR/>
+ <A HREF="precol.exe"> PreCol for Windows</A>
+*/
 int main(int argc, char* argv[]) {
     clock_t start, end;
+    start = clock();
     int rows = 0;
     int entries = 0;
     int blockSize = 100;
@@ -166,13 +176,12 @@ int main(int argc, char* argv[]) {
 
     //Coloring of the vertices
     property_map<Graph, vertex_color_t>::type color = get(vertex_color, G_b);
-    start = clock();
     if(alg=="PartialD2ColoringCols") {
         PartialD2Coloring(G_b, V_c);
     } else if(alg=="PartialD2ColoringRows") {
         PartialD2Coloring(G_b, V_r);
     } else if(alg=="PartialD2RestrictedColumns") {
-        PartialD2ColoringRestricted(G_b, V_c);
+        PartialD2ColoringRestrictedOMP(G_b, V_c);
     } else if(alg == "PartialD2ColoringRestrictedRows") {
         PartialD2ColoringRestricted(G_b, V_r);
     } else if(alg =="StarBicoloringScheme") {
@@ -188,13 +197,13 @@ int main(int argc, char* argv[]) {
     } else if (alg == "StarBicoloringSchemeCombinedVertexCoverColoringRestricted") {
         StarBicoloringSchemeCombinedVertexCoverColoringRestricted(G_b, V_r, V_c, Mode);
     }
-    end = clock();
     int max_color_col = *max_element(V_c.begin(),V_c.end(),[&](Ver v1, Ver v2){
         return get(vertex_color,G_b,v1) < get(vertex_color,G_b,v2);});
     int max_color_row = *max_element(V_r.begin(),V_r.end(),[&](Ver v1, Ver v2){
         return get(vertex_color,G_b,v1) < get(vertex_color,G_b,v2);});
     cout << "Row Colors:_" << get(vertex_color,G_b,max_color_row) << endl;
     cout << "Column Colors:_" << get(vertex_color,G_b,max_color_col) << endl;
+    end = clock();
     cout << "Time:_" << (end - start) / double(CLOCKS_PER_SEC) << endl;
 //            } else if (Extras == 2) {
 //                Graph G_c(mm.nrows());
