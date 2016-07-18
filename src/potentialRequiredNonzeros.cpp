@@ -8,8 +8,7 @@
  *
  * \return number of potentially required elements
  */
-int potentialRequiredNonzerosD2(Graph& G_b,
-				const vector<graph_traits<Graph>::edge_descriptor>& edge_ordering) {
+int potentialRequiredNonzerosD2(Graph& G_b, const vector<graph_traits<Graph>::edge_descriptor>& edge_ordering) {
     property_map<Graph, vertex_color_t>::type color = get(vertex_color, G_b);
     property_map<Graph, edge_weight_t>::type weight = get(edge_weight, G_b);
     graph_traits<Graph>::adjacency_iterator v, v_end;
