@@ -208,25 +208,25 @@ int main(int argc, char* argv[]) {
 //                for (unsigned int k = PartialD2Coloring(G_b, V_c); k >= 2; k--) {
 //                    if (kClique(G_c, k)) {
 //                        cout << k << "-Clique existiert" << endl;
-
-
-    idx_t nVertices = 6;
-    idx_t nEdges    = 7;
-    idx_t nWeights  = 1;
-    idx_t nParts    = 2;
-
-    idx_t objval;
-    idx_t part[nVertices];
-    
-    // Indexes of starting points in adjacent array
-    idx_t xadj[nVertices+1] = {0,2,5,7,9,12,14};
-
-    // Adjacent vertices in consecutive index order
-    idx_t adjncy[2 * nEdges] = {1,3,0,4,2,1,5,0,4,3,1,5,4,2};
-
-    // Weights of vertices
-    // if all weights are equal then can be set to NULL
-    idx_t vwgt[nVertices * nWeights];
+//
+//
+//    idx_t nVertices = 6;
+//    idx_t nEdges    = 7;
+//    idx_t nWeights  = 1;
+//    idx_t nParts    = 2;
+//
+//    idx_t objval;
+//    idx_t part[nVertices];
+//
+//    // Indexes of starting points in adjacent array
+//    idx_t xadj[nVertices+1] = {0,2,5,7,9,12,14};
+//
+//    // Adjacent vertices in consecutive index order
+//    idx_t adjncy[2 * nEdges] = {1,3,0,4,2,1,5,0,4,3,1,5,4,2};
+//
+//    // Weights of vertices
+//    // if all weights are equal then can be set to NULL
+//    idx_t vwgt[nVertices * nWeights];
     return EXIT_SUCCESS;
 }
 
