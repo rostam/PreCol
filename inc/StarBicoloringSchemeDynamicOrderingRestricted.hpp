@@ -9,16 +9,16 @@
 #include "neighbors.hpp"
 #include "ISetRestricted.hpp"
 #include "ISetVariantRestricted.hpp"
-
+#include "orderings.h"
 using namespace std;
 using namespace boost;
 
 int StarBicoloringSchemeDynamicOrderingRestricted(Graph& G_b, 
 					     const vector<unsigned int>& V_r,
 					     const vector<unsigned int>& V_c,
-					     const int& Mode,string& Ordering,const int &Mode2);
+					     const int& Mode,Ordering* ord,const int &Mode2);
 
 bool StarBicoloringDynamicOrderingRestricted(Graph& G_b,
 			      const vector<unsigned int>& V_r,
-			      const vector<unsigned int>& V_c,string& Ordering);
+			      const vector<unsigned int>& V_c,Ordering* ord);
 #endif

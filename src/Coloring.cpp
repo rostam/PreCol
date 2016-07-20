@@ -4,10 +4,10 @@
 #include <cmath>
 #include <iomanip>
 #include "datatypes.hpp"
-#include "Mtx2BipGraph.hpp"
+#include "Mtx2Graph.hpp"
 #include "ConvertGraph.hpp"
 #include "kClique.hpp"
-#include "OrderingHeuristics.hpp"
+#include "orderings.h"
 #include "PartialD2Coloring.hpp"
 #include "PartialD2ColoringRestricted.hpp"
 #include "PartialD2ColoringRestrictedOMP.hpp"
@@ -22,9 +22,11 @@
 #include "potentialRequiredNonzeros.hpp"
 #include "addReqElements.hpp"
 #include <metis.h>
+#include "SILU.h"
 
-void generate_order(const string &alg, const string &ord, const Graph &G_b, vector<unsigned int> &V_r,
+void generate_order(const string &alg, Ordering* ord, const Graph &G_b, vector<unsigned int> &V_r,
                     vector<unsigned int> &V_c);
+
 
 /*! \mainpage PreCol - A Brief Description.
  * This software considers three computation ingredients needed in the field of
@@ -50,7 +52,6 @@ int main(int argc, char* argv[]) {
                            "StarBicoloringSchemeDynamicOrderingRestricted",
                            "StarBicoloringSchemeCombinedVertexCoverColoringRestricted"};
 
-    vector<string> ords = {"LFO","SLO","IDO"};
     vector<string> iset = {"Best","Variant"};
     vector<string> pats = {"Full","Diagonal","BlockDiagonal"};
 
@@ -106,6 +107,27 @@ int main(int argc, char* argv[]) {
     Graph G_b(2 * mm.nrows());
     vector<unsigned int> V_r, V_c;
 
+    Graph G_ilu(mm.nrows());
+    mm.MtxToILUGraph(G_ilu);
+    remove_edge_if([&](Edge e) {
+        if(sparsify=="Diagonal") {
+            return source(e, G_b) != target(e, G_b);
+        } else if(sparsify == "BlockDiagonal") {
+            int RowCoordinate = source(e, G_b);
+            int ColumnCoordinate = target(e, G_b);
+            int RelativeDistance = RowCoordinate - ColumnCoordinate;
+            int RowBlock = RowCoordinate / blockSize;
+            int ColumnBlock = ColumnCoordinate / blockSize;
+            if ((RelativeDistance < blockSize) && (RelativeDistance > -blockSize)
+                && (RowBlock == ColumnBlock)) return false;
+            else return true;
+        } else if(sparsify == "Full") {
+            return false;
+        } else {
+            return false;
+        }
+    }, G_ilu);
+
     //Add vertices to graph
     for_each_v(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
 
@@ -154,7 +176,8 @@ int main(int argc, char* argv[]) {
     cout << "Density_pattern:_" << double(entries_pattern) / rows * 100 << endl;
     cout << "Mode:_" << Mode << endl;
 
-    generate_order(alg, ord, G_b, V_r, V_c);
+    Ordering *order = get_ordering(ord);
+    generate_order(alg, order, G_b, V_r, V_c);
 
     //Coloring of the vertices
     property_map<Graph, vertex_color_t>::type color = get(vertex_color, G_b);
@@ -171,11 +194,11 @@ int main(int argc, char* argv[]) {
     } else if(alg == "StarBicoloringSchemeRestricted") {
         StarBicoloringSchemeRestricted(G_b, V_r, V_c, Mode, Mode2);
     } else if (alg == "StarBicoloringSchemeDynamicOrdering") {
-        StarBicoloringSchemeDynamicOrdering(G_b, V_r, V_c, Mode, ord, Mode2);
+        StarBicoloringSchemeDynamicOrdering(G_b, V_r, V_c, Mode, order, Mode2);
     } else if (alg == "StarBicoloringSchemeCombinedVertexCoverColoring") {
         StarBicoloringSchemeCombinedVertexCoverColoring(G_b, V_r, V_c, Mode);
     } else if (alg == "StarBicoloringSchemeDynamicOrderingRestricted") {
-        StarBicoloringSchemeDynamicOrderingRestricted(G_b, V_r, V_c, Mode, ord, Mode2);
+        StarBicoloringSchemeDynamicOrderingRestricted(G_b, V_r, V_c, Mode, order, Mode2);
     } else if (alg == "StarBicoloringSchemeCombinedVertexCoverColoringRestricted") {
         StarBicoloringSchemeCombinedVertexCoverColoringRestricted(G_b, V_r, V_c, Mode);
     }
@@ -198,9 +221,12 @@ int main(int argc, char* argv[]) {
     int pot = potentialRequiredNonzerosD2(G_b, edge_ordering);
     int add = addReqElements(G_b, edge_ordering);
 
+    graph2dot(G_ilu);
+    int fillin = SILU::getFillinMinDeg(G_ilu,2, V_r);
+
     cout << "Potentially Required:_" << pot <<  endl;
     cout << "Additionally Required:_" << add - entries_pattern << endl;
-
+    cout << "Fillin:_" << fillin << endl;
     cout << "Time:_" << (end - start) / double(CLOCKS_PER_SEC) << endl;
 //            } else if (Extras == 2) {
 //                Graph G_c(mm.nrows());
@@ -241,29 +267,12 @@ int main(int argc, char* argv[]) {
  *
  * \return void
  */
-void generate_order(const string &alg, const string &ord, const Graph &G_b, vector<unsigned int> &V_r,
-vector<unsigned int> &V_c) {
+void generate_order(const string &alg, Ordering* ord, const Graph &G_b, vector<unsigned int> &V_r, vector<unsigned int> &V_c) {
     if (alg.find("Restricted") == string::npos) {
-        if (ord == "LFO") {
-            OrderingHeuristics::LFO(G_b, V_r);
-            OrderingHeuristics::LFO(G_b, V_c);
-        } else if (ord == "SLO") {
-            OrderingHeuristics::SLO(G_b, V_r);
-            OrderingHeuristics::SLO(G_b, V_c);
-        } else if (ord == "IDO") {
-            OrderingHeuristics::IDO(G_b, V_r);
-            OrderingHeuristics::IDO(G_b, V_c);
-        }
+        ord->order(G_b, V_r);
+        ord->order(G_b, V_c);
     } else {
-        if (ord == "LFO") {
-            OrderingHeuristics::LFOrestricted(G_b, V_r);
-            OrderingHeuristics::LFOrestricted(G_b, V_c);
-        } else if (ord == "SLO") {
-            OrderingHeuristics::SLOrestricted(G_b, V_r);
-            OrderingHeuristics::SLOrestricted(G_b, V_c);
-        } else if (ord == "IDO") {
-            OrderingHeuristics::IDOrestricted(G_b, V_r);
-            OrderingHeuristics::IDOrestricted(G_b, V_c);
-        }
+        ord->order_restricted(G_b, V_r);
+        ord->order_restricted(G_b, V_c);
     }
 }

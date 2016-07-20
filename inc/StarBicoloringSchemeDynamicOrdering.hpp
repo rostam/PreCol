@@ -10,6 +10,7 @@
 #include "ISet.hpp"
 #include "ISetVariant.hpp"
 #include "ISetColeman.hpp"
+#include "orderings.h"
 
 using namespace std;
 using namespace boost;
@@ -17,9 +18,9 @@ using namespace boost;
 int StarBicoloringSchemeDynamicOrdering(Graph& G_b,
 				   const vector<unsigned int>& V_r,
 				   const vector<unsigned int>& V_c,
-				   const int& mode,string& sort,const int & mode2);
+				   const int& mode,Ordering* ord,const int & mode2);
 
 bool StarBicoloringDynamicOrdering(Graph& G_b,
 		    const vector<unsigned int>& V_r,
-		    const vector<unsigned int>& V_c,string& sort);
+		    const vector<unsigned int>& V_c,Ordering* ord);
 #endif

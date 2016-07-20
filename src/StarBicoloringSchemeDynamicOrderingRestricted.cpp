@@ -1,9 +1,8 @@
 #include "StarBicoloringSchemeDynamicOrderingRestricted.hpp"
-#include "OrderingHeuristics.hpp"
 int StarBicoloringSchemeDynamicOrderingRestricted(Graph& G_b,
 					     const vector<unsigned int>& V_r,
 					     const vector<unsigned int>& V_c,
-					     const int& Mode,string& Ordering,const int & Mode2)
+					     const int& Mode,Ordering* ord,const int & Mode2)
 {
   vector<int> IS;
   property_map<Graph, vertex_color_t>::type color = get(vertex_color, G_b);
@@ -33,7 +32,7 @@ int StarBicoloringSchemeDynamicOrderingRestricted(Graph& G_b,
   }
 
   //Color all vertices which are not colored
-  StarBicoloringDynamicOrderingRestricted(G_b,V_r,V_c,Ordering);
+  StarBicoloringDynamicOrderingRestricted(G_b,V_r,V_c,ord);
 
   //Both sets V_r and V_c are colored with colors from 1 to x
   return EXIT_SUCCESS;
@@ -41,16 +40,14 @@ int StarBicoloringSchemeDynamicOrderingRestricted(Graph& G_b,
 
 bool StarBicoloringDynamicOrderingRestricted(Graph& G_b,
 			      const vector<unsigned int>& V_r,
-			      const vector<unsigned int>& V_c,string& Ordering) {
+			      const vector<unsigned int>& V_c,Ordering* ord) {
     vector<int> forbiddenColors(V_r.size(), -1);
     vector<unsigned int> Vertices(V_r.size() + V_c.size());
     property_map<Graph, vertex_color_t>::type color = get(vertex_color, G_b);
     copy(V_r.begin(), V_r.end(), Vertices.begin());
     copy(V_c.begin(), V_c.end(), Vertices.begin() + V_r.size());
 
-    if (Ordering == "LFO") { OrderingHeuristics::LFO(G_b, Vertices); }
-    if (Ordering == "SLO") { OrderingHeuristics::SLO(G_b, Vertices); }
-    if (Ordering == "IDO") { OrderingHeuristics::IDO(G_b, Vertices); }
+    ord->order(G_b,Vertices);
 
     for (vector<unsigned int>::iterator v = Vertices.begin(); v != Vertices.end(); v++) {
 

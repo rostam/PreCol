@@ -1,4 +1,4 @@
-#include "Mtx2BipGraph.hpp"
+#include "Mtx2Graph.hpp"
 
 matrix_market::matrix_market(char* filename) {
     int ret_code;
@@ -13,7 +13,6 @@ matrix_market::matrix_market(char* filename) {
         printf("Could not process Matrix Market banner.\n");
         exit(1);
       }
-    
 
     /*  This is how one can screen matrix types if their application */
     /*  only supports a subset of the Matrix Market data types.      */
@@ -61,23 +60,41 @@ matrix_market::matrix_market(char* filename) {
 
 bool matrix_market::MtxToBipGraph(Graph& G_b) {
 
-  if (mm_is_symmetric(matcode)) {
+    if (mm_is_symmetric(matcode)) {
 
-    // add the edges to the graph object
-    for (int i=0; i < nz; ++i) {
-      add_edge(I[i], M+J[i], 0, G_b);
-      if (I[i]!=J[i])
-	add_edge(J[i], M+I[i], 0, G_b);
+        // add the edges to the graph object
+        for (int i = 0; i < nz; ++i) {
+            add_edge(I[i], M + J[i], 0, G_b);
+            if (I[i] != J[i])
+                add_edge(J[i], M + I[i], 0, G_b);
+        }
+    } else {
+
+        // add the edges to the graph object
+        for (int i = 0; i < nz; ++i) {
+            add_edge(I[i], M + J[i], 0, G_b);
+        }
     }
-  } else {
 
-    // add the edges to the graph object
-    for (int i=0; i < nz; ++i) {
-      add_edge(I[i], M+J[i], 0, G_b);
+    return EXIT_SUCCESS;
+}
+
+bool matrix_market::MtxToILUGraph(Graph& G_ilu) {
+    if (mm_is_symmetric(matcode)) {
+        // add the edges to the graph object
+        for (int i = 0; i < nz; ++i) {
+            if (I[i] != J[i])
+                add_edge(I[i], J[i], 0, G_ilu);
+            if (I[i] != J[i])
+                add_edge(J[i], I[i], 0, G_ilu);
+        }
+    } else {
+        // add the edges to the graph object
+        for (int i = 0; i < nz; ++i) {
+            add_edge(I[i], J[i], 0, G_ilu);
+        }
     }
-  }
-
-  return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }
 
 matrix_market::~matrix_market() {

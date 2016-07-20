@@ -1,10 +1,10 @@
 #include "StarBicoloringSchemeDynamicOrdering.hpp"
-#include "OrderingHeuristics.hpp"
+#include "Ordering.h"
 
 int StarBicoloringSchemeDynamicOrdering(Graph& G_b,
 				   const vector<unsigned int>& V_r,
 				   const vector<unsigned int>& V_c,
-				   const int& Mode,string& sort,const int& Mode2)
+				   const int& Mode,Ordering* ord,const int& Mode2)
 {
   vector<int> IS;
   //vector<int> Color(V_r.size()+V_c.size(),-1);
@@ -36,8 +36,6 @@ property_map<Graph, vertex_color_t>::type color = get(vertex_color, G_b);
     IS = ISetVariant(G_b,V_r,V_c,5.5);
   }
 
-
-  
   //Color vertices in independent set with color 0
   for (vector<int>::iterator IS_it = IS.begin();
        IS_it != IS.end();
@@ -48,7 +46,7 @@ property_map<Graph, vertex_color_t>::type color = get(vertex_color, G_b);
   }
 
   //Color all vertices which are not colored
-  StarBicoloringDynamicOrdering(G_b,V_r,V_c,sort);
+  StarBicoloringDynamicOrdering(G_b,V_r,V_c,ord);
 
   //Both sets V_r and V_c are colored with colors from 1 to x
   //return make_pair(*max_element(Color.begin(),Color.begin()+V_r.size()),
@@ -58,16 +56,14 @@ property_map<Graph, vertex_color_t>::type color = get(vertex_color, G_b);
 
 bool StarBicoloringDynamicOrdering(Graph& G_b,
 		    const vector<unsigned int>& V_r,
-		    const vector<unsigned int>& V_c,string& Ordering) {
+		    const vector<unsigned int>& V_c,Ordering* ord) {
     vector<int> forbiddenColors(V_r.size(), -1);
     vector<unsigned int> Vertices(V_r.size() + V_c.size());
     property_map<Graph, vertex_color_t>::type color = get(vertex_color, G_b);
     copy(V_r.begin(), V_r.end(), Vertices.begin());
     copy(V_c.begin(), V_c.end(), Vertices.begin() + V_r.size());
 
-    if (Ordering == "LFO") { OrderingHeuristics::LFO(G_b, Vertices); }
-    if (Ordering == "SLO") { OrderingHeuristics::SLO(G_b, Vertices); }
-    if (Ordering == "IDO") { OrderingHeuristics::IDO(G_b, Vertices); }
+    ord->order(G_b,Vertices);
 
     for (vector<unsigned int>::iterator v = Vertices.begin(); v != Vertices.end(); v++) {
         if (get(vertex_color, G_b, *v) != 0) { // schon mit Farbe 0 gefärbt
