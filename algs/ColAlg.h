@@ -14,10 +14,17 @@
 #include "boost/graph/copy.hpp"
 #include "isets.h"
 
+/**
+ * \class ColAlg
+ * \brief The abstract coloring algorithms class
+ *
+ * This is an abstract class. The subclasses should define the coloring function.
+ *
+ */
 class ColAlg {
 protected:
-    vector<unsigned int> V_c;
-    vector<unsigned int> V_r;
+    vector<unsigned int> V_c; //!< The set of column vertices
+    vector<unsigned int> V_r; //!< The set of row vertices
     int Mode, Mode2;
     Graph& G_b;
     Ordering *ord;
