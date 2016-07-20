@@ -8,21 +8,14 @@
 #include "ConvertGraph.hpp"
 #include "kClique.hpp"
 #include "orderings.h"
-#include "PartialD2Coloring.hpp"
-#include "PartialD2ColoringRestricted.hpp"
 #include "PartialD2ColoringRestrictedOMP.hpp"
-#include "StarBicoloringScheme.hpp"
-#include "StarBicoloringSchemeDynamicOrdering.hpp"
-#include "StarBicoloringSchemeCombinedVertexCoverColoring.hpp"
-#include "StarBicoloringSchemeRestricted.hpp"
-#include "StarBicoloringSchemeDynamicOrderingRestricted.hpp"
-#include "StarBicoloringSchemeCombinedVertexCoverColoringRestricted.hpp"
 #include "output_graph.hpp"
 #include <helper.h>
 #include "potentialRequiredNonzeros.hpp"
 #include "addReqElements.hpp"
 #include <metis.h>
 #include "SILU.h"
+#include "algs.h"
 
 void generate_order(const string &alg, Ordering* ord, const Graph &G_b, vector<unsigned int> &V_r,
                     vector<unsigned int> &V_c);
@@ -52,17 +45,21 @@ int main(int argc, char* argv[]) {
                            "StarBicoloringSchemeDynamicOrderingRestricted",
                            "StarBicoloringSchemeCombinedVertexCoverColoringRestricted"};
 
-    vector<string> iset = {"Best","Variant"};
-    vector<string> pats = {"Full","Diagonal","BlockDiagonal"};
+    vector<string> iset = {"Best", "Variant"};
+    vector<string> pats = {"Full", "Diagonal", "BlockDiagonal"};
 
     if (argc < 3) {
         cout << "Insufficient arguments... ";
-        cout <<  "\nColoring Algorithm [Ordering][Independent Set][Rho][Pattern][Blocksize] Matrix";
-        cout << "\nAlgorithm: |";copy(algs.begin(), algs.end(), ostream_iterator<string>(cout, "|"));
-        cout << "\nOrdering: |";copy(ords.begin(), ords.end(), ostream_iterator<string>(cout, "|"));
-        cout << "\nIndependent Set: |"; copy(iset.begin(), iset.end(), ostream_iterator<string>(cout, "|"));
+        cout << "\nColoring Algorithm [Ordering][Independent Set][Rho][Pattern][Blocksize] Matrix";
+        cout << "\nAlgorithm: |";
+        copy(algs.begin(), algs.end(), ostream_iterator<string>(cout, "|"));
+        cout << "\nOrdering: |";
+        copy(ords.begin(), ords.end(), ostream_iterator<string>(cout, "|"));
+        cout << "\nIndependent Set: |";
+        copy(iset.begin(), iset.end(), ostream_iterator<string>(cout, "|"));
         cout << "\nRho [1|1.5..]";
-        cout << "\nPattern: |"; copy(pats.begin(), pats.end(), ostream_iterator<string>(cout, "|"));
+        cout << "\nPattern: |";
+        copy(pats.begin(), pats.end(), ostream_iterator<string>(cout, "|"));
         cout << "\nBlocksize integer";
         cout << "\nNote that not all parameters are required for all algorithms\n";
         return -1;
@@ -77,8 +74,8 @@ int main(int argc, char* argv[]) {
 
     string ord = argv[2];
     int Mode = 3;
-    if(string(argv[3]) == "Best") Mode = 3;
-    else if (string(argv[3]) == "Variant" ) Mode = 0;
+    if (string(argv[3]) == "Best") Mode = 3;
+    else if (string(argv[3]) == "Variant") Mode = 0;
 
     if (Mode == 3) {
         int rho = atoi(argv[4]);
@@ -93,7 +90,7 @@ int main(int argc, char* argv[]) {
         }
     }
     string sparsify = argv[5];
-    if(sparsify == "BlockDiagonal") {
+    if (sparsify == "BlockDiagonal") {
         int bls = atoi(argv[6]);
         if (bls != 0) blockSize = bls;
     }
@@ -110,18 +107,19 @@ int main(int argc, char* argv[]) {
     Graph G_ilu(mm.nrows());
     mm.MtxToILUGraph(G_ilu);
     remove_edge_if([&](Edge e) {
-        if(sparsify=="Diagonal") {
+        if (sparsify == "Diagonal") {
             return source(e, G_b) != target(e, G_b);
-        } else if(sparsify == "BlockDiagonal") {
+        } else if (sparsify == "BlockDiagonal") {
             int RowCoordinate = source(e, G_b);
             int ColumnCoordinate = target(e, G_b);
             int RelativeDistance = RowCoordinate - ColumnCoordinate;
             int RowBlock = RowCoordinate / blockSize;
             int ColumnBlock = ColumnCoordinate / blockSize;
             if ((RelativeDistance < blockSize) && (RelativeDistance > -blockSize)
-                && (RowBlock == ColumnBlock)) return false;
+                && (RowBlock == ColumnBlock))
+                return false;
             else return true;
-        } else if(sparsify == "Full") {
+        } else if (sparsify == "Full") {
             return false;
         } else {
             return false;
@@ -149,13 +147,13 @@ int main(int argc, char* argv[]) {
     //edge_weight=0
     property_map<Graph, edge_weight_t>::type weight = get(edge_weight, G_b);
     graph_traits<Graph>::edge_iterator ei, ei_end;
-    for_each_e(G_b,[&](Edge e) {
-        if(sparsify=="Diagonal") {
+    for_each_e(G_b, [&](Edge e) {
+        if (sparsify == "Diagonal") {
             if (source(e, G_b) + mm.nrows() == target(e, G_b)) {
                 put(weight, e, 1);
                 entries_pattern++;
             }
-        } else if(sparsify == "BlockDiagonal") {
+        } else if (sparsify == "BlockDiagonal") {
             int RowCoordinate = source(e, G_b) + mm.nrows();
             int ColumnCoordinate = target(e, G_b);
             int RelativeDistance = RowCoordinate - ColumnCoordinate;
@@ -165,7 +163,7 @@ int main(int argc, char* argv[]) {
                 put(weight, e, 1);
                 entries_pattern++;
             }
-        } else if(sparsify == "Full") {
+        } else if (sparsify == "Full") {
             put(weight, e, 1);
             entries_pattern++;
         } else {
@@ -181,36 +179,40 @@ int main(int argc, char* argv[]) {
 
     //Coloring of the vertices
     property_map<Graph, vertex_color_t>::type color = get(vertex_color, G_b);
-    if(alg=="PartialD2ColoringCols") {
-        PartialD2Coloring(G_b, V_c);
-    } else if(alg=="PartialD2ColoringRows") {
-        PartialD2Coloring(G_b, V_r);
-    } else if(alg=="PartialD2RestrictedColumns") {
-        PartialD2ColoringRestrictedOMP(G_b, V_c);
-    } else if(alg == "PartialD2ColoringRestrictedRows") {
-        PartialD2ColoringRestricted(G_b, V_r);
-    } else if(alg =="StarBicoloringScheme") {
-        StarBicoloringScheme(G_b, V_r, V_c, Mode, Mode2);
-    } else if(alg == "StarBicoloringSchemeRestricted") {
-        StarBicoloringSchemeRestricted(G_b, V_r, V_c, Mode, Mode2);
+    ColAlg *calg;
+    if (alg == "PartialD2ColoringCols") {
+        calg = new D2Color(G_b, V_c, false);
+    } else if (alg == "PartialD2ColoringRows") {
+        calg = new D2Color(G_b, V_r, false);
+    } else if (alg == "PartialD2RestrictedColumns") {
+        calg = new D2Color(G_b, V_c, true);
+    } else if (alg == "PartialD2ColoringRestrictedRows") {
+        calg = new D2Color(G_b, V_r, true);
+    } else if (alg == "StarBicoloringScheme") {
+        calg = new StarBicoloring(G_b, V_r, V_c, Mode, Mode2, false);
+    } else if (alg == "StarBicoloringSchemeRestricted") {
+        calg = new StarBicoloring(G_b, V_r, V_c, Mode, Mode2, true);
     } else if (alg == "StarBicoloringSchemeDynamicOrdering") {
-        StarBicoloringSchemeDynamicOrdering(G_b, V_r, V_c, Mode, order, Mode2);
+        calg = new StarBicoloringDynamic(G_b, V_r, V_c, Mode, Mode2, order, false);
     } else if (alg == "StarBicoloringSchemeCombinedVertexCoverColoring") {
-        StarBicoloringSchemeCombinedVertexCoverColoring(G_b, V_r, V_c, Mode);
+        calg = new StarBicoloringVertexCover(G_b, V_r, V_c, Mode, Mode2, false);
     } else if (alg == "StarBicoloringSchemeDynamicOrderingRestricted") {
-        StarBicoloringSchemeDynamicOrderingRestricted(G_b, V_r, V_c, Mode, order, Mode2);
+        calg = new StarBicoloringDynamic(G_b, V_r, V_c, Mode, Mode2, order, true);
     } else if (alg == "StarBicoloringSchemeCombinedVertexCoverColoringRestricted") {
-        StarBicoloringSchemeCombinedVertexCoverColoringRestricted(G_b, V_r, V_c, Mode);
+        calg = new StarBicoloringVertexCover(G_b, V_r, V_c, Mode, Mode2, true);
     }
-    int max_color_col = *max_element(V_c.begin(),V_c.end(),[&](Ver v1, Ver v2){
-        return get(vertex_color,G_b,v1) < get(vertex_color,G_b,v2);});
-    int max_color_row = *max_element(V_r.begin(),V_r.end(),[&](Ver v1, Ver v2){
-        return get(vertex_color,G_b,v1) < get(vertex_color,G_b,v2);});
-    cout << "Row Colors:_" << get(vertex_color,G_b,max_color_row) << endl;
-    cout << "Column Colors:_" << get(vertex_color,G_b,max_color_col) << endl;
+    calg->color();
+    int max_color_col = *max_element(V_c.begin(), V_c.end(), [&](Ver v1, Ver v2) {
+        return get(vertex_color, G_b, v1) < get(vertex_color, G_b, v2);
+    });
+    int max_color_row = *max_element(V_r.begin(), V_r.end(), [&](Ver v1, Ver v2) {
+        return get(vertex_color, G_b, v1) < get(vertex_color, G_b, v2);
+    });
+    cout << "Row Colors:_" << get(vertex_color, G_b, max_color_row) << endl;
+    cout << "Column Colors:_" << get(vertex_color, G_b, max_color_col) << endl;
     end = clock();
 
-    vector <graph_traits<Graph>::edge_descriptor> edge_ordering;
+    vector<graph_traits<Graph>::edge_descriptor> edge_ordering;
 
     //all edges A - \Rinit
     for (tie(ei, ei_end) = edges(G_b); ei != ei_end; ++ei) {
@@ -222,9 +224,9 @@ int main(int argc, char* argv[]) {
     int add = addReqElements(G_b, edge_ordering);
 
     graph2dot(G_ilu);
-    int fillin = SILU::getFillinMinDeg(G_ilu,2, V_r);
+    int fillin = SILU::getFillinMinDeg(G_ilu, 2, V_r);
 
-    cout << "Potentially Required:_" << pot <<  endl;
+    cout << "Potentially Required:_" << pot << endl;
     cout << "Additionally Required:_" << add - entries_pattern << endl;
     cout << "Fillin:_" << fillin << endl;
     cout << "Time:_" << (end - start) / double(CLOCKS_PER_SEC) << endl;

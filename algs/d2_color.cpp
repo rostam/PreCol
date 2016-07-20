@@ -1,17 +1,11 @@
-#include "PartialD2ColoringRestricted.hpp"
+//
+// Created by rostam on 20.07.16.
+//
 
-/** 
- * Compute a distance-2 coloring of a bipartite graph G_b restricted
- * to required edges
- *
- * Input:
- * - G_b bipartite graph with required egdes given as weights edge_weight
- * - V   contained vertices are colored in the given ordering v_1, ..., v_n 
- *
- * Output:
- * - G_b bipartite graph with colors as weights vertex_color
- */
-int PartialD2ColoringRestricted(Graph& G_b, const vector<unsigned int>& V) {
+#include "d2_color.h"
+
+int D2Color::color() {
+    vector<unsigned int> V=V_c;
     property_map<Graph, vertex_color_t>::type color = get(vertex_color, G_b);
     vector<unsigned int> N_2;
     vector<unsigned int> forbiddenColors(num_vertices(G_b), -1);
@@ -23,7 +17,10 @@ int PartialD2ColoringRestricted(Graph& G_b, const vector<unsigned int>& V) {
         forbiddenColors[0] = v;
         if (IncidentToReqEdge(G_b, v)) {
             //Get the distance-2 neighbors
-            N_2 = neighbors::N_2restricted(G_b, v);
+            if(restricted)
+                N_2 = neighbors::N_2restricted(G_b, v);
+            else
+                N_2 = neighbors::N_2(G_b, v);
             //Iterate over distance-2 neighbors
             for_each(N_2.begin(), N_2.end(), [&](unsigned int n_2) {
                 //Mark colors which are used by distance-2 neighbors in forbiddenColors
@@ -44,3 +41,27 @@ int PartialD2ColoringRestricted(Graph& G_b, const vector<unsigned int>& V) {
     });
     return EXIT_SUCCESS;
 }
+
+/**
+ * Compute a distance-2 coloring of a bipartite graph G_b
+ *
+ * Input:
+ * - G_b bipartite graph
+ * - V   contained vertices are colored in the given ordering v_1, ..., v_n
+ *
+ * Output:
+ * - G_b bipartite graph with colors as weights vertex_color
+ */
+
+
+/**
+ * Compute a distance-2 coloring of a bipartite graph G_b restricted
+ * to required edges
+ *
+ * Input:
+ * - G_b bipartite graph with required egdes given as weights edge_weight
+ * - V   contained vertices are colored in the given ordering v_1, ..., v_n
+ *
+ * Output:
+ * - G_b bipartite graph with colors as weights vertex_color
+ */
