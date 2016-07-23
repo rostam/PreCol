@@ -18,9 +18,11 @@
 struct matrix_market
 {
   matrix_market(char* filename);
+  matrix_market(Graph& G_b, int m, int n);
   ~matrix_market();
   bool MtxToBipGraph(Graph& g);
   bool MtxToILUGraph(Graph& G_ilu);
+  bool writeToFile(char* filename);
 
   inline unsigned int nrows() const { return M; }
   inline unsigned int issym() const { return mm_is_symmetric(matcode); }

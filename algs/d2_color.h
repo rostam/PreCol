@@ -13,6 +13,7 @@ public:
     int color();
     int color_restricted();
     int general_color(bool restricted);
+    string get_name();
 };
 
 

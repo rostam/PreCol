@@ -1,5 +1,35 @@
 #include "Mtx2Graph.hpp"
 
+matrix_market::matrix_market(Graph& G, int m, int n) {
+    nz = num_edges(G) + num_vertices(G);
+    mm_set_matrix(&matcode);
+    mm_set_sparse(&matcode);
+    if(is_directed(G)) {
+        mm_set_general(&matcode);
+    }
+    else mm_set_symmetric(&matcode);
+    mm_set_pattern(&matcode);
+    /* reseve memory for matrices */
+    I = (unsigned int *) malloc(nz * sizeof(unsigned int));
+    J = (unsigned int *) malloc(nz * sizeof(unsigned int));
+
+    int cnt = 0;
+    for(E_iter e = edges(G).first; e != edges(G).second;e++) {
+        I[cnt] = source(*e,G)+1;J[cnt] = target(*e,G)+1;cnt++;
+    }
+    int edge_cnt = num_edges(G);
+    for(int i=0;i < num_vertices(G);i++) {I[edge_cnt] = i+1;J[edge_cnt]=i+1;}
+    M=m;N=n;
+}
+
+bool matrix_market::writeToFile(char* filename) {
+    const int size =nz;
+    double val[size];
+    fill(val,val+size,1);
+    mm_write_mtx_crd(filename, M, N, nz, (int *) I, (int *) J, val, matcode);
+    return true;
+}
+
 matrix_market::matrix_market(char* filename) {
     int ret_code;
     FILE *file;

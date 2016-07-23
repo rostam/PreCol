@@ -16,9 +16,6 @@ int SILU::getFillinMinDeg(Graph& g, int el, vector<unsigned int>& ord) {
     for_each(ord.begin(),ord.end(),[&](unsigned int i) {
         fillin += ILUOneStep(g,i,el);
     });
-//    for(int i=0;i<num_vertices(g);i++) {
-//        fillin += ILUOneStep(g,i,el);
-//    }
     return fillin;
 }
 

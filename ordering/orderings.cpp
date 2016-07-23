@@ -4,7 +4,11 @@
 #include "orderings.h"
 
 Ordering* get_ordering(const string& s) {
-    if(s=="LFO") return new LFO();
-    else if(s=="SLO") return new SLO();
-    else if(s=="IDO") return new IDO();
+    size_t pos = s.find("_");
+    string col_ord = s.substr(0,pos);
+    string pre_ord = s.substr(pos+1);
+    if(col_ord=="LFO") return new LFO();
+    else if(col_ord=="SLO") return new SLO();
+    else if(col_ord=="IDO") return new IDO();
+    else if(col_ord=="Nat") return new Nat();
 }

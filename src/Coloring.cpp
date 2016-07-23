@@ -125,6 +125,8 @@ int main(int argc, char* argv[]) {
             return false;
         }
     }, G_ilu);
+    matrix_market mm_sparse(G_ilu,num_vertices(G_ilu),num_vertices(G_ilu));
+    mm_sparse.writeToFile("test.mtx");
 
     //Add vertices to graph
     for_each_v(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
@@ -228,7 +230,7 @@ int main(int argc, char* argv[]) {
 
     cout << "Potentially Required:_" << pot << endl;
     cout << "Additionally Required:_" << add - entries_pattern << endl;
-    cout << "Fillin:_" << fillin << endl;
+    cout << "Fillin (symm):_" << fillin*2 << endl;
     cout << "Time:_" << (end - start) / double(CLOCKS_PER_SEC) << endl;
 //            } else if (Extras == 2) {
 //                Graph G_c(mm.nrows());
@@ -262,7 +264,7 @@ int main(int argc, char* argv[]) {
  * order is generated in the corresponding collection V_r and V_c.
  *
  * \param alg the coloring algorithm
- * \param ord the type of ordering (LFS, IDO, ...)
+ * \param ord the type of ordering (LFO, IDO, ...)
  * \param G_b weighted bipartite graph (in,out)
  * \param V_r vertex ordering for rows (out)
  * \param V_c vertex ordering for columns (out)
