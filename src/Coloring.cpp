@@ -224,10 +224,8 @@ int main(int argc, char* argv[]) {
     }
     int pot = potentialRequiredNonzerosD2(G_b, edge_ordering);
     int add = addReqElements(G_b, edge_ordering);
-
     graph2dot(G_ilu);
     int fillin = SILU::getFillinMinDeg(G_ilu, 2, V_r);
-
     cout << "Potentially Required:_" << pot << endl;
     cout << "Additionally Required:_" << add - entries_pattern << endl;
     cout << "Fillin (symm):_" << fillin*2 << endl;

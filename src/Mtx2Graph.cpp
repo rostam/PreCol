@@ -1,5 +1,12 @@
 #include "Mtx2Graph.hpp"
-
+/**
+ * \brief Constructor which gets a graph and make the matrix
+ *
+ * @param G the input graph (can be directed or undirected)
+ * @param m the number of rows
+ * @param n the number of cols
+ * @return
+ */
 matrix_market::matrix_market(Graph& G, int m, int n) {
     nz = num_edges(G) + num_vertices(G);
     mm_set_matrix(&matcode);
@@ -22,6 +29,12 @@ matrix_market::matrix_market(Graph& G, int m, int n) {
     M=m;N=n;
 }
 
+/**
+ * \brief Write the matrix into the file with format mtx
+ *
+ * @param filename the name of file
+ * @return true if it works correctly
+ */
 bool matrix_market::writeToFile(char* filename) {
     const int size =nz;
     double val[size];
@@ -30,6 +43,12 @@ bool matrix_market::writeToFile(char* filename) {
     return true;
 }
 
+/**
+ * \brief gets the name of a mtx file and makes the matrix
+ *
+ * @param filename the name of the matrix file with format mtx
+ * @return
+ */
 matrix_market::matrix_market(char* filename) {
     int ret_code;
     FILE *file;
@@ -88,6 +107,12 @@ matrix_market::matrix_market(char* filename) {
     
 }
 
+/**
+ * \brief return the bipartite graph generated from the matrix
+ *
+ * @param G_b the result matrix
+ * @return
+ */
 bool matrix_market::MtxToBipGraph(Graph& G_b) {
 
     if (mm_is_symmetric(matcode)) {
@@ -109,6 +134,12 @@ bool matrix_market::MtxToBipGraph(Graph& G_b) {
     return EXIT_SUCCESS;
 }
 
+/**
+ * \brief Convert the matrix to a directed or undirected Graph
+ *
+ * @param G_ilu the output graph
+ * @return
+ */
 bool matrix_market::MtxToILUGraph(Graph& G_ilu) {
     if (mm_is_symmetric(matcode)) {
         // add the edges to the graph object
