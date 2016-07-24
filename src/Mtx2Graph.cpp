@@ -25,7 +25,7 @@ matrix_market::matrix_market(Graph& G, int m, int n) {
         I[cnt] = source(*e,G)+1;J[cnt] = target(*e,G)+1;cnt++;
     }
     int edge_cnt = num_edges(G);
-    for(int i=0;i < num_vertices(G);i++) {I[edge_cnt] = i+1;J[edge_cnt]=i+1;}
+    for(int i=0;i < num_vertices(G);i++) {I[edge_cnt+i] = i+1;J[edge_cnt+i]=i+1;}
     M=m;N=n;
 }
 

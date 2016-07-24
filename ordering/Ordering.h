@@ -7,6 +7,7 @@
 
 #include "datatypes.hpp"
 #include <memory>
+#include "neighbors.hpp"
 
 
 static bool ge_degree(pair<int,int> t1, pair<int,int> t2)

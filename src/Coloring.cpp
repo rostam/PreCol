@@ -10,7 +10,6 @@
 #include "orderings.h"
 #include "PartialD2ColoringRestrictedOMP.hpp"
 #include "output_graph.hpp"
-#include <helper.h>
 #include "potentialRequiredNonzeros.hpp"
 #include "addReqElements.hpp"
 #include <metis.h>
@@ -25,6 +24,7 @@ void generate_order(const string &alg, Ordering* ord, const Graph &G_b, vector<u
  * This software considers three computation ingredients needed in the field of
  * computational science: sparsification of a matrix, preconditioning, and coloring.
  \image html logo.png
+ \section Extension
  \section Downloads
  <A HREF="precol.out"> PreCol for Linux</A><BR/>
  <A HREF="precol.exe"> PreCol for Windows</A>
@@ -126,7 +126,7 @@ int main(int argc, char* argv[]) {
         }
     }, G_ilu);
     matrix_market mm_sparse(G_ilu,num_vertices(G_ilu),num_vertices(G_ilu));
-    mm_sparse.writeToFile("test.mtx");
+    mm_sparse.writeToFile("R.mtx");
 
     //Add vertices to graph
     for_each_v(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
@@ -215,20 +215,45 @@ int main(int argc, char* argv[]) {
     end = clock();
 
     vector<graph_traits<Graph>::edge_descriptor> edge_ordering;
-
     //all edges A - \Rinit
     for (tie(ei, ei_end) = edges(G_b); ei != ei_end; ++ei) {
         if (get(edge_weight, G_b, *ei) == 0) {
             edge_ordering.push_back(*ei);
         }
     }
+    int test0 = 0;
+    int test1 = 0;
+    int test2 = 0;
+    int test4 = 0;
     int pot = potentialRequiredNonzerosD2(G_b, edge_ordering);
-    int add = addReqElements(G_b, edge_ordering);
-    graph2dot(G_ilu);
     int fillin = SILU::getFillinMinDeg(G_ilu, 2, V_r);
-    cout << "Potentially Required:_" << pot << endl;
+    for_each(SILU::F.begin(),SILU::F.end(),[&](pair<int,int> f) {
+        put(edge_weight, G_b, edge(f.first, f.second, G_b).first, 3);
+    });
+
+    int add = addReqElements(G_b, edge_ordering);
+//
+//    for_each_e(G_b,[&](Edge e) {
+//        if(get(edge_weight,G_b,e) == 0) {
+//            test0++;
+//        }
+//    });
+//    for_each_e(G_b,[&](Edge e) {
+//       if(get(edge_weight,G_b,e) == 1) {
+//           test1++;
+//       }
+//    });
+//
+//    for_each_e(G_b,[&](Edge e) {
+//        if(get(edge_weight,G_b,e) == 4) {
+//            test4++;
+//        }
+//    });
+    //graph2dot(G_ilu);
+    cout << "Potentially Required:_" << pot << " " << test0 <<" "
+         << test1 << " " << test2 << " " << test4 << endl;
     cout << "Additionally Required:_" << add - entries_pattern << endl;
-    cout << "Fillin (symm):_" << fillin*2 << endl;
+    cout << "Fillin (symm):_" << fillin*2 << " " << num_edges(G_ilu)<<  endl;
     cout << "Time:_" << (end - start) / double(CLOCKS_PER_SEC) << endl;
 //            } else if (Extras == 2) {
 //                Graph G_c(mm.nrows());
@@ -271,6 +296,6 @@ int main(int argc, char* argv[]) {
  */
 void generate_order(const string &alg, Ordering* ord, const Graph &G_b,
                     vector<unsigned int> &V_r, vector<unsigned int> &V_c) {
-    ord->order(G_b, V_r, !(alg.find("Restricted") == string::npos));
-    ord->order(G_b, V_c, !(alg.find("Restricted") == string::npos));
+    ord->order(G_b, V_r, alg.find("Restricted") != string::npos);
+    ord->order(G_b, V_c, alg.find("Restricted") != string::npos);
 }
