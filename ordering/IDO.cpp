@@ -5,7 +5,7 @@
 #include <neighbors.hpp>
 #include "IDO.h"
 
-bool IDO::general_order(const Graph &G_b, vector<unsigned int> &V, bool restricted) {
+bool IDO::order(const Graph &G_b, vector<unsigned int> &V, bool restricted) {
     //Degree (second.first) and incident degree (second.second)
     vector<pair<int,pair<int,int> > > Degrees;
     vector<unsigned int> Ordering;
@@ -50,12 +50,4 @@ bool IDO::general_order(const Graph &G_b, vector<unsigned int> &V, bool restrict
     V=Ordering;
 
     return EXIT_SUCCESS;
-}
-
-bool IDO::order(const Graph& G_b, vector<unsigned int>& V) {
-    return general_order(G_b,V,false);
-}
-
-bool IDO::order_restricted(const Graph &G_b, vector<unsigned int> &V) {
-    return general_order(G_b,V,true);
 }

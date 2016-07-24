@@ -5,7 +5,7 @@
 #include <neighbors.hpp>
 #include "LFO.h"
 
-bool LFO::general_order(const Graph& G_b, vector<unsigned int>& V, bool restricted) {
+bool LFO::order(const Graph& G_b, vector<unsigned int>& V, bool restricted) {
     list<pair<int,int> > VertexDegree;
     vector<unsigned int> Ordering;
 
@@ -30,14 +30,4 @@ bool LFO::general_order(const Graph& G_b, vector<unsigned int>& V, bool restrict
     V=Ordering;
 
     return EXIT_SUCCESS;
-}
-
-bool LFO::order(const Graph& G_b, vector<unsigned int>& V)
-{
-    return general_order(G_b,V,false);
-}
-
-bool LFO::order_restricted(const Graph& G_b, vector<unsigned int>& V)
-{
-    return general_order(G_b,V,true);
 }

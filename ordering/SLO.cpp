@@ -5,8 +5,9 @@
 #include <neighbors.hpp>
 #include "SLO.h"
 
-bool SLO::order(const Graph& G_b, vector<unsigned int>& V)
+bool SLO::order(const Graph& G_b, vector<unsigned int>& V, bool restricted)
 {
+    if(restricted) return order_restricted(G_b,V);
     vector<pair<int,int> > VertexDegree;
     vector<unsigned int> Ordering;
 

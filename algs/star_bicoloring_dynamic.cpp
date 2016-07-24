@@ -64,7 +64,7 @@ bool StarBicoloringDynamic::color_rest() {
     copy(V_r.begin(), V_r.end(), Vertices.begin());
     copy(V_c.begin(), V_c.end(), Vertices.begin() + V_r.size());
 
-    ord->order(G_b,Vertices);
+    ord->order(G_b,Vertices,false);
 
     for (vector<unsigned int>::iterator v = Vertices.begin(); v != Vertices.end(); v++) {
         if (get(vertex_color, G_b, *v) != 0) { // schon mit Farbe 0 gefärbt
@@ -154,7 +154,7 @@ bool StarBicoloringDynamic::color_rest_restricted() {
     copy(V_r.begin(), V_r.end(), Vertices.begin());
     copy(V_c.begin(), V_c.end(), Vertices.begin() + V_r.size());
 
-    ord->order(G_b,Vertices);
+    ord->order(G_b,Vertices,false);
 
     for (vector<unsigned int>::iterator v = Vertices.begin(); v != Vertices.end(); v++) {
 

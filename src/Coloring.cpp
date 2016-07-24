@@ -269,12 +269,8 @@ int main(int argc, char* argv[]) {
  *
  * \return void
  */
-void generate_order(const string &alg, Ordering* ord, const Graph &G_b, vector<unsigned int> &V_r, vector<unsigned int> &V_c) {
-    if (alg.find("Restricted") == string::npos) {
-        ord->order(G_b, V_r);
-        ord->order(G_b, V_c);
-    } else {
-        ord->order_restricted(G_b, V_r);
-        ord->order_restricted(G_b, V_c);
-    }
+void generate_order(const string &alg, Ordering* ord, const Graph &G_b,
+                    vector<unsigned int> &V_r, vector<unsigned int> &V_c) {
+    ord->order(G_b, V_r, !(alg.find("Restricted") == string::npos));
+    ord->order(G_b, V_c, !(alg.find("Restricted") == string::npos));
 }

@@ -9,7 +9,7 @@
 #include "Ordering.h"
 
 class SLO : public Ordering{
-    bool order(const Graph &G_b, vector<unsigned int> &V);
+    bool order(const Graph &G_b, vector<unsigned int> &V, bool restricted);
     bool order_restricted(const Graph &G_b, vector<unsigned int> &V);
 };
 

@@ -4,6 +4,13 @@
 
 #include "SILU.h"
 
+/**
+ *
+ * @param g
+ * @param el
+ * @param ord
+ * @return
+ */
 int SILU::getFillinMinDeg(Graph& g, int el, vector<unsigned int>& ord) {
     int fillin = 0;
     for_each(vertices(g).first,vertices(g).second,[&](unsigned int ver1) {
@@ -19,6 +26,13 @@ int SILU::getFillinMinDeg(Graph& g, int el, vector<unsigned int>& ord) {
     return fillin;
 }
 
+/**
+ *
+ * @param g
+ * @param selected
+ * @param el
+ * @return
+ */
 int SILU::ILUOneStep(Graph& g, int selected, int el) {
     int fillin = 0;
     vector<unsigned int> inVer, outVer;

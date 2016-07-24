@@ -8,8 +8,6 @@
 #include "Ordering.h"
 
 class LFO : public Ordering {
-    bool order(const Graph &G_b, vector<unsigned int> &V);
-    bool order_restricted(const Graph &G_b, vector<unsigned int> &V);
-    bool general_order(const Graph &G_b, vector<unsigned int> &V, bool restricted);
+    bool order(const Graph &G_b, vector<unsigned int> &V, bool restricted);
 };
 #endif //PRECOL_LFO_H
