@@ -161,7 +161,9 @@ int main(int argc, char* argv[]) {
             int RelativeDistance = RowCoordinate - ColumnCoordinate;
             int RowBlock = RowCoordinate / blockSize;
             int ColumnBlock = ColumnCoordinate / blockSize;
-            if ((RelativeDistance < blockSize) && (RelativeDistance > -blockSize) && (RowBlock == ColumnBlock)) {
+            if ((RelativeDistance < blockSize)
+                && (RelativeDistance > -blockSize)
+                && (RowBlock == ColumnBlock)) {
                 put(weight, e, 1);
                 entries_pattern++;
             }
@@ -215,23 +217,114 @@ int main(int argc, char* argv[]) {
     end = clock();
 
     vector<graph_traits<Graph>::edge_descriptor> edge_ordering;
+    copy_if(edges(G_b).first,edges(G_b).second,back_inserter(edge_ordering),[&G_b](Edge e) {
+        return get(edge_weight,G_b,e)==0;
+    });
     //all edges A - \Rinit
-    for (tie(ei, ei_end) = edges(G_b); ei != ei_end; ++ei) {
-        if (get(edge_weight, G_b, *ei) == 0) {
-            edge_ordering.push_back(*ei);
-        }
-    }
-    int test0 = 0;
-    int test1 = 0;
-    int test2 = 0;
-    int test4 = 0;
+//    for (tie(ei, ei_end) = edges(G_b); ei != ei_end; ++ei) {
+//        if (get(edge_weight, G_b, *ei) == 0) {
+//            edge_ordering.push_back(*ei);
+//        }
+//    }
+//
+//    // extract ordering option
+//    // Orderings:
+//    // - column vertices
+//    // - row vertices
+//    // - distance to diagonal
+//    if (opts && hasKey(prhs[3],"ordering")){
+//        if (getValue(prhs[3],"ordering")==string("columns")) {
+//            cout << "Edge ordering: columns" << endl;
+//            sort(edge_ordering.begin(),edge_ordering.end(),le_cols(G_b));
+//        } else if(getValue(prhs[3],"ordering")==string("rows")) {
+//            cout << "Edge ordering: rows" << endl;
+//            sort(edge_ordering.begin(),edge_ordering.end(),le_rows(G_b));
+//        } else if(getValue(prhs[3],"ordering")==string("near_diag")) {
+//            cout << "Edge ordering: near_diag" << endl;
+//            sort(edge_ordering.begin(),edge_ordering.end(),le_dist_diag(G_b,m));
+//        } else
+//            mexErrMsgTxt("Wrong value for edge ordering!");
+//    } else {
+//        cout << "Edge ordering (default): columns" << endl;
+//        sort(edge_ordering.begin(),edge_ordering.end(),le_cols(G_b));
+//    }
+    //sort(edge_ordering.begin(),edge_ordering.end(),le_cols(G_b));
+
     int pot = potentialRequiredNonzerosD2(G_b, edge_ordering);
-    int fillin = SILU::getFillinMinDeg(G_ilu, 2, V_r);
-    for_each(SILU::F.begin(),SILU::F.end(),[&](pair<int,int> f) {
-        put(edge_weight, G_b, edge(f.first, f.second, G_b).first, 3);
+    SILU silu;
+    int fillin = silu.getFillinMinDeg(G_ilu, 2, V_r);
+    int cont = 0;
+//    for_each(silu.F.begin(),silu.F.end(),[&](pair<int,int> f) {
+////        put(edge_weight, G_ilu, edge(f.first, f.second, G_ilu).first, 3);
+//        if(!edge(f.first, f.second, G_b).second) {
+//            add_edge(f.first, f.second, G_b);
+//            put(edge_weight, G_b, edge(f.first, f.second, G_ilu).first, 3);
+//            cont ++;
+//        }
+//    });
+    for_each_e(G_ilu,[&](Edge e) {
+        if(edge(source(e,G_ilu), source(e,G_ilu)+V_c.size(), G_b).second) {
+            put(edge_weight, G_b,
+                edge(source(e,G_ilu), source(e,G_ilu)+V_c.size(), G_b).first, 3);
+        } else {
+            add_edge(source(e,G_ilu), source(e,G_ilu)+V_c.size(),G_b);
+            put(edge_weight, G_b,
+                edge(source(e,G_ilu), source(e,G_ilu)+V_c.size(), G_b).first, 3);
+        }
     });
 
-    int add = addReqElements(G_b, edge_ordering);
+    vector<graph_traits<Graph>::edge_descriptor> edge_ordering2;
+
+    //all edges \in \ERpot
+    copy_if(edges(G_b).first,edges(G_b).second,back_inserter(edge_ordering2),[&G_b](Edge e) {
+        return get(edge_weight,G_b,e)==2;
+    });
+//    for (tie(ei, ei_end) = edges(G_b); ei != ei_end; ++ei) {
+//
+//        if(get(edge_weight,G_b,*ei)==2)
+//            edge_ordering2.push_back(*ei);
+//    }
+
+//    cerr << "edge_ordering.size(): " << edge_ordering2.size() << endl;
+
+//   std::cout << "edges(G_b) = ";
+//   for (vector<graph_traits<Graph>::edge_descriptor>::iterator i=edge_ordering.begin(); i!=edge_ordering.end(); ++i) {
+//     std::cout << "(" << source(*i, G_b)
+// 	      << "," << target(*i, G_b) << ") ";
+//   }
+//   std::cout << std::endl;
+
+    // extract ordering option
+    // Orderings:
+    // - column vertices
+    // - row vertices
+    // - distance to diagonal
+//    if (opts && hasKey(prhs[2],"ordering")){
+//        if (getValue(prhs[2],"ordering")==string("columns")) {
+//            cout << "Edge ordering: columns" << endl;
+//            sort(edge_ordering.begin(),edge_ordering.end(),le_cols(G_b));
+//        } else if(getValue(prhs[2],"ordering")==string("rows")) {
+//            cout << "Edge ordering: rows" << endl;
+//            sort(edge_ordering.begin(),edge_ordering.end(),le_rows(G_b));
+//        } else if(getValue(prhs[2],"ordering")==string("near_diag")) {
+//            cout << "Edge ordering: near_diag" << endl;
+//            sort(edge_ordering.begin(),edge_ordering.end(),le_dist_diag(G_b,m));
+//        } else if(getValue(prhs[2],"ordering")==string("forward")) {
+//            cout << "Edge ordering: forward" << endl;
+//            sort(edge_ordering.begin(),edge_ordering.end(),lt_forward(G_b,m));
+//        } else if(getValue(prhs[2],"ordering")==string("reverse")) {
+//            cout << "Edge ordering: reverse" << endl;
+//            sort(edge_ordering.begin(),edge_ordering.end(),gt_reverse(G_b,m));
+//        } else
+//            mexErrMsgTxt("Wrong value for edge ordering!");
+//    } else {
+//        cout << "Edge ordering (default): columns" << endl;
+//        sort(edge_ordering.begin(),edge_ordering.end(),le_cols(G_b));
+//    }
+
+//    sort(edge_ordering2.begin(),edge_ordering2.end(),le_cols(G_b));
+
+    int add = addReqElements(G_b, edge_ordering2);
 //
 //    for_each_e(G_b,[&](Edge e) {
 //        if(get(edge_weight,G_b,e) == 0) {
@@ -250,10 +343,9 @@ int main(int argc, char* argv[]) {
 //        }
 //    });
     //graph2dot(G_ilu);
-    cout << "Potentially Required:_" << pot << " " << test0 <<" "
-         << test1 << " " << test2 << " " << test4 << endl;
-    cout << "Additionally Required:_" << add - entries_pattern << endl;
-    cout << "Fillin (symm):_" << fillin*2 << " " << num_edges(G_ilu)<<  endl;
+    cout << "Potentially Required:_" << pot << endl;
+    cout << "Additionally Required:_" << add  << endl;
+    cout << "Fillin (symm):_" << fillin*2 <<  endl;
     cout << "Time:_" << (end - start) / double(CLOCKS_PER_SEC) << endl;
 //            } else if (Extras == 2) {
 //                Graph G_c(mm.nrows());

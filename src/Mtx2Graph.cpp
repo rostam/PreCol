@@ -114,9 +114,7 @@ matrix_market::matrix_market(char* filename) {
  * @return
  */
 bool matrix_market::MtxToBipGraph(Graph& G_b) {
-
     if (mm_is_symmetric(matcode)) {
-
         // add the edges to the graph object
         for (int i = 0; i < nz; ++i) {
             add_edge(I[i], M + J[i], 0, G_b);
@@ -124,7 +122,6 @@ bool matrix_market::MtxToBipGraph(Graph& G_b) {
                 add_edge(J[i], M + I[i], 0, G_b);
         }
     } else {
-
         // add the edges to the graph object
         for (int i = 0; i < nz; ++i) {
             add_edge(I[i], M + J[i], 0, G_b);

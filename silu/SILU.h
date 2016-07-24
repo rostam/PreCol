@@ -15,7 +15,7 @@
  */
 class SILU {
 public:
-    static vector<pair<int,int>> F;
+    vector<pair<int,int>> F;
 /**
  *
  * @param g
@@ -23,7 +23,7 @@ public:
  * @param ord
  * @return
  */
-    static int getFillinMinDeg(Graph &g, int el, vector<unsigned int> &ord) {
+    int getFillinMinDeg(Graph &g, int el, vector<unsigned int> &ord) {
         int fillin = 0;
         for_each(vertices(g).first, vertices(g).second, [&](unsigned int ver1) {
             for_each(vertices(g).first, vertices(g).second, [&](unsigned int ver2) {
@@ -45,7 +45,7 @@ public:
  * @param el
  * @return
  */
-    static int ILUOneStep(Graph &g, int selected, int el) {
+    int ILUOneStep(Graph &g, int selected, int el) {
         int fillin = 0;
         vector<unsigned int> inVer, outVer;
         for_each(vertices(g).first, vertices(g).second, [&](unsigned int ver) {
@@ -66,7 +66,7 @@ public:
                             int e2_w = get(edge_weight, g, e2);
                             if (e1_w + e2_w + 1 <= el) {
                                 add_edge(anInVer, anOutVer, g);
-                                F.push_back(anInver,anOutVer);
+                                F.push_back(make_pair(anInVer,anOutVer));
                                 put(edge_weight, g, edge(anInVer, anOutVer, g).first, e1_w + e2_w + 1);
                                 fillin++;
                             }
