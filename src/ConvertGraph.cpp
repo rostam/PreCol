@@ -78,24 +78,23 @@ bool G_bToG_r(const Graph& G_b, const vector<unsigned int>& V_r, Graph& G_r)
 //the required elements (column intersection graph for rows instead of
 //colums)
 bool G_bToG_rRestricted(const Graph& G_b, const vector<unsigned int>& V_r,
-			Graph& G_r)
-{
-  for (vector<unsigned int>::const_iterator v_r = V_r.begin();
-       v_r != V_r.end();
-       ++v_r) {
+			Graph& G_r) {
+    for (vector<unsigned int>::const_iterator v_r = V_r.begin();
+         v_r != V_r.end();
+         ++v_r) {
 
-    vector<unsigned int> N_2;
-    N_2 = neighbors::N_2restricted(G_b,*v_r);
-    
-    for (vector<unsigned int>::iterator n_2 = N_2.begin();
-	 n_2 != N_2.end();
-	 ++n_2) {
+        vector<unsigned int> N_2;
+        N_2 = neighbors::N_2restricted(G_b, *v_r);
 
-      if (*n_2>*v_r) {
-	add_edge(*v_r,*n_2,0,G_r);
-      }
+        for (vector<unsigned int>::iterator n_2 = N_2.begin();
+             n_2 != N_2.end();
+             ++n_2) {
+
+            if (*n_2 > *v_r) {
+                add_edge(*v_r, *n_2, 0, G_r);
+            }
+        }
     }
-  }
 
-  return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }
