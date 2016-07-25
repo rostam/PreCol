@@ -125,8 +125,6 @@ int main(int argc, char* argv[]) {
             return false;
         }
     }, G_ilu);
-    matrix_market mm_sparse(G_ilu,num_vertices(G_ilu),num_vertices(G_ilu));
-    mm_sparse.writeToFile((char *) "R.mtx");
 
     //Add vertices to graph
     for_each_v(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
@@ -258,15 +256,9 @@ int main(int argc, char* argv[]) {
     int pot = potentialRequiredNonzerosD2(G_b, edge_ordering);
     SILU silu;
     int fillin = silu.getFillinMinDeg(G_ilu, 2, V_r);
-    int cont = 0;
-//    for_each(silu.F.begin(),silu.F.end(),[&](pair<int,int> f) {
-//        put(edge_weight, G_ilu, edge(f.first, f.second, G_ilu).first, 3);
-//        if(!edge(f.first, f.second, G_b).second) {
-//            add_edge(f.first, f.second, G_b);
-//            put(edge_weight, G_b, edge(f.first, f.second, G_ilu).first, 3);
-//            cont ++;
-//        }
-//    });
+    matrix_market mm_f(G_ilu,"f",V_c.size(),V_r.size(),false);
+    mm_f.writeToFile("F.mtx");
+
     for_each_e(G_ilu,[&](Edge e) {
         if(edge(source(e,G_ilu), source(e,G_ilu)+V_c.size(), G_b).second) {
             put(edge_weight, G_b,
@@ -277,6 +269,8 @@ int main(int argc, char* argv[]) {
                 edge(source(e,G_ilu), source(e,G_ilu)+V_c.size(), G_b).first, 3);
         }
     });
+
+
 
     vector<graph_traits<Graph>::edge_descriptor> edge_ordering2;
 
@@ -331,10 +325,10 @@ int main(int argc, char* argv[]) {
 
     int add = addReqElements(G_b, edge_ordering2);
 
-    matrix_market mm_a(G_b,"a",V_c.size(),V_r.size());
+    matrix_market mm_a(G_b,"a",V_c.size(),V_r.size(),true);
     mm_a.writeToFile((char *) "add.mtx");
 
-    matrix_market mm_r(G_b,"r",V_c.size(),V_r.size());
+    matrix_market mm_r(G_b,"r",V_c.size(),V_r.size(),true );
     mm_r.writeToFile((char *) "req.mtx");
     //graph2dot(G_ilu);
     cout << "Potentially Required:_" << pot << endl;

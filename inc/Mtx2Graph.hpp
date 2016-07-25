@@ -19,7 +19,7 @@ struct matrix_market
 {
   matrix_market(char* filename);
   matrix_market(Graph& G, int m, int n);
-  matrix_market(Graph& G_b, string tag, int m, int n);
+  matrix_market(Graph& G_b, string tag, int m, int n, bool ispartite);
   ~matrix_market();
   bool MtxToBipGraph(Graph& g);
   bool MtxToILUGraph(Graph& G_ilu);

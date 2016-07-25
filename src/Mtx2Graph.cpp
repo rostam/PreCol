@@ -39,7 +39,7 @@ matrix_market::matrix_market(Graph& G, int m, int n) {
  * @param n the number of cols
  * @return
  */
-matrix_market::matrix_market(Graph& G_b, string tag, int m, int n) {
+matrix_market::matrix_market(Graph& G_b, string tag, int m, int n, bool bipartite) {
     nz = (int) count_if(edges(G_b).first, edges(G_b).second, [&](Edge e) {
             return get(edge_name,G_b,e) == tag;
         });
@@ -58,12 +58,17 @@ matrix_market::matrix_market(Graph& G_b, string tag, int m, int n) {
         if(get(edge_name,G_b,e) == tag) {
             int src = source(e, G_b);
             int tgt = target(e, G_b);
-            if (src > m) {
-                I[cnt] = src - m + 1;
-                J[cnt] = tgt + 1;
+            if(bipartite) {
+                if (src > m) {
+                    I[cnt] = src - m + 1;
+                    J[cnt] = tgt + 1;
+                } else {
+                    I[cnt] = tgt - m + 1;
+                    J[cnt] = src + 1;
+                }
             } else {
-                I[cnt] = tgt - m + 1;
-                J[cnt] = src + 1;
+                I[cnt] = src + 1;
+                J[cnt] = tgt + 1;
             }
             cnt++;
         }

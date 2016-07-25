@@ -68,6 +68,7 @@ public:
                                 add_edge(anInVer, anOutVer, g);
                                 F.push_back(make_pair(anInVer,anOutVer));
                                 put(edge_weight, g, edge(anInVer, anOutVer, g).first, e1_w + e2_w + 1);
+                                put(edge_name, g, edge(anInVer, anOutVer, g).first, "f");
                                 fillin++;
                             }
                         }
