@@ -126,7 +126,7 @@ int main(int argc, char* argv[]) {
         }
     }, G_ilu);
     matrix_market mm_sparse(G_ilu,num_vertices(G_ilu),num_vertices(G_ilu));
-    mm_sparse.writeToFile("R.mtx");
+    mm_sparse.writeToFile((char *) "R.mtx");
 
     //Add vertices to graph
     for_each_v(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
@@ -148,11 +148,13 @@ int main(int argc, char* argv[]) {
     //If edge e \in E_S then edge_property edge_weight=1 else
     //edge_weight=0
     property_map<Graph, edge_weight_t>::type weight = get(edge_weight, G_b);
+    property_map<Graph, edge_name_t>::type name = get(edge_name, G_b);
     graph_traits<Graph>::edge_iterator ei, ei_end;
     for_each_e(G_b, [&](Edge e) {
         if (sparsify == "Diagonal") {
             if (source(e, G_b) + mm.nrows() == target(e, G_b)) {
                 put(weight, e, 1);
+                put(name, e, "r");
                 entries_pattern++;
             }
         } else if (sparsify == "BlockDiagonal") {
@@ -165,13 +167,16 @@ int main(int argc, char* argv[]) {
                 && (RelativeDistance > -blockSize)
                 && (RowBlock == ColumnBlock)) {
                 put(weight, e, 1);
+                put(name, e, "r");
                 entries_pattern++;
             }
         } else if (sparsify == "Full") {
             put(weight, e, 1);
+            put(name, e, "r");
             entries_pattern++;
         } else {
             cout << "No required pattern" << endl;
+            return;
         }
     });
     cout << "Entries_pattern:_" << entries_pattern << endl;
@@ -248,14 +253,14 @@ int main(int argc, char* argv[]) {
 //        cout << "Edge ordering (default): columns" << endl;
 //        sort(edge_ordering.begin(),edge_ordering.end(),le_cols(G_b));
 //    }
-    //sort(edge_ordering.begin(),edge_ordering.end(),le_cols(G_b));
+//    sort(edge_ordering.begin(),edge_ordering.end(),le_cols(G_b));
 
     int pot = potentialRequiredNonzerosD2(G_b, edge_ordering);
     SILU silu;
     int fillin = silu.getFillinMinDeg(G_ilu, 2, V_r);
     int cont = 0;
 //    for_each(silu.F.begin(),silu.F.end(),[&](pair<int,int> f) {
-////        put(edge_weight, G_ilu, edge(f.first, f.second, G_ilu).first, 3);
+//        put(edge_weight, G_ilu, edge(f.first, f.second, G_ilu).first, 3);
 //        if(!edge(f.first, f.second, G_b).second) {
 //            add_edge(f.first, f.second, G_b);
 //            put(edge_weight, G_b, edge(f.first, f.second, G_ilu).first, 3);
@@ -325,26 +330,15 @@ int main(int argc, char* argv[]) {
 //    sort(edge_ordering2.begin(),edge_ordering2.end(),le_cols(G_b));
 
     int add = addReqElements(G_b, edge_ordering2);
-//
-//    for_each_e(G_b,[&](Edge e) {
-//        if(get(edge_weight,G_b,e) == 0) {
-//            test0++;
-//        }
-//    });
-//    for_each_e(G_b,[&](Edge e) {
-//       if(get(edge_weight,G_b,e) == 1) {
-//           test1++;
-//       }
-//    });
-//
-//    for_each_e(G_b,[&](Edge e) {
-//        if(get(edge_weight,G_b,e) == 4) {
-//            test4++;
-//        }
-//    });
+
+    matrix_market mm_a(G_b,"a",V_c.size(),V_r.size());
+    mm_a.writeToFile((char *) "add.mtx");
+
+    matrix_market mm_r(G_b,"r",V_c.size(),V_r.size());
+    mm_r.writeToFile((char *) "req.mtx");
     //graph2dot(G_ilu);
     cout << "Potentially Required:_" << pot << endl;
-    cout << "Additionally Required:_" << add  << endl;
+    cout << "Additionally Required:_" << add  <<  " " << endl;
     cout << "Fillin (symm):_" << fillin*2 <<  endl;
     cout << "Time:_" << (end - start) / double(CLOCKS_PER_SEC) << endl;
 //            } else if (Extras == 2) {

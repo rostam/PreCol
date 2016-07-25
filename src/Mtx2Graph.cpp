@@ -30,6 +30,50 @@ matrix_market::matrix_market(Graph& G, int m, int n) {
 }
 
 /**
+ * \briefConstructor which gets a bigraph and make the matrix
+ * from the edges marked by a tag
+ *
+ * @param G_b a bipartite graph
+ * @param tag the tag related to edges
+ * @param m the number of rows
+ * @param n the number of cols
+ * @return
+ */
+matrix_market::matrix_market(Graph& G_b, string tag, int m, int n) {
+    nz = (int) count_if(edges(G_b).first, edges(G_b).second, [&](Edge e) {
+            return get(edge_name,G_b,e) == tag;
+        });
+    mm_set_matrix(&matcode);
+    mm_set_sparse(&matcode);
+    if(is_directed(G_b)) {
+        mm_set_general(&matcode);
+    }
+    else mm_set_symmetric(&matcode);
+    mm_set_pattern(&matcode);
+    /* reseve memory for matrices */
+    I = (unsigned int *) malloc(nz * sizeof(unsigned int));
+    J = (unsigned int *) malloc(nz * sizeof(unsigned int));
+    int cnt = 0;
+    for_each_e(G_b,[&](Edge e) {
+        if(get(edge_name,G_b,e) == tag) {
+            int src = source(e, G_b);
+            int tgt = target(e, G_b);
+            if (src > m) {
+                I[cnt] = src - m + 1;
+                J[cnt] = tgt + 1;
+            } else {
+                I[cnt] = tgt - m + 1;
+                J[cnt] = src + 1;
+            }
+            cnt++;
+        }
+    });
+    M=m;N=n;
+}
+
+
+
+/**
  * \brief Write the matrix into the file with format mtx
  *
  * @param filename the name of file

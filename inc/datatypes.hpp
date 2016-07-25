@@ -10,7 +10,8 @@ using namespace boost;
 
 typedef adjacency_list<vecS, vecS, undirectedS,
 		property<vertex_color_t, int>,
-		property<edge_weight_t, int>> Graph;
+		property<edge_weight_t, int,
+	    property<edge_name_t, string>>> Graph;
 
 typedef graph_traits<Graph>::vertex_iterator V_iter;
 typedef graph_traits<Graph>::edge_iterator E_iter;

@@ -16,6 +16,7 @@
 int addReqElements(Graph& G_b,
                    vector<graph_traits<Graph>::edge_descriptor>& edge_ordering) {
     property_map<Graph, edge_weight_t>::type weight = get(edge_weight, G_b);
+    property_map<Graph, edge_name_t>::type name = get(edge_name, G_b);
     graph_traits<Graph>::out_edge_iterator oe_it, oe_it_end;
     unsigned int u, v, w, x;
     bool validAddReqElement = true;
@@ -74,6 +75,7 @@ int addReqElements(Graph& G_b,
         }
         if (validAddReqElement) {
             put(weight, *e_it, 4); //add edge to additionally required elements \ERadd
+            put(name, *e_it, "a");
             e_it = edge_ordering.erase(e_it);
             counter++;
         } else {
