@@ -192,8 +192,8 @@ bool matrix_market::MtxToILUGraph(Graph& G_ilu) {
         for (int i = 0; i < nz; ++i) {
             if (I[i] != J[i])
                 add_edge(I[i], J[i], 0, G_ilu);
-            if (I[i] != J[i])
-                add_edge(J[i], I[i], 0, G_ilu);
+//            if (I[i] != J[i])
+//                add_edge(J[i], I[i], 0, G_ilu);
         }
     } else {
         // add the edges to the graph object
