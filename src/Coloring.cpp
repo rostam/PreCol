@@ -117,7 +117,6 @@ int main(int argc, char* argv[]) {
     }, G_ilu);
     vector<unsigned int> Ord_ilu;
     Ordering *order = get_ordering(G_ilu,ord,Ord_ilu);
-    cout << " salam " << Ord_ilu.size() << endl;
     generate_order(alg, order, G_b, V_r, V_c);
 
     //Add vertices to graph
@@ -192,19 +191,21 @@ int main(int argc, char* argv[]) {
     });
     int pot = potentialRequiredNonzerosD2(G_b, edge_ordering);
     SILU silu;
+    cout << "\nsalam " << num_edges(G_ilu);
     int fillin = silu.getFillinMinDeg(G_ilu, 2, Ord_ilu);
+    cout << "\nsalam " << num_edges(G_ilu);
     matrix_market mm_f(G_ilu,"f",V_c.size(),V_r.size(),false);
+    cout << "\nsalam1 " << num_edges(G_b);
     mm_f.writeToFile((char *) "F.mtx");
     for_each_e(G_ilu,[&](Edge e) {
-        if(edge(source(e,G_ilu), source(e,G_ilu)+V_c.size(), G_b).second) {
-            put(edge_weight, G_b,
-                edge(source(e,G_ilu), source(e,G_ilu)+V_c.size(), G_b).first, 3);
-        } else {
-            add_edge(source(e,G_ilu), source(e,G_ilu)+V_c.size(),G_b);
-            put(edge_weight, G_b,
-                edge(source(e,G_ilu), source(e,G_ilu)+V_c.size(), G_b).first, 3);
-        }
+        Ver src = source(e,G_ilu);
+        Ver tgt = target(e,G_ilu);
+        if(!edge(src,tgt+V_c.size(),G_b).second) add_edge(src,tgt+V_c.size(),G_b);
+        if(!edge(src+V_c.size(),tgt,G_b).second) add_edge(src+V_c.size(),tgt,G_b);
+        put(edge_weight, G_b, edge(src, tgt + V_c.size(), G_b).first, 3);
+        put(edge_weight, G_b, edge(src + V_c.size(), tgt, G_b).first, 3);
     });
+    cout << "\nsalam1 " << num_edges(G_b);
 
     vector<graph_traits<Graph>::edge_descriptor> edge_ordering2;
     //all edges \in \ERpot

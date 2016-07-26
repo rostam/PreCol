@@ -10,7 +10,33 @@
 #include "SLO.h"
 #include "IDO.h"
 #include <fstream>
+#include "metis.h"
+
 static vector<string> ords = {"LFO","SLO","IDO"};
+
+//static void getMetisOrdering2(Graph& g, string name, vector<unsigned int>& met_ord) {
+//    idx_t nvtxs = num_vertices(g);
+//    idx_t *xadj = new idx_t[num_vertices(g) + 1];
+//    idx_t *adjncy = new idx_t[2 * num_edges(g)];
+//
+//    int cnt_e = 0;
+//    int cnt_v = 0;
+//    xadj[0]=0;
+//    for (int v = 0; v < num_vertices(g); v++) {
+//        for_each(adjacent_vertices(v, g).first, adjacent_vertices(v, g).second, [&](Ver nv) {
+//            adjncy[cnt_e] = nv;
+//            cnt_e++;
+//        });
+//        xadj[cnt_v] = cnt_e;
+//        cnt_v++;
+//    }
+//
+//    idx_t *perm = new idx_t[num_vertices(g)],*iperm= new idx_t[num_vertices(g)];
+//    int ret;
+//    METIS_NodeND(&nvtxs,xadj,adjncy, NULL,NULL,perm,iperm);
+//    cout << "dars " << ret << " " << METIS_OK << endl;
+//
+//}
 
 static void getMetisOrdering(Graph& g, string name, vector<unsigned int>& met_ord) {
     ofstream of;
@@ -49,6 +75,23 @@ static Ordering* get_ordering(Graph& G_ilu,const string& s, vector<unsigned int>
         }
     } else if(pre_ord == "Metis"){
         getMetisOrdering(G_ilu,"graph", order);
+//        reverse(order.begin(),order.end());
+//        getMetisOrdering2(G_ilu,"graph", order);
+    } else if(pre_ord == "Min") {
+        list<pair<int, int> > VertexDegree;
+        for_each_v(G_ilu,[&](Ver v) {
+            vector<int> ns;
+            for_each(adjacent_vertices(v,G_ilu).first,adjacent_vertices(v,G_ilu).second,[&](Ver nv){
+                ns.push_back(nv);
+            });
+            VertexDegree.push_back(make_pair(v,ns.size()));
+        });
+        VertexDegree.sort(ge_degree);
+        for (list<pair<int, int>>::iterator i = VertexDegree.begin();
+             i != VertexDegree.end();
+             ++i) {
+            order.push_back((*i).first);
+        }
     }
 
     if(col_ord=="LFO") return new LFO();
