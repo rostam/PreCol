@@ -12,7 +12,7 @@ int potentialRequiredNonzerosD2(Graph& G_b, const vector<graph_traits<Graph>::ed
     property_map<Graph, edge_weight_t>::type weight = get(edge_weight, G_b);
     property_map<Graph, edge_name_t>::type name = get(edge_name, G_b);
     bool validNewElement = true;
-    int counter = 0;
+
     //every path (u,v,w) with u, w are column vertices, v is a row vertex and (u,v) \notin E_init
     for_each(edge_ordering.begin(),edge_ordering.end(),[&](Edge e) {
         //non-required edge
@@ -26,6 +26,17 @@ int potentialRequiredNonzerosD2(Graph& G_b, const vector<graph_traits<Graph>::ed
         if (validNewElement) {
             put(weight, edge(u, v, G_b).first, 2); // potentially required elements
             put(name, edge(u, v, G_b).first, "p");
+            u = u>num_vertices(G_b)/2 ? u - 960 : u + 960;
+            v = v>num_vertices(G_b)/2 ? v - 960 : v + 960;
+//            if(edge(v, u, G_b).second) {
+//                put(weight, edge(v, u, G_b).first, 2);
+//                put(name, edge(v, u, G_b).first, "p");
+//            }
+        }
+    });
+    int counter = 0;
+    for_each_e(G_b,[&](Edge e) {
+        if(get(edge_name,G_b,e) == "p") {
             counter++;
         }
     });

@@ -122,11 +122,12 @@ int main(int argc, char* argv[]) {
     //Add vertices to graph
     for_each_v(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
 
-    cout << "Number of vertices: " << num_vertices(G_b) << endl;
+    cerr << "Number of vertices: " << num_vertices(G_b) << endl;
+
     //Add edges to graph
     mm.MtxToBipGraph(G_b);
     //  graph2dot(G_b);
-    cout << "Matrix:_" << argv[1] << endl;
+    cerr << "Matrix:_" << argv[1] << endl;
     rows = num_vertices(G_b) / 2;
     entries = num_edges(G_b);
     cout << "Rows:_" << rows << endl;
@@ -172,7 +173,6 @@ int main(int argc, char* argv[]) {
 //    cout << "Density_pattern:_" << double(entries_pattern) / rows * 100 << endl;
     cout << "Mode:_" << Mode << endl;
 
-
     //Coloring of the vertices
     getAlg(Mode2, alg, Mode, G_b, V_r, V_c, order) -> color();
     int max_color_col = *max_element(V_c.begin(), V_c.end(), [&](Ver v1, Ver v2) {
@@ -197,17 +197,18 @@ int main(int argc, char* argv[]) {
     int fillin = silu.getFillinMinDeg(G_ilu, 2, Ord_ilu);
     matrix_market mm_f(G_ilu,"f",V_c.size(),V_r.size(),false);
     mm_f.writeToFile((char *) "F.mtx");
-    cout << "test-1 " << num_edges(G_b) << endl;
     for_each_e(G_ilu,[&](Edge e) {
         Ver src = source(e,G_ilu);
         Ver tgt = target(e,G_ilu);
-        //cout << src << " " << tgt << endl;
         if(!edge(src,tgt+V_c.size(),G_b).second) add_edge(src,tgt+V_c.size(),G_b);
         if(!edge(src+V_c.size(),tgt,G_b).second) add_edge(src+V_c.size(),tgt,G_b);
+        if(!edge(tgt,src+V_c.size(),G_b).second) add_edge(tgt,src+V_c.size(),G_b);
+        if(!edge(tgt+V_c.size(),src,G_b).second) add_edge(tgt+V_c.size(),src,G_b);
         put(edge_weight, G_b, edge(src, tgt + V_c.size(), G_b).first, 3);
         put(edge_weight, G_b, edge(src + V_c.size(), tgt, G_b).first, 3);
+        put(edge_weight, G_b, edge(tgt, src + V_c.size(), G_b).first, 3);
+        put(edge_weight, G_b, edge(tgt + V_c.size(), src, G_b).first, 3);
     });
-    cout << "test " << num_edges(G_b) << endl;
     vector<graph_traits<Graph>::edge_descriptor> edge_ordering2;
     //all edges \in \ERpot
     copy_if(edges(G_b).first,edges(G_b).second,back_inserter(edge_ordering2),[&](Edge e) {
@@ -218,11 +219,10 @@ int main(int argc, char* argv[]) {
         bool cond = false;
         if(edge(src,tgt, G_ilu).second) {
             if(get(edge_name,G_ilu, edge(src,tgt, G_ilu).first) == "f") {
-                cond=true;
+//                cond=true;
             }
         }
-        return get(edge_weight,G_b,e)==2
-               &&  !cond;
+        return get(edge_weight,G_b,e)==2 && !cond;
     });
 
     cout << "sakam " << edge_ordering2.size() << endl;

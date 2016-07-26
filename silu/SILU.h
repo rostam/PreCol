@@ -24,7 +24,6 @@ public:
  * @return
  */
     int getFillinMinDeg(Graph &g, int el, vector<unsigned int> &ord) {
-        int fillin = 0;
         for_each(vertices(g).first, vertices(g).second, [&](unsigned int ver1) {
             for_each(vertices(g).first, vertices(g).second, [&](unsigned int ver2) {
                 if (edge(ver1, ver2, g).second) {
@@ -33,9 +32,15 @@ public:
             });
         });
         for_each(ord.begin(), ord.end(), [&](unsigned int i) {
-            fillin += ILUOneStep(g, i, el);
+            ILUOneStep(g, i, el);
         });
-        return fillin;
+        int counter = 0;
+        for_each_e(g,[&](Edge e) {
+            if(get(edge_name,g,e) == "f") {
+                counter++;
+            }
+        });
+        return counter;
     }
 
 /**
@@ -45,8 +50,7 @@ public:
  * @param el
  * @return
  */
-    int ILUOneStep(Graph &g, int selected, int el) {
-        int fillin = 0;
+    void ILUOneStep(Graph &g, int selected, int el) {
         vector<unsigned int> inVer, outVer;
         for_each(vertices(g).first, vertices(g).second, [&](unsigned int ver) {
             if (edge(ver, selected, g).second || edge(selected, ver, g).second) {
@@ -65,19 +69,16 @@ public:
                             int e1_w = get(edge_weight, g, e1);
                             int e2_w = get(edge_weight, g, e2);
                             if (e1_w + e2_w + 1 <= el) {
-                                add_edge(anInVer, anOutVer, g);
+                                if(!edge(anInVer, anOutVer, g).second) add_edge(anInVer, anOutVer, g);
                                 F.push_back(make_pair(anInVer,anOutVer));
                                 put(edge_weight, g, edge(anInVer, anOutVer, g).first, e1_w + e2_w + 1);
                                 put(edge_name, g, edge(anInVer, anOutVer, g).first, "f");
-                                fillin++;
                             }
                         }
                     }
                 }
             });
         });
-
-        return fillin;
     }
 };
 
