@@ -10,8 +10,8 @@
 #include "orderings.h"
 #include "PartialD2ColoringRestrictedOMP.hpp"
 #include "output_graph.hpp"
-#include "potentialRequiredNonzeros.hpp"
-#include "addReqElements.hpp"
+#include "pot.hpp"
+#include "add.hpp"
 #include <metis.h>
 #include "SILU.h"
 #include "algs.h"
@@ -189,30 +189,55 @@ int main(int argc, char* argv[]) {
     copy_if(edges(G_b).first,edges(G_b).second,back_inserter(edge_ordering),[&G_b](Edge e) {
         return get(edge_weight,G_b,e)==0;
     });
+//    sort(edge_ordering.begin(),edge_ordering.end(),le_cols(G_b));
     int pot = potentialRequiredNonzerosD2(G_b, edge_ordering);
+    matrix_market mm_p(G_b,"p",V_c.size(),V_r.size(),true);
+    mm_p.writeToFile((char *) "pot.mtx");
     SILU silu;
-    cout << "\nsalam " << num_edges(G_ilu);
     int fillin = silu.getFillinMinDeg(G_ilu, 2, Ord_ilu);
-    cout << "\nsalam " << num_edges(G_ilu);
     matrix_market mm_f(G_ilu,"f",V_c.size(),V_r.size(),false);
-    cout << "\nsalam1 " << num_edges(G_b);
     mm_f.writeToFile((char *) "F.mtx");
+    cout << "test-1 " << num_edges(G_b) << endl;
     for_each_e(G_ilu,[&](Edge e) {
         Ver src = source(e,G_ilu);
         Ver tgt = target(e,G_ilu);
+        //cout << src << " " << tgt << endl;
         if(!edge(src,tgt+V_c.size(),G_b).second) add_edge(src,tgt+V_c.size(),G_b);
         if(!edge(src+V_c.size(),tgt,G_b).second) add_edge(src+V_c.size(),tgt,G_b);
         put(edge_weight, G_b, edge(src, tgt + V_c.size(), G_b).first, 3);
         put(edge_weight, G_b, edge(src + V_c.size(), tgt, G_b).first, 3);
     });
-    cout << "\nsalam1 " << num_edges(G_b);
-
+    cout << "test " << num_edges(G_b) << endl;
     vector<graph_traits<Graph>::edge_descriptor> edge_ordering2;
     //all edges \in \ERpot
-    copy_if(edges(G_b).first,edges(G_b).second,back_inserter(edge_ordering2),[&G_b](Edge e) {
-        return get(edge_weight,G_b,e)==2;
+    copy_if(edges(G_b).first,edges(G_b).second,back_inserter(edge_ordering2),[&](Edge e) {
+        int src = source(e,G_b);
+        int tgt = target(e,G_b);
+        if(src >= V_c.size()) src = src - V_c.size();
+        if(tgt >= V_c.size()) tgt = tgt - V_c.size();
+        bool cond = false;
+        if(edge(src,tgt, G_ilu).second) {
+            if(get(edge_name,G_ilu, edge(src,tgt, G_ilu).first) == "f") {
+                cond=true;
+            }
+        }
+        return get(edge_weight,G_b,e)==2
+               &&  !cond;
     });
-    int add = addReqElements(G_b, edge_ordering2);
+
+    cout << "sakam " << edge_ordering2.size() << endl;
+    int num_addReqElements = 0;
+    int num_addReqElements_cur = 0;
+    int cnt_loop_addReqElements = 0;
+    do {
+        num_addReqElements_cur = addReqElements(G_b, edge_ordering2);
+        num_addReqElements += num_addReqElements_cur;
+//        cout << "Num add: " << num_addReqElements << endl;
+        ++cnt_loop_addReqElements;
+    } while(num_addReqElements_cur>0);
+
+    int add = num_addReqElements;
+//    int add = addReqElements(G_b, edge_ordering2);
 
     matrix_market mm_a(G_b,"a",V_c.size(),V_r.size(),true);
     mm_a.writeToFile((char *) "add.mtx");

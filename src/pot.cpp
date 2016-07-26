@@ -1,4 +1,4 @@
-#include "potentialRequiredNonzeros.hpp"
+#include "pot.hpp"
 
 /** Iterates over all vertices and checks if an edge can be added
  *  without an extra color (distance-2 coloring restricted)
@@ -9,34 +9,26 @@
  * \return number of potentially required elements
  */
 int potentialRequiredNonzerosD2(Graph& G_b, const vector<graph_traits<Graph>::edge_descriptor>& edge_ordering) {
-    property_map<Graph, vertex_color_t>::type color = get(vertex_color, G_b);
     property_map<Graph, edge_weight_t>::type weight = get(edge_weight, G_b);
-    graph_traits<Graph>::adjacency_iterator v, v_end;
-    graph_traits<Graph>::adjacency_iterator w, w_end;
+    property_map<Graph, edge_name_t>::type name = get(edge_name, G_b);
     bool validNewElement = true;
     int counter = 0;
     //every path (u,v,w) with u, w are column vertices, v is a row vertex and (u,v) \notin E_init
-    for (vector<graph_traits<Graph>::edge_descriptor>::const_iterator e_it = edge_ordering.begin();
-         e_it != edge_ordering.end();
-         ++e_it) {
-
+    for_each(edge_ordering.begin(),edge_ordering.end(),[&](Edge e) {
         //non-required edge
-        unsigned int u = target(*e_it, G_b); //column vertex
-        unsigned int v = source(*e_it, G_b); //row vertex
+        unsigned int u = target(e, G_b); //column vertex
+        unsigned int v = source(e, G_b); //row vertex
 
         validNewElement = true;
-        for (tie(w, w_end) = adjacent_vertices(v, G_b);
-             w != w_end && validNewElement;
-             w++) {
-
-            if (get(vertex_color, G_b, *w) == get(vertex_color, G_b, u) && u != *w)
-                validNewElement = false;
-        }
+        for_each(adjacent_vertices(v, G_b).first,adjacent_vertices(v, G_b).second,[&](Ver w) {
+            if (get(vertex_color, G_b, w) == get(vertex_color, G_b, u) && u != w) validNewElement = false;
+        });
         if (validNewElement) {
             put(weight, edge(u, v, G_b).first, 2); // potentially required elements
+            put(name, edge(u, v, G_b).first, "p");
             counter++;
         }
-    }
+    });
     return counter;
 }
 

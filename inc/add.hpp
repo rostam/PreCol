@@ -13,8 +13,7 @@
  *
  * \return number of additionally required elements
  */
-int addReqElements(Graph& G_b,
-                   vector<graph_traits<Graph>::edge_descriptor>& edge_ordering) {
+int addReqElements(Graph& G_b, vector<graph_traits<Graph>::edge_descriptor>& edge_ordering) {
     property_map<Graph, edge_weight_t>::type weight = get(edge_weight, G_b);
     property_map<Graph, edge_name_t>::type name = get(edge_name, G_b);
     graph_traits<Graph>::out_edge_iterator oe_it, oe_it_end;
@@ -38,13 +37,11 @@ int addReqElements(Graph& G_b,
         if (target(*e_it, G_b) >= m) { target_i -= m; } // r_i, c_i: index i
 
         if (source_i > target_i) {
-
             //non-required edge
             u = source(*e_it, G_b); //row vertex
             v = target(*e_it, G_b); //column vertex v_c
             w = v - m; //row vertex v_r
         } else if (source_i < target_i) {
-
             //non-required edge
             u = target(*e_it, G_b); //column vertex
             v = source(*e_it, G_b); //row vertex v_r
