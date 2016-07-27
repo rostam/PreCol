@@ -70,9 +70,13 @@ public:
                             int e2_w = get(edge_weight, g, e2);
                             if (e1_w + e2_w + 1 <= el) {
                                 if(!edge(anInVer, anOutVer, g).second) add_edge(anInVer, anOutVer, g);
+                                if(!edge(anOutVer, anInVer, g).second) add_edge(anInVer, anOutVer, g);
                                 F.push_back(make_pair(anInVer,anOutVer));
+                                F.push_back(make_pair(anOutVer,anInVer));
                                 put(edge_weight, g, edge(anInVer, anOutVer, g).first, e1_w + e2_w + 1);
                                 put(edge_name, g, edge(anInVer, anOutVer, g).first, "f");
+                                put(edge_weight, g, edge(anOutVer, anInVer, g).first, e1_w + e2_w + 1);
+                                put(edge_name, g, edge(anOutVer, anInVer, g).first, "f");
                             }
                         }
                     }

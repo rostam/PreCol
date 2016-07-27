@@ -192,45 +192,44 @@ int main(int argc, char* argv[]) {
 //    sort(edge_ordering.begin(),edge_ordering.end(),le_cols(G_b));
     int pot = potentialRequiredNonzerosD2(G_b, edge_ordering);
     matrix_market mm_p(G_b,"p",V_c.size(),V_r.size(),true);
-    mm_p.writeToFile((char *) "pot.mtx");
+    mm_p.writeToFile((char *) "matlab/pot.mtx");
     SILU silu;
-    int fillin = silu.getFillinMinDeg(G_ilu, 2, Ord_ilu);
+
+    int fillin = silu.getFillinMinDeg(G_ilu, 10, Ord_ilu);
     matrix_market mm_f(G_ilu,"f",V_c.size(),V_r.size(),false);
-    mm_f.writeToFile((char *) "F.mtx");
+    mm_f.writeToFile((char *) "matlab/F.mtx");
+
+    Graph G_b2(mm.nrows()*2);
+    for_each_e(G_b,[&](Edge e) {
+        Ver src = source(e,G_b);
+        Ver tgt = target(e,G_b);
+        if(get(edge_name,G_b, e) == "p") {
+            add_edge(src,tgt,G_b2);
+            put(edge_weight, G_b2, edge(src, tgt , G_b2).first, 2);
+        }
+    });
     for_each_e(G_ilu,[&](Edge e) {
         Ver src = source(e,G_ilu);
         Ver tgt = target(e,G_ilu);
-        if(!edge(src,tgt+V_c.size(),G_b).second) add_edge(src,tgt+V_c.size(),G_b);
-        if(!edge(src+V_c.size(),tgt,G_b).second) add_edge(src+V_c.size(),tgt,G_b);
-        if(!edge(tgt,src+V_c.size(),G_b).second) add_edge(tgt,src+V_c.size(),G_b);
-        if(!edge(tgt+V_c.size(),src,G_b).second) add_edge(tgt+V_c.size(),src,G_b);
-        put(edge_weight, G_b, edge(src, tgt + V_c.size(), G_b).first, 3);
-        put(edge_weight, G_b, edge(src + V_c.size(), tgt, G_b).first, 3);
-        put(edge_weight, G_b, edge(tgt, src + V_c.size(), G_b).first, 3);
-        put(edge_weight, G_b, edge(tgt + V_c.size(), src, G_b).first, 3);
+        add_edge(src,tgt+V_c.size(),G_b2);
+        add_edge(tgt,src+V_c.size(),G_b2);
+        put(edge_weight, G_b2, edge(src, tgt + V_c.size(), G_b2).first, 3);
+        put(edge_weight, G_b2, edge(tgt, src + V_c.size(), G_b2).first, 3);
     });
+
     vector<graph_traits<Graph>::edge_descriptor> edge_ordering2;
     //all edges \in \ERpot
-    copy_if(edges(G_b).first,edges(G_b).second,back_inserter(edge_ordering2),[&](Edge e) {
-        int src = source(e,G_b);
-        int tgt = target(e,G_b);
-        if(src >= V_c.size()) src = src - V_c.size();
-        if(tgt >= V_c.size()) tgt = tgt - V_c.size();
-        bool cond = false;
-        if(edge(src,tgt, G_ilu).second) {
-            if(get(edge_name,G_ilu, edge(src,tgt, G_ilu).first) == "f") {
-//                cond=true;
-            }
-        }
-        return get(edge_weight,G_b,e)==2 && !cond;
+    copy_if(edges(G_b2).first,edges(G_b2).second,back_inserter(edge_ordering2),[&](Edge e) {
+        return get(edge_weight,G_b2,e)==2;
     });
 
     cout << "sakam " << edge_ordering2.size() << endl;
+
     int num_addReqElements = 0;
     int num_addReqElements_cur = 0;
     int cnt_loop_addReqElements = 0;
     do {
-        num_addReqElements_cur = addReqElements(G_b, edge_ordering2);
+        num_addReqElements_cur = addReqElements(G_b2, edge_ordering2);
         num_addReqElements += num_addReqElements_cur;
 //        cout << "Num add: " << num_addReqElements << endl;
         ++cnt_loop_addReqElements;
@@ -239,11 +238,11 @@ int main(int argc, char* argv[]) {
     int add = num_addReqElements;
 //    int add = addReqElements(G_b, edge_ordering2);
 
-    matrix_market mm_a(G_b,"a",V_c.size(),V_r.size(),true);
-    mm_a.writeToFile((char *) "add.mtx");
+    matrix_market mm_a(G_b2,"a",V_c.size(),V_r.size(),true);
+    mm_a.writeToFile((char *) "matlab/add.mtx");
 
     matrix_market mm_r(G_b,"r",V_c.size(),V_r.size(),true );
-    mm_r.writeToFile((char *) "req.mtx");
+    mm_r.writeToFile((char *) "matlab/req.mtx");
     //graph2dot(G_ilu);
     cout << "Potentially Required:_" << pot << endl;
     cout << "Additionally Required:_" << add  <<  " " << endl;

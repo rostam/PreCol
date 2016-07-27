@@ -28,10 +28,10 @@ int potentialRequiredNonzerosD2(Graph& G_b, const vector<graph_traits<Graph>::ed
             put(name, edge(u, v, G_b).first, "p");
             u = u>num_vertices(G_b)/2 ? u - 960 : u + 960;
             v = v>num_vertices(G_b)/2 ? v - 960 : v + 960;
-//            if(edge(v, u, G_b).second) {
-//                put(weight, edge(v, u, G_b).first, 2);
-//                put(name, edge(v, u, G_b).first, "p");
-//            }
+            if(edge(v, u, G_b).second) {
+                put(weight, edge(v, u, G_b).first, 2);
+                put(name, edge(v, u, G_b).first, "p");
+            }
         }
     });
     int counter = 0;
@@ -108,7 +108,6 @@ int potentialRequiredNonzerosSB(Graph& G_b,
                         break;
                 }
             }
-
             // add element if possible
             if (validNewElement) {
                 put(weight, *e_it, 2);
