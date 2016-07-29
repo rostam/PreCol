@@ -95,27 +95,28 @@ int main(int argc, char* argv[]) {
     vector<unsigned int> V_r, V_c;
 
     Graph G_ilu(mm.nrows());
-    mm.MtxToILUGraph(G_ilu);
+//    mm.MtxToILUGraph(G_ilu);
+//
+//    remove_edge_if([&](Edge e) {
+//        if (sparsify == "Diagonal") {
+//            return source(e, G_b) != target(e, G_b);
+//        } else if (sparsify == "BlockDiagonal") {
+//            int RowCoordinate = source(e, G_b);
+//            int ColumnCoordinate = target(e, G_b);
+//            int RelativeDistance = RowCoordinate - ColumnCoordinate;
+//            int RowBlock = RowCoordinate / blockSize;
+//            int ColumnBlock = ColumnCoordinate / blockSize;
+//            if ((RelativeDistance < blockSize) && (RelativeDistance > -blockSize)
+//                && (RowBlock == ColumnBlock))
+//                return false;
+//            else return true;
+//        } else if (sparsify == "Full") {
+//            return false;
+//        } else {
+//            return false;
+//        }
+//    }, G_ilu);
 
-    remove_edge_if([&](Edge e) {
-        if (sparsify == "Diagonal") {
-            return source(e, G_b) != target(e, G_b);
-        } else if (sparsify == "BlockDiagonal") {
-            int RowCoordinate = source(e, G_b);
-            int ColumnCoordinate = target(e, G_b);
-            int RelativeDistance = RowCoordinate - ColumnCoordinate;
-            int RowBlock = RowCoordinate / blockSize;
-            int ColumnBlock = ColumnCoordinate / blockSize;
-            if ((RelativeDistance < blockSize) && (RelativeDistance > -blockSize)
-                && (RowBlock == ColumnBlock))
-                return false;
-            else return true;
-        } else if (sparsify == "Full") {
-            return false;
-        } else {
-            return false;
-        }
-    }, G_ilu);
     vector<unsigned int> Ord_ilu;
     Ordering *order = get_ordering(G_ilu,ord,Ord_ilu);
     generate_order(alg, order, G_b, V_r, V_c);
@@ -193,44 +194,66 @@ int main(int argc, char* argv[]) {
     int pot = potentialRequiredNonzerosD2(G_b, edge_ordering);
     matrix_market mm_p(G_b,"p",V_c.size(),V_r.size(),true);
     mm_p.writeToFile((char *) "matlab/pot.mtx");
+    int cnt_r = 0;
+    for_each_e(G_b,[&](Edge e) {
+        if (get(edge_name, G_b, e) == "r") {
+            cnt_r++;
+            int src = source(e, G_b);
+            int tgt = target(e, G_b);
+            int m = mm.nrows();
+            if (src > m) {
+                add_edge(src - m ,tgt ,G_ilu);
+            } else {
+                add_edge(src ,tgt - m,G_ilu);
+            }
+        }
+    });
 
     SILU silu;
-    int fillin = silu.getFillinMinDeg(G_ilu, 2, Ord_ilu);
+    int fillin = silu.getFillinMinDeg(G_ilu, 10, Ord_ilu);
     matrix_market mm_f(G_ilu,"f",V_c.size(),V_r.size(),false);
     mm_f.writeToFile((char *) "matlab/F.mtx");
 
-    int cntt = 0;
+    Graph G_b2(mm.nrows()*2);
+    cout << "shoma1 " << num_edges(G_b);
+    for_each_e(G_b,[&](Edge e) {
+        if (get(edge_name, G_b, e) == "r") {
+            Ver src = source(e,G_b);
+            Ver tgt = target(e,G_b);
+            add_edge(src,tgt,G_b2);
+            put(edge_weight, G_b2, edge(src, tgt , G_b2).first, 2);
+        }
+    });
+    cout << " sho " << num_edges(G_b2) <<endl;
     for_each_e(G_ilu,[&](Edge e) {
         Ver src = source(e,G_ilu);
         Ver tgt = target(e,G_ilu);
-        add_edge(src,tgt+V_c.size(),G_b);
-        add_edge(tgt,src+V_c.size(),G_b);
-        put(edge_weight, G_b, edge(src, tgt + V_c.size(), G_b).first, 3);
-        put(edge_weight, G_b, edge(tgt, src + V_c.size(), G_b).first, 3);
-        cntt ++ ;
-    });
+        add_edge(src,tgt+V_c.size(),G_b2);
+        add_edge(tgt,src+V_c.size(),G_b2);
+        put(edge_weight, G_b2, edge(src, tgt + V_c.size(), G_b2).first, 3);
+        put(edge_weight, G_b2, edge(tgt, src + V_c.size(), G_b2).first, 3);
 
+    });
+    cout << " shoma2 " << num_edges(G_b2) <<endl;
     vector<graph_traits<Graph>::edge_descriptor> edge_ordering2;
     //all edges \in \ERpot
-    copy_if(edges(G_b).first,edges(G_b).second,back_inserter(edge_ordering2),[&](Edge e) {
-        return get(edge_weight,G_b,e)==2;
+    copy_if(edges(G_b2).first,edges(G_b2).second,back_inserter(edge_ordering2),[&](Edge e) {
+        return get(edge_weight,G_b2,e)==2;
     });
-    cout << "sakam " << edge_ordering2.size() << endl;
 
     int num_addReqElements = 0;
     int num_addReqElements_cur = 0;
     int cnt_loop_addReqElements = 0;
     do {
-        num_addReqElements_cur = addReqElements(G_b, edge_ordering2);
+        num_addReqElements_cur = addReqElements(G_b2, edge_ordering2);
         num_addReqElements += num_addReqElements_cur;
-//        cout << "Num add: " << num_addReqElements << endl;
         ++cnt_loop_addReqElements;
     } while(num_addReqElements_cur>0);
 
     int add = num_addReqElements;
 //    int add = addReqElements(G_b, edge_ordering2);
 
-    matrix_market mm_a(G_b,"a",V_c.size(),V_r.size(),true);
+    matrix_market mm_a(G_b2,"a",V_c.size(),V_r.size(),true);
     mm_a.writeToFile((char *) "matlab/add.mtx");
 
     matrix_market mm_r(G_b,"r",V_c.size(),V_r.size(),true );

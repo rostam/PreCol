@@ -31,7 +31,6 @@ int potentialRequiredNonzerosD2(Graph& G_b, const vector<graph_traits<Graph>::ed
             put(weight, edge(u, v, G_b).first, 2); // potentially required elements
             put(weight, edge(v, u, G_b).first, 2);
             put(name, edge(u,v,G_b).first,"p");
-            if(edge(v,u,G_b).second)
             put(name, edge(v,u,G_b).first,"p");
             counter++;
         }
