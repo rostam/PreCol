@@ -96,6 +96,7 @@ int main(int argc, char* argv[]) {
 
     Graph G_ilu(mm.nrows());
     mm.MtxToILUGraph(G_ilu);
+
     remove_edge_if([&](Edge e) {
         if (sparsify == "Diagonal") {
             return source(e, G_b) != target(e, G_b);
@@ -122,12 +123,11 @@ int main(int argc, char* argv[]) {
     //Add vertices to graph
     for_each_v(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
 
-    cerr << "Number of vertices: " << num_vertices(G_b) << endl;
-
     //Add edges to graph
     mm.MtxToBipGraph(G_b);
+
     //  graph2dot(G_b);
-    cerr << "Matrix:_" << argv[1] << endl;
+//    cerr << "Matrix:_" << argv[1] << endl;
     rows = num_vertices(G_b) / 2;
     entries = num_edges(G_b);
     cout << "Rows:_" << rows << endl;
@@ -171,7 +171,7 @@ int main(int argc, char* argv[]) {
     });
     cout << "Entries_pattern:_" << entries_pattern << endl;
 //    cout << "Density_pattern:_" << double(entries_pattern) / rows * 100 << endl;
-    cout << "Mode:_" << Mode << endl;
+//    cout << "Mode:_" << Mode << endl;
 
     //Coloring of the vertices
     getAlg(Mode2, alg, Mode, G_b, V_r, V_c, order) -> color();
@@ -193,43 +193,35 @@ int main(int argc, char* argv[]) {
     int pot = potentialRequiredNonzerosD2(G_b, edge_ordering);
     matrix_market mm_p(G_b,"p",V_c.size(),V_r.size(),true);
     mm_p.writeToFile((char *) "matlab/pot.mtx");
-    SILU silu;
 
-    int fillin = silu.getFillinMinDeg(G_ilu, 10, Ord_ilu);
+    SILU silu;
+    int fillin = silu.getFillinMinDeg(G_ilu, 2, Ord_ilu);
     matrix_market mm_f(G_ilu,"f",V_c.size(),V_r.size(),false);
     mm_f.writeToFile((char *) "matlab/F.mtx");
 
-    Graph G_b2(mm.nrows()*2);
-    for_each_e(G_b,[&](Edge e) {
-        Ver src = source(e,G_b);
-        Ver tgt = target(e,G_b);
-        if(get(edge_name,G_b, e) == "p") {
-            add_edge(src,tgt,G_b2);
-            put(edge_weight, G_b2, edge(src, tgt , G_b2).first, 2);
-        }
-    });
+    int cntt = 0;
     for_each_e(G_ilu,[&](Edge e) {
         Ver src = source(e,G_ilu);
         Ver tgt = target(e,G_ilu);
-        add_edge(src,tgt+V_c.size(),G_b2);
-        add_edge(tgt,src+V_c.size(),G_b2);
-        put(edge_weight, G_b2, edge(src, tgt + V_c.size(), G_b2).first, 3);
-        put(edge_weight, G_b2, edge(tgt, src + V_c.size(), G_b2).first, 3);
+        add_edge(src,tgt+V_c.size(),G_b);
+        add_edge(tgt,src+V_c.size(),G_b);
+        put(edge_weight, G_b, edge(src, tgt + V_c.size(), G_b).first, 3);
+        put(edge_weight, G_b, edge(tgt, src + V_c.size(), G_b).first, 3);
+        cntt ++ ;
     });
 
     vector<graph_traits<Graph>::edge_descriptor> edge_ordering2;
     //all edges \in \ERpot
-    copy_if(edges(G_b2).first,edges(G_b2).second,back_inserter(edge_ordering2),[&](Edge e) {
-        return get(edge_weight,G_b2,e)==2;
+    copy_if(edges(G_b).first,edges(G_b).second,back_inserter(edge_ordering2),[&](Edge e) {
+        return get(edge_weight,G_b,e)==2;
     });
-
     cout << "sakam " << edge_ordering2.size() << endl;
 
     int num_addReqElements = 0;
     int num_addReqElements_cur = 0;
     int cnt_loop_addReqElements = 0;
     do {
-        num_addReqElements_cur = addReqElements(G_b2, edge_ordering2);
+        num_addReqElements_cur = addReqElements(G_b, edge_ordering2);
         num_addReqElements += num_addReqElements_cur;
 //        cout << "Num add: " << num_addReqElements << endl;
         ++cnt_loop_addReqElements;
@@ -238,7 +230,7 @@ int main(int argc, char* argv[]) {
     int add = num_addReqElements;
 //    int add = addReqElements(G_b, edge_ordering2);
 
-    matrix_market mm_a(G_b2,"a",V_c.size(),V_r.size(),true);
+    matrix_market mm_a(G_b,"a",V_c.size(),V_r.size(),true);
     mm_a.writeToFile((char *) "matlab/add.mtx");
 
     matrix_market mm_r(G_b,"r",V_c.size(),V_r.size(),true );
