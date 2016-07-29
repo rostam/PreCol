@@ -210,14 +210,14 @@ int main(int argc, char* argv[]) {
     });
 
     SILU silu;
-    int fillin = silu.getFillinMinDeg(G_ilu, 10, Ord_ilu);
+    int fillin = silu.getFillinMinDeg(G_ilu, 20, Ord_ilu);
     matrix_market mm_f(G_ilu,"f",V_c.size(),V_r.size(),false);
     mm_f.writeToFile((char *) "matlab/F.mtx");
 
     Graph G_b2(mm.nrows()*2);
     cout << "shoma1 " << num_edges(G_b);
     for_each_e(G_b,[&](Edge e) {
-        if (get(edge_name, G_b, e) == "r") {
+        if (get(edge_name, G_b, e) == "p") {
             Ver src = source(e,G_b);
             Ver tgt = target(e,G_b);
             add_edge(src,tgt,G_b2);
@@ -248,6 +248,7 @@ int main(int argc, char* argv[]) {
         num_addReqElements_cur = addReqElements(G_b2, edge_ordering2);
         num_addReqElements += num_addReqElements_cur;
         ++cnt_loop_addReqElements;
+        cout << "salam " << endl;
     } while(num_addReqElements_cur>0);
 
     int add = num_addReqElements;
