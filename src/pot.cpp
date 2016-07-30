@@ -15,7 +15,6 @@ int potentialRequiredNonzerosD2(Graph& G_b, const vector<graph_traits<Graph>::ed
     graph_traits<Graph>::adjacency_iterator v, v_end;
     graph_traits<Graph>::adjacency_iterator w, w_end;
     bool validNewElement = true;
-    int counter = 0;
 
     //every path (u,v,w) with u, w are column vertices, v is a row vertex and (u,v) \notin E_init
     for (vector<graph_traits<Graph>::edge_descriptor>::const_iterator e_it = edge_ordering.begin(); e_it != edge_ordering.end(); ++e_it) {
@@ -29,12 +28,17 @@ int potentialRequiredNonzerosD2(Graph& G_b, const vector<graph_traits<Graph>::ed
         }
         if (validNewElement) {
             put(weight, edge(u, v, G_b).first, 2); // potentially required elements
-            put(weight, edge(v, u, G_b).first, 2);
             put(name, edge(u,v,G_b).first,"p");
-            put(name, edge(v,u,G_b).first,"p");
-            counter++;
+            int m = num_vertices(G_b)/2;
+            unsigned int tmpu = u >= m ? u-m : u+m;
+            unsigned int tmpv = v >= m ? v-m : v+m;
+            put(weight, edge(tmpv, tmpu, G_b).first, 2);
+            put(name, edge(tmpv,tmpu,G_b).first,"p");
         }
     }
+
+    int counter = 0;
+    for_each_e(G_b,[&](Edge e) {if(get(edge_name,G_b,e)=="p") counter++; });
     return counter;
 }
 

@@ -10,10 +10,11 @@ int potentialRequiredNonzerosSB(Graph& G_b,
 				const vector<graph_traits<Graph>::edge_descriptor>& edge_ordering);
 //
 struct le_dist_diag {
-  le_dist_diag(const Graph& G_b, const int m): graph(G_b), num_rows(m) {}
-
+    le_dist_diag(const Graph &G_b, const int m) : graph(G_b), num_rows(m) {}
+    
     bool operator()(const graph_traits<Graph>::edge_descriptor e1, const graph_traits<Graph>::edge_descriptor e2) {
-      return abs((int)(target(e1, graph)-num_rows-source(e1, graph))) < abs((int)(target(e2, graph)-num_rows-source(e2, graph)));
+        return abs((int) (target(e1, graph) - num_rows - source(e1, graph))) <
+               abs((int) (target(e2, graph) - num_rows - source(e2, graph)));
     }
 
     const int num_rows;

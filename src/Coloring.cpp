@@ -95,27 +95,6 @@ int main(int argc, char* argv[]) {
     vector<unsigned int> V_r, V_c;
 
     Graph G_ilu(mm.nrows());
-//    mm.MtxToILUGraph(G_ilu);
-//
-//    remove_edge_if([&](Edge e) {
-//        if (sparsify == "Diagonal") {
-//            return source(e, G_b) != target(e, G_b);
-//        } else if (sparsify == "BlockDiagonal") {
-//            int RowCoordinate = source(e, G_b);
-//            int ColumnCoordinate = target(e, G_b);
-//            int RelativeDistance = RowCoordinate - ColumnCoordinate;
-//            int RowBlock = RowCoordinate / blockSize;
-//            int ColumnBlock = ColumnCoordinate / blockSize;
-//            if ((RelativeDistance < blockSize) && (RelativeDistance > -blockSize)
-//                && (RowBlock == ColumnBlock))
-//                return false;
-//            else return true;
-//        } else if (sparsify == "Full") {
-//            return false;
-//        } else {
-//            return false;
-//        }
-//    }, G_ilu);
 
     vector<unsigned int> Ord_ilu;
     Ordering *order = get_ordering(G_ilu,ord,Ord_ilu);
@@ -210,12 +189,12 @@ int main(int argc, char* argv[]) {
     });
 
     SILU silu;
-    int fillin = silu.getFillinMinDeg(G_ilu, 20, Ord_ilu);
+    int fillin = silu.getFillinMinDeg(G_ilu, 10, Ord_ilu);
     matrix_market mm_f(G_ilu,"f",V_c.size(),V_r.size(),false);
     mm_f.writeToFile((char *) "matlab/F.mtx");
 
     Graph G_b2(mm.nrows()*2);
-    cout << "shoma1 " << num_edges(G_b);
+    Graph G_b3(mm.nrows()*2);
     for_each_e(G_b,[&](Edge e) {
         if (get(edge_name, G_b, e) == "p") {
             Ver src = source(e,G_b);
@@ -224,7 +203,6 @@ int main(int argc, char* argv[]) {
             put(edge_weight, G_b2, edge(src, tgt , G_b2).first, 2);
         }
     });
-    cout << " sho " << num_edges(G_b2) <<endl;
     for_each_e(G_ilu,[&](Edge e) {
         Ver src = source(e,G_ilu);
         Ver tgt = target(e,G_ilu);
@@ -234,10 +212,25 @@ int main(int argc, char* argv[]) {
         put(edge_weight, G_b2, edge(tgt, src + V_c.size(), G_b2).first, 3);
 
     });
-    cout << " shoma2 " << num_edges(G_b2) <<endl;
+    for_each_e(G_ilu,[&](Edge e) {
+        Ver src = source(e,G_ilu);
+        Ver tgt = target(e,G_ilu);
+        add_edge(src,tgt+V_c.size(),G_b3);
+        add_edge(tgt,src+V_c.size(),G_b3);
+        put(edge_weight, G_b3, edge(src, tgt + V_c.size(), G_b3).first, 3);
+        put(edge_weight, G_b3, edge(tgt, src + V_c.size(), G_b3).first, 3);
+        put(edge_name, G_b3, edge(src, tgt + V_c.size(), G_b3).first, "np");
+        put(edge_name, G_b3, edge(tgt, src + V_c.size(), G_b3).first, "np");
+    });
+
     vector<graph_traits<Graph>::edge_descriptor> edge_ordering2;
     //all edges \in \ERpot
     copy_if(edges(G_b2).first,edges(G_b2).second,back_inserter(edge_ordering2),[&](Edge e) {
+        return get(edge_weight,G_b2,e)==2;
+    });
+
+    vector<graph_traits<Graph>::edge_descriptor> edge_ordering3;
+    copy_if(edges(G_b2).first,edges(G_b2).second,back_inserter(edge_ordering3),[&](Edge e) {
         return get(edge_weight,G_b2,e)==2;
     });
 
@@ -248,9 +241,15 @@ int main(int argc, char* argv[]) {
         num_addReqElements_cur = addReqElements(G_b2, edge_ordering2);
         num_addReqElements += num_addReqElements_cur;
         ++cnt_loop_addReqElements;
-        cout << "salam " << endl;
     } while(num_addReqElements_cur>0);
 
+    matrix_market mm_NP(G_b3,"np",V_c.size(),V_r.size(),true);
+    mm_NP.writeToFile((char *) "matlab/req_f.mtx");
+
+    cout << "additionally weak:  " << num_edges(G_b3) << " "
+         << addReqElementsWeak(G_b3,edge_ordering3) << " "  << edge_ordering3.size()<< endl;
+
+    cout << "kheir" << addReqElementsMat(mm_p, mm_NP) << endl;
     int add = num_addReqElements;
 //    int add = addReqElements(G_b, edge_ordering2);
 
