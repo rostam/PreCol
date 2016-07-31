@@ -249,7 +249,7 @@ int main(int argc, char* argv[]) {
     cout << "additionally weak:  " << num_edges(G_b3) << " "
          << addReqElementsWeak(G_b3,edge_ordering3) << " "  << edge_ordering3.size()<< endl;
 
-    cout << "kheir" << addReqElementsMat(mm_p, mm_NP) << endl;
+    cout << "Additionally Matrix Version:" << addReqElementsMat(mm_p, mm_NP) << endl;
     int add = num_addReqElements;
 //    int add = addReqElements(G_b, edge_ordering2);
 
