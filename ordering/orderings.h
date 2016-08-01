@@ -41,7 +41,7 @@ static vector<string> ords = {"LFO","SLO","IDO"};
 static void getMetisOrdering(Graph& g, string name, vector<unsigned int>& met_ord) {
     ofstream of;
     of.open(name);
-    of << num_vertices(g) << " " << num_edges(g) << endl;
+    of << num_vertices(g) << " " << num_edges(g)/2 << endl;
     for (int i = 0; i < num_vertices(g); i++) {
         string tmp = "";
         for (int j = 0; j < num_vertices(g); j++) {

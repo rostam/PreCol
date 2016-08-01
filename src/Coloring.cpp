@@ -97,8 +97,6 @@ int main(int argc, char* argv[]) {
     Graph G_ilu(mm.nrows());
 
     vector<unsigned int> Ord_ilu;
-    Ordering *order = get_ordering(G_ilu,ord,Ord_ilu);
-    generate_order(alg, order, G_b, V_r, V_c);
 
     //Add vertices to graph
     for_each_v(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
@@ -153,6 +151,20 @@ int main(int argc, char* argv[]) {
 //    cout << "Density_pattern:_" << double(entries_pattern) / rows * 100 << endl;
 //    cout << "Mode:_" << Mode << endl;
 
+    for_each_e(G_b,[&](Edge e) {
+        if (get(edge_name, G_b, e) == "r") {
+            int src = source(e, G_b);
+            int tgt = target(e, G_b);
+            int m = mm.nrows();
+            if (src > m) {
+                add_edge(src - m ,tgt ,G_ilu);
+            } else {
+                add_edge(src ,tgt - m,G_ilu);
+            }
+        }
+    });
+    Ordering *order = get_ordering(G_ilu,ord,Ord_ilu);
+    generate_order(alg, order, G_b, V_r, V_c);
     //Coloring of the vertices
     getAlg(Mode2, alg, Mode, G_b, V_r, V_c, order) -> color();
     int max_color_col = *max_element(V_c.begin(), V_c.end(), [&](Ver v1, Ver v2) {
@@ -173,20 +185,6 @@ int main(int argc, char* argv[]) {
     int pot = potentialRequiredNonzerosD2(G_b, edge_ordering);
     matrix_market mm_p(G_b,"p",V_c.size(),V_r.size(),true);
     mm_p.writeToFile((char *) "matlab/pot.mtx");
-    int cnt_r = 0;
-    for_each_e(G_b,[&](Edge e) {
-        if (get(edge_name, G_b, e) == "r") {
-            cnt_r++;
-            int src = source(e, G_b);
-            int tgt = target(e, G_b);
-            int m = mm.nrows();
-            if (src > m) {
-                add_edge(src - m ,tgt ,G_ilu);
-            } else {
-                add_edge(src ,tgt - m,G_ilu);
-            }
-        }
-    });
 
     SILU silu;
     int fillin = silu.getFillinMinDeg(G_ilu, 10, Ord_ilu);
