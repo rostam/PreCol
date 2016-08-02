@@ -14,11 +14,11 @@
 
 static vector<string> ords = {"LFO","SLO","IDO"};
 
-static Ordering* get_ordering(const string& col_ord, vector<unsigned int>& order) {
-    if(col_ord=="LFO") return new LFO();
-    else if(col_ord=="SLO") return new SLO();
-    else if(col_ord=="IDO") return new IDO();
-    else if(col_ord=="Nat") return new Nat();
+static shared_ptr<Ordering> get_ordering(const string& col_ord, vector<unsigned int>& order) {
+    if(col_ord=="LFO") return shared_ptr<Ordering>(new LFO());
+    else if(col_ord=="SLO") return shared_ptr<Ordering>(new SLO());
+    else if(col_ord=="IDO") return shared_ptr<Ordering>(new IDO());
+    else if(col_ord=="Nat") return shared_ptr<Ordering>(new Nat());
 }
 
 
@@ -33,7 +33,7 @@ static Ordering* get_ordering(const string& col_ord, vector<unsigned int>& order
  *
  * \return void
  */
-static void generate_order(const string &alg, Ordering* ord, const Graph &G_b,
+static void generate_order(const string &alg, shared_ptr<Ordering> ord, const Graph &G_b,
                     vector<unsigned int> &V_r, vector<unsigned int> &V_c) {
     ord->order(G_b, V_r, alg.find("Restricted") != string::npos);
     ord->order(G_b, V_c, alg.find("Restricted") != string::npos);

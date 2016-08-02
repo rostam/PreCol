@@ -9,9 +9,6 @@
 #include "datatypes.hpp"
 #include "neighbors.hpp"
 
-using namespace std;
-using namespace boost;
-
 vector<int> ISetVariant(Graph G_b,
 			vector<unsigned int> V_r,
 			vector<unsigned int> V_c,

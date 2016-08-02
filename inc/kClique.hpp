@@ -8,9 +8,6 @@
 #include "datatypes.hpp"
 #include "neighbors.hpp"
 
-using namespace std;
-using namespace boost;
-
 int kClique(const Graph& G_c, const unsigned int& k);
 
 bool step(const Graph& G_c,

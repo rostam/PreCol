@@ -2,7 +2,15 @@
 #define ADDREQELEMENTS_HPP
 
 #include "datatypes.hpp"
-
+/**
+ * \brief Computes the additionally required elements
+ *
+ * This computation is based on the matrix.
+ *
+ * @param P the given potentially requited elements in the matrix format
+ * @param F the fillin matrix
+ * @return the list of positions of additionally required elements
+ */
 vector<pair<int,int>> addReqElementsMat(matrix_market& P, matrix_market& F) {
     vector<pair<int,int>> ret;
     for (int k = 0; k < P.nz; k++) {
@@ -44,7 +52,7 @@ vector<pair<int,int>> addReqElementsMat(matrix_market& P, matrix_market& F) {
  *
  * \return number of additionally required elements
  */
-int addReqElements(Graph& G_b, vector<graph_traits<Graph>::edge_descriptor>& edge_ordering) {
+int addReqElements(Graph& G_b, vector<Edge>& edge_ordering) {
     property_map<Graph, edge_weight_t>::type weight = get(edge_weight, G_b);
     property_map<Graph, edge_name_t>::type name = get(edge_name, G_b);
     graph_traits<Graph>::out_edge_iterator oe_it, oe_it_end;
@@ -156,8 +164,5 @@ int addReqElementsWeak(Graph& G_b, vector<graph_traits<Graph>::edge_descriptor>&
     });
 
     return counter;
-//    for_each_e(G_b,[&](Edge e) {
-//        if()
-//    });
 }
 #endif

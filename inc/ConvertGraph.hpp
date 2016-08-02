@@ -8,9 +8,6 @@
 #include "datatypes.hpp"
 #include "neighbors.hpp"
 
-using namespace std;
-using namespace boost;
-
 bool G_bToG_c(const Graph& G_b, const vector<unsigned int>& V_c, Graph& G_c);
 bool G_bToG_cRestricted(const Graph& G_b, const vector<unsigned int>& V_c, Graph& G_c);
 bool G_bToG_r(const Graph& G_b, const vector<unsigned int>& V_r, Graph& G_r);

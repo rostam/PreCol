@@ -12,10 +12,8 @@
 #include "output_graph.hpp"
 #include "pot.hpp"
 #include "add.hpp"
-#include <metis.h>
 #include "SILU.h"
 #include "algs.h"
-#include "boost/graph/metis.hpp"
 #include "sparsify.h"
 
 /*! \mainpage PreCol - A Brief Description.
@@ -124,7 +122,7 @@ int main(int argc, char* argv[]) {
     size_t pos = ord.find("_");
     string col_ord = ord.substr(0,pos);
     string pre_ord = ord.substr(pos+1);
-    Ordering *order = get_ordering(col_ord,Ord_ilu);
+    shared_ptr<Ordering> order = get_ordering(col_ord,Ord_ilu);
     generate_order(alg, order, G_b, V_r, V_c);
     //Coloring of the vertices
     getAlg(Mode2, alg, Mode, G_b, V_r, V_c, order) -> color();
@@ -183,13 +181,13 @@ int main(int argc, char* argv[]) {
         put(edge_name, G_b3, edge(tgt, src + V_c.size(), G_b3).first, "np");
     });
 
-    vector<graph_traits<Graph>::edge_descriptor> edge_ordering2;
+    vector<Edge> edge_ordering2;
     //all edges \in \ERpot
     copy_if(edges(G_b2).first,edges(G_b2).second,back_inserter(edge_ordering2),[&](Edge e) {
         return get(edge_weight,G_b2,e)==2;
     });
 
-    vector<graph_traits<Graph>::edge_descriptor> edge_ordering3;
+    vector<Edge> edge_ordering3;
     copy_if(edges(G_b2).first,edges(G_b2).second,back_inserter(edge_ordering3),[&](Edge e) {
         return get(edge_weight,G_b2,e)==2;
     });
@@ -229,31 +227,6 @@ int main(int argc, char* argv[]) {
     cout << "Additionally Required:_" << add  <<  " " << endl;
     cout << "Fillin (symm):_" << fillin*2 <<  endl;
     cout << "Time:_" << (end - start) / double(CLOCKS_PER_SEC) << endl;
-//            } else if (Extras == 2) {
-//                Graph G_c(mm.nrows());
-//                G_bToG_c(G_b, V_c, G_c);
-//                for (unsigned int k = PartialD2Coloring(G_b, V_c); k >= 2; k--) {
-//                    if (kClique(G_c, k)) {
-//                        cout << k << "-Clique existiert" << endl;
-//
-//
-//    idx_t nVertices = 6;
-//    idx_t nEdges    = 7;
-//    idx_t nWeights  = 1;
-//    idx_t nParts    = 2;
-//
-//    idx_t objval;
-//    idx_t part[nVertices];
-//
-//    // Indexes of starting points in adjacent array
-//    idx_t xadj[nVertices+1] = {0,2,5,7,9,12,14};
-//
-//    // Adjacent vertices in consecutive index order
-//    idx_t adjncy[2 * nEdges] = {1,3,0,4,2,1,5,0,4,3,1,5,4,2};
-//
-//    // Weights of vertices
-//    // if all weights are equal then can be set to NULL
-//    idx_t vwgt[nVertices * nWeights];
     return EXIT_SUCCESS;
 }
 

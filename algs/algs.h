@@ -23,39 +23,37 @@ static vector<string> algs = {"PartialD2ColoringColumns", "PartialD2ColoringRows
  * \brief returns a pointer to the correct coloring algorithm
  *
  * @param Mode2
- * @param alg
+ * @param alg the name of coloring algorithm
  * @param Mode
- * @param G_b
- * @param V_r
- * @param V_c
- * @param order
+ * @param G_b the input bipartite graph
+ * @param V_r the row vertices
+ * @param V_c the column vertices
+ * @param order the ordering of vertices for coloring
  * @return
  */
-static ColAlg *getAlg(int Mode2, const string &alg, int Mode, Graph &G_b, vector<unsigned int> &V_r, vector<unsigned int> &V_c,
-               Ordering *order) {
-    ColAlg *calg;
+static shared_ptr<ColAlg> getAlg(int Mode2, const string &alg, int Mode, Graph &G_b, vector<unsigned int> &V_r, vector<unsigned int> &V_c,
+               shared_ptr<Ordering> order) {
     if (alg == "PartialD2ColoringCols") {
-        calg = new D2Color(G_b, V_c, false);
+        return shared_ptr<ColAlg>(new D2Color(G_b, V_c, false));
     } else if (alg == "PartialD2ColoringRows") {
-        calg = new D2Color(G_b, V_r, false);
+        return shared_ptr<ColAlg>(new D2Color(G_b, V_r, false));
     } else if (alg == "PartialD2RestrictedColumns") {
-        calg = new D2Color(G_b, V_c, true);
+        return shared_ptr<ColAlg>(new D2Color(G_b, V_c, true));
     } else if (alg == "PartialD2ColoringRestrictedRows") {
-        calg = new D2Color(G_b, V_r, true);
+        return shared_ptr<ColAlg>(new D2Color(G_b, V_r, true));
     } else if (alg == "StarBicoloringScheme") {
-        calg = new StarBicoloring(G_b, V_r, V_c, Mode, Mode2, false);
+        return shared_ptr<ColAlg>(new StarBicoloring(G_b, V_r, V_c, Mode, Mode2, false));
     } else if (alg == "StarBicoloringSchemeRestricted") {
-        calg = new StarBicoloring(G_b, V_r, V_c, Mode, Mode2, true);
+        return shared_ptr<ColAlg>(new StarBicoloring(G_b, V_r, V_c, Mode, Mode2, true));
     } else if (alg == "StarBicoloringSchemeDynamicOrdering") {
-        calg = new StarBicoloringDynamic(G_b, V_r, V_c, Mode, Mode2, order, false);
+        return shared_ptr<ColAlg>(new StarBicoloringDynamic(G_b, V_r, V_c, Mode, Mode2, order, false));
     } else if (alg == "StarBicoloringSchemeCombinedVertexCoverColoring") {
-        calg = new StarBicoloringVertexCover(G_b, V_r, V_c, Mode, Mode2, false);
+        return shared_ptr<ColAlg>(new StarBicoloringVertexCover(G_b, V_r, V_c, Mode, Mode2, false));
     } else if (alg == "StarBicoloringSchemeDynamicOrderingRestricted") {
-        calg = new StarBicoloringDynamic(G_b, V_r, V_c, Mode, Mode2, order, true);
+        return shared_ptr<ColAlg>(new StarBicoloringDynamic(G_b, V_r, V_c, Mode, Mode2, order, true));
     } else if (alg == "StarBicoloringSchemeCombinedVertexCoverColoringRestricted") {
-        calg = new StarBicoloringVertexCover(G_b, V_r, V_c, Mode, Mode2, true);
-    }    //all edges A - \Rinit
-    return calg;
+        return shared_ptr<ColAlg>(new StarBicoloringVertexCover(G_b, V_r, V_c, Mode, Mode2, true));
+    }
 }
 
 

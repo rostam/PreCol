@@ -1,12 +1,17 @@
 #include "output_graph.hpp"
 
+/**
+ * \brief create the vcg format file from the given graph
+ *
+ * @param g
+ * @return
+ */
 int graph2vcg(Graph& g) {
-
   ofstream outFile; //output stream
   outFile.open("test2.vcg"); //open output file  
 
-  graph_traits<Graph>::vertex_iterator vi, vi_end;
-  graph_traits<Graph>::edge_iterator   ei, ei_end;
+  V_iter vi, vi_end;
+  E_iter   ei, ei_end;
 
   outFile << "graph: {" << endl;
   for (tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi) {
@@ -25,13 +30,19 @@ int graph2vcg(Graph& g) {
   return 0;
 }
 
+/**
+ * \brief generate the dot graph file  from graph
+ *
+ * @param g the input graph
+ * @return
+ */
 int graph2dot(Graph& g) {
 
   ofstream outFile; //output stream
   outFile.open("graph.dot"); //open output file  
 
-  graph_traits<Graph>::vertex_iterator vi, vi_end;
-  graph_traits<Graph>::edge_iterator   ei, ei_end;
+    V_iter vi, vi_end;
+    E_iter   ei, ei_end;
 
   outFile << "graph {" << endl;
   for (tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi) {
@@ -48,13 +59,21 @@ int graph2dot(Graph& g) {
   return 0;
 }
 
+/**
+ * \brief generate a dot (graphviz) output form given graph
+ *
+ * @param g the input graph
+ * @param list_g_a first subgraph
+ * @param list_g_b second subgraph
+ * @return
+ */
 int graph2dot(Graph& g, list<int>& list_g_a, list<int>& list_g_b) {
 
   ofstream outFile; //output stream
   outFile.open("subgraphs.dot"); //open output file  
 
-  graph_traits<Graph>::vertex_iterator vi, vi_end;
-  graph_traits<Graph>::edge_iterator   ei, ei_end;
+    V_iter vi, vi_end;
+    E_iter   ei, ei_end;
 
   outFile << "graph G {" << endl;
   outFile << "subgraph G_A {" << endl;

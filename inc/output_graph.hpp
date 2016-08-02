@@ -7,9 +7,6 @@
 #include "boost/graph/adjacency_list.hpp"
 #include "datatypes.hpp"
 
-using namespace std;
-using namespace boost;
-
 /**
  * \brief Output the graph as vcg 
  *

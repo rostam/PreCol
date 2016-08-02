@@ -28,7 +28,13 @@
 //    cout << "dars " << ret << " " << METIS_OK << endl;
 //
 //}
-
+/**
+ * \brief Computes the fill-reducing ordering
+ *
+ * @param g the given simple graph which would be converted to a metis input format
+ * @param name the name of the file which is given to metis command
+ * @param met_ord the computed ordering in Metis
+ */
 static void getMetisOrdering(Graph& g, string name, vector<unsigned int>& met_ord) {
     ofstream of;
     of.open(name);
@@ -55,9 +61,11 @@ static void getMetisOrdering(Graph& g, string name, vector<unsigned int>& met_or
 }
 
 /**
+ * \brief Constructor for SILU factorization on a given bipartite graph
  *
- * @param G_b
- * @param pre_ord
+ * @param G_b the input bipartite graph
+ * @param pre_ord the list of integers specifies the order in which the
+ * ILU should be computed
  * @return
  */
 SILU::SILU(Graph& G_b, const string& pre_ord) : G_ilu(num_vertices(G_b)/2) {
@@ -102,9 +110,7 @@ SILU::SILU(Graph& G_b, const string& pre_ord) : G_ilu(num_vertices(G_b)/2) {
 
 /**
  *
- * @param g
  * @param el
- * @param ord
  * @return
  */
 int SILU::getFillinMinDeg(int el) {

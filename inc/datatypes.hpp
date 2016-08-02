@@ -4,20 +4,28 @@
 #include "boost/config.hpp"
 #include "boost/graph/adjacency_list.hpp"
 #include "boost/cstdlib.hpp"
-
+#include <memory>
+#include <iostream>
 using namespace std;
-using namespace boost;
+using boost::property;
+using boost::edge_name;
+using boost::edge_weight;
+using boost::vertex_color_t;
+using boost::edge_weight_t;
+using boost::edge_name_t;
+using boost::property_map;
+using boost::graph_traits;
+using boost::vertex_color;
+typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS,
+		property<boost::vertex_color_t, int>,
+		property<boost::edge_weight_t, int,
+	    property<boost::edge_name_t, string>>> Graph;
 
-typedef adjacency_list<vecS, vecS, undirectedS,
-		property<vertex_color_t, int>,
-		property<edge_weight_t, int,
-	    property<edge_name_t, string>>> Graph;
-
-typedef graph_traits<Graph>::vertex_iterator V_iter;
-typedef graph_traits<Graph>::edge_iterator E_iter;
+typedef boost::graph_traits<Graph>::vertex_iterator V_iter;
+typedef boost::graph_traits<Graph>::edge_iterator E_iter;
 typedef Graph::vertex_descriptor Ver;
 typedef Graph::edge_descriptor Edge;
-typedef property_map<Graph, edge_weight_t>::type edge_weight_type;
+typedef boost::property_map<Graph, boost::edge_weight_t>::type edge_weight_type;
 
 template<typename Lambda>
 static void for_each_v(Graph& g, Lambda func) {

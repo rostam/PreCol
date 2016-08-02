@@ -27,7 +27,7 @@ protected:
     vector<unsigned int> V_r; //!< The set of row vertices
     int Mode, Mode2;
     Graph& G_b;
-    Ordering *ord;
+    shared_ptr<Ordering> ord;
     bool restricted;
 public:
     ColAlg(Graph &G_b, vector<unsigned int> &V, bool restricted) : restricted(restricted), V_c(V), G_b(G_b) { };
@@ -41,7 +41,7 @@ public:
             : restricted(restricted), Mode2(Mode2), Mode(Mode), V_r(V_r), V_c(V_c), G_b(G_b) { };
 
     ColAlg(Graph &G_b, vector<unsigned int> &V_r,
-           vector<unsigned int> &V_c, int Mode, int Mode2, Ordering *ord, bool restricted)
+           vector<unsigned int> &V_c, int Mode, int Mode2, shared_ptr<Ordering> ord, bool restricted)
             : restricted(restricted), ord(ord), Mode2(Mode2), Mode(Mode), V_r(V_r), V_c(V_c), G_b(G_b) { };
 
     virtual int color() = 0;

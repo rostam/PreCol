@@ -1,7 +1,8 @@
 #include "PartialD2ColoringRestrictedOMP.hpp"
 #include <omp.h>
 
-/** 
+/**
+ * \brief paralle computation of coloring
  * Compute a distance-2 coloring of a bipartite graph G_b restricted
  * to required edges
  *

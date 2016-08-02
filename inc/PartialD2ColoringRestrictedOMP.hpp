@@ -8,8 +8,5 @@
 #include "datatypes.hpp"
 #include "neighbors.hpp"
 
-using namespace std;
-using namespace boost;
-
 int PartialD2ColoringRestrictedOMP(Graph& G_b, const vector<unsigned int>& V);
 #endif

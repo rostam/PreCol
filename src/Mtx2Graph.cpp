@@ -1,5 +1,13 @@
 #include "Mtx2Graph.hpp"
 
+/**
+ * \brief Constructor for making matrix from list of edges
+ *
+ * @param mat list of edges
+ * @param m the number of rows
+ * @param n the number of columns
+ * @param directed is directed or not
+ */
 matrix_market::matrix_market(vector<pair<int,int>> mat, int m, int n,bool directed) {
     nz = mat.size();
     mm_set_matrix(&matcode);
