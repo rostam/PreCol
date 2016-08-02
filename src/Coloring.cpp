@@ -16,6 +16,7 @@
 #include "SILU.h"
 #include "algs.h"
 #include "boost/graph/metis.hpp"
+#include "sparsify.h"
 
 /*! \mainpage PreCol - A Brief Description.
  * This software considers three computation ingredients needed in the field of
@@ -113,57 +114,17 @@ int main(int argc, char* argv[]) {
     //cout << "Density:_" << (entries * 100) / pow(double(rows), 2) << endl;
 
     //Initialize required pattern
-    int entries_pattern = 0;
     //If edge e \in E_S then edge_property edge_weight=1 else
     //edge_weight=0
-    property_map<Graph, edge_weight_t>::type weight = get(edge_weight, G_b);
-    property_map<Graph, edge_name_t>::type name = get(edge_name, G_b);
-    for_each_e(G_b, [&](Edge e) {
-        if (sparsify == "Diagonal") {
-            if (source(e, G_b) + mm.nrows() == target(e, G_b)) {
-                put(weight, e, 1);
-                put(name, e, "r");
-                entries_pattern++;
-            }
-        } else if (sparsify == "BlockDiagonal") {
-            int RowCoordinate = source(e, G_b) + mm.nrows();
-            int ColumnCoordinate = target(e, G_b);
-            int RelativeDistance = RowCoordinate - ColumnCoordinate;
-            int RowBlock = RowCoordinate / blockSize;
-            int ColumnBlock = ColumnCoordinate / blockSize;
-            if ((RelativeDistance < blockSize)
-                && (RelativeDistance > -blockSize)
-                && (RowBlock == ColumnBlock)) {
-                put(weight, e, 1);
-                put(name, e, "r");
-                entries_pattern++;
-            }
-        } else if (sparsify == "Full") {
-            put(weight, e, 1);
-            put(name, e, "r");
-            entries_pattern++;
-        } else {
-            cout << "No required pattern" << endl;
-            return;
-        }
-    });
+    int entries_pattern = sparsifier(G_b, sparsify, mm.nrows(),blockSize);
     cout << "Entries_pattern:_" << entries_pattern << endl;
 //    cout << "Density_pattern:_" << double(entries_pattern) / rows * 100 << endl;
 //    cout << "Mode:_" << Mode << endl;
 
-    for_each_e(G_b,[&](Edge e) {
-        if (get(edge_name, G_b, e) == "r") {
-            int src = source(e, G_b);
-            int tgt = target(e, G_b);
-            int m = mm.nrows();
-            if (src > m) {
-                add_edge(src - m ,tgt ,G_ilu);
-            } else {
-                add_edge(src ,tgt - m,G_ilu);
-            }
-        }
-    });
-    Ordering *order = get_ordering(G_ilu,ord,Ord_ilu);
+    size_t pos = ord.find("_");
+    string col_ord = ord.substr(0,pos);
+    string pre_ord = ord.substr(pos+1);
+    Ordering *order = get_ordering(col_ord,Ord_ilu);
     generate_order(alg, order, G_b, V_r, V_c);
     //Coloring of the vertices
     getAlg(Mode2, alg, Mode, G_b, V_r, V_c, order) -> color();
@@ -177,7 +138,7 @@ int main(int argc, char* argv[]) {
     cout << "Column Colors:_" << get(vertex_color, G_b, max_color_col) << endl;
     end = clock();
     //all edges A - \Rinit
-    vector<graph_traits<Graph>::edge_descriptor> edge_ordering;
+    vector<Edge> edge_ordering;
     copy_if(edges(G_b).first,edges(G_b).second,back_inserter(edge_ordering),[&G_b](Edge e) {
         return get(edge_weight,G_b,e)==0;
     });
@@ -186,9 +147,9 @@ int main(int argc, char* argv[]) {
     matrix_market mm_p(G_b,"p",V_c.size(),V_r.size(),true);
     mm_p.writeToFile((char *) "matlab/pot.mtx");
 
-    SILU silu;
-    int fillin = silu.getFillinMinDeg(G_ilu, 10, Ord_ilu);
-    matrix_market mm_f(G_ilu,"f",V_c.size(),V_r.size(),false);
+    SILU silu(G_b, pre_ord);
+    int fillin = silu.getFillinMinDeg(10);
+    matrix_market mm_f(silu.G_ilu,"f",V_c.size(),V_r.size(),false);
     mm_f.writeToFile((char *) "matlab/F.mtx");
 
     Graph G_b2(mm.nrows()*2);
@@ -199,20 +160,21 @@ int main(int argc, char* argv[]) {
             Ver tgt = target(e,G_b);
             add_edge(src,tgt,G_b2);
             put(edge_weight, G_b2, edge(src, tgt , G_b2).first, 2);
+            put(edge_name, G_b2, edge(src, tgt , G_b2).first, "p");
         }
     });
-    for_each_e(G_ilu,[&](Edge e) {
-        Ver src = source(e,G_ilu);
-        Ver tgt = target(e,G_ilu);
+    for_each_e(silu.G_ilu,[&](Edge e) {
+        Ver src = source(e,silu.G_ilu);
+        Ver tgt = target(e,silu.G_ilu);
         add_edge(src,tgt+V_c.size(),G_b2);
         add_edge(tgt,src+V_c.size(),G_b2);
         put(edge_weight, G_b2, edge(src, tgt + V_c.size(), G_b2).first, 3);
         put(edge_weight, G_b2, edge(tgt, src + V_c.size(), G_b2).first, 3);
 
     });
-    for_each_e(G_ilu,[&](Edge e) {
-        Ver src = source(e,G_ilu);
-        Ver tgt = target(e,G_ilu);
+    for_each_e(silu.G_ilu,[&](Edge e) {
+        Ver src = source(e,silu.G_ilu);
+        Ver tgt = target(e,silu.G_ilu);
         add_edge(src,tgt+V_c.size(),G_b3);
         add_edge(tgt,src+V_c.size(),G_b3);
         put(edge_weight, G_b3, edge(src, tgt + V_c.size(), G_b3).first, 3);
@@ -247,12 +209,18 @@ int main(int argc, char* argv[]) {
     cout << "additionally weak:  " << num_edges(G_b3) << " "
          << addReqElementsWeak(G_b3,edge_ordering3) << " "  << edge_ordering3.size()<< endl;
 
-    cout << "Additionally Matrix Version:" << addReqElementsMat(mm_p, mm_NP) << endl;
+    vector<pair<int,int>> ret = addReqElementsMat(mm_p, mm_NP);
+    cout << "Additionally Matrix Version:" << ret.size() << endl;
+    matrix_market mm_amat(ret,V_c.size(),V_c.size(),false);
+    mm_amat.writeToFile((char *) "matlab/add_mat.mtx");
     int add = num_addReqElements;
 //    int add = addReqElements(G_b, edge_ordering2);
 
     matrix_market mm_a(G_b2,"a",V_c.size(),V_r.size(),true);
     mm_a.writeToFile((char *) "matlab/add.mtx");
+
+    matrix_market mm_a2(G_b3,"a",V_c.size(),V_r.size(),true);
+    mm_a2.writeToFile((char *) "matlab/add2.mtx");
 
     matrix_market mm_r(G_b,"r",V_c.size(),V_r.size(),true );
     mm_r.writeToFile((char *) "matlab/req.mtx");

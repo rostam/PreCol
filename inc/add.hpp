@@ -3,32 +3,34 @@
 
 #include "datatypes.hpp"
 
-int addReqElementsMat(matrix_market& P, matrix_market& F) {
-    int count = 0;
-    for(int k=0;k<P.nz;k++) {
+vector<pair<int,int>> addReqElementsMat(matrix_market& P, matrix_market& F) {
+    vector<pair<int,int>> ret;
+    for (int k = 0; k < P.nz; k++) {
         bool violation = false;
-        if(P.I[k] < P.J[k]) {
-            for(int j=0;j<F.nz;j++) {
-                if(F.J[j] == P.I[k]) {
-                    if(F.I[j] > P.I[k]) {
+        if (P.I[k] < P.J[k]) {
+            for (int j = 0; j < F.nz; j++) {
+                if (F.J[j] == P.I[k]) {
+                    if (F.I[j] > P.I[k]) {
                         violation = true;
                         break;
                     }
                 }
             }
         } else {
-            for(int j=0;j<F.nz;j++) {
-                if(F.I[j] == P.J[k]) {
-                    if(F.J[j] > P.J[k]) {
+            for (int j = 0; j < F.nz; j++) {
+                if (F.I[j] == P.J[k]) {
+                    if (F.J[j] > P.J[k]) {
                         violation = true;
                         break;
                     }
                 }
             }
         }
-        if(!violation) count++ ;
+        if (!violation) {
+            ret.push_back(make_pair(P.I[k], P.J[k]));
+        }
     }
-    return count;
+    return ret;
 }
 
 /**

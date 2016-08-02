@@ -1,4 +1,22 @@
 #include "Mtx2Graph.hpp"
+
+matrix_market::matrix_market(vector<pair<int,int>> mat, int m, int n,bool directed) {
+    nz = mat.size();
+    mm_set_matrix(&matcode);
+    mm_set_sparse(&matcode);
+    if(directed) mm_set_general(&matcode);
+    else mm_set_symmetric(&matcode);
+    mm_set_pattern(&matcode);
+    /* reseve memory for matrices */
+    I = (unsigned int *) malloc(nz * sizeof(unsigned int));
+    J = (unsigned int *) malloc(nz * sizeof(unsigned int));
+    M=m;N=n;
+    int cnt = 0;
+    for_each(mat.begin(),mat.end(),[&](pair<int,int> p) {
+        I[cnt]=p.first;J[cnt]=p.second;
+        cnt++;
+    });
+}
 /**
  * \brief Constructor which gets a graph and make the matrix
  *
