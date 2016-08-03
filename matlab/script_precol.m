@@ -28,10 +28,10 @@ disp('Solve with block + add PC')
 disp('Solve with block PC')
 [x_orig,residual_block] = SolveLinearSystem(A,b,restart,tol,maxit,method,L_block,U_block);
 
- figure,shg,semilogy(residual,'-r*')
+ figure,shg,semilogy(residual,'-r','LineWidth',2)
     hold on
-    shg,semilogy(residual_block,'-bo')
-    shg,semilogy(residual_block_add,'-ks')
+    shg,semilogy(residual_block,'-b','LineWidth',2)
+    shg,semilogy(residual_block_add,'-k','LineWidth',2)
     
     
     xlabel('Matrix Vector Product n',...
@@ -47,4 +47,4 @@ disp('Solve with block PC')
         upper(method), ' for ', MatrixName],...
         'FontSize',FontSize)
     set(gca,'FontSize',FontSize)
-    myprint('convergence.png',MatrixName,DirName);
+    myprint('convergence.png',MatrixName,DirName,h);
