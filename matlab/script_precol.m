@@ -9,7 +9,7 @@ restart = 3;
 tol = 1.0e-12;
 maxit = 150;
 
-DirName = 'PNG-Sparsification';
+DirName = 'figs';
 FontSize = 14;
 
 A = mmread(MatrixName);
