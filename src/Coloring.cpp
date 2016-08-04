@@ -83,11 +83,15 @@ int main(int argc, char* argv[]) {
         int bls = atoi(argv[6]);
         if (bls != 0) blockSize = bls;
     }
+
+    int el = atoi(argv[7]);
+
     string filename;
     filename.insert(0, argv[argc - 1]);
 
     //Initialize mm-object (matrixmarket)
     matrix_market mm(argv[argc - 1]);
+
 
     //Initialize graph-object (boost)
     Graph G_b(2 * mm.nrows());
@@ -146,7 +150,7 @@ int main(int argc, char* argv[]) {
     mm_p.writeToFile((char *) "matlab/pot.mtx");
 
     SILU silu(G_b, pre_ord);
-    int fillin = silu.getFillinMinDeg(10);
+    int fillin = silu.getFillinMinDeg(el);
     matrix_market mm_f(silu.G_ilu,"f",V_c.size(),V_r.size(),false);
     mm_f.writeToFile((char *) "matlab/F.mtx");
 
