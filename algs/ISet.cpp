@@ -1,13 +1,11 @@
 #include "ISet.hpp"
 
-vector<int> ISet(const Graph& G_b,
-		 vector<unsigned int> V_r,
-		 vector<unsigned int> V_c,const int & mode) {
+vector<int> ISet::compute() {
     vector<int> IS;
-    list<graph_traits<Graph>::edge_iterator> E_1;
-    list<graph_traits<Graph>::edge_iterator> E_2;
-    list<graph_traits<Graph>::edge_iterator> E_3;
-    list<graph_traits<Graph>::edge_iterator> E_4;
+    list <graph_traits<Graph>::edge_iterator> E_1;
+    list <graph_traits<Graph>::edge_iterator> E_2;
+    list <graph_traits<Graph>::edge_iterator> E_3;
+    list <graph_traits<Graph>::edge_iterator> E_4;
     int NumVertices_V_r = V_r.size();
     int NumVertices = V_r.size() + V_c.size();
     double rho;

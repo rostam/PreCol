@@ -1,20 +1,19 @@
 #include <iostream>
-#include <string.h>
 #include <ctime>
-#include <cmath>
 #include <iomanip>
 #include "datatypes.hpp"
 #include "Mtx2Graph.hpp"
 #include "ConvertGraph.hpp"
 #include "kClique.hpp"
 #include "orderings.h"
-#include "PartialD2ColoringRestrictedOMP.hpp"
+#include "d2_color_omp.hpp"
 #include "output_graph.hpp"
 #include "pot.hpp"
 #include "add.hpp"
 #include "SILU.h"
 #include "algs.h"
 #include "sparsify.h"
+#include "handle_input.h"
 
 /*! \mainpage PreCol - A Brief Description.
  * This software considers three computation ingredients needed in the field of
@@ -30,83 +29,30 @@ int main(int argc, char* argv[]) {
     start = clock();
     int rows = 0;
     int entries = 0;
-    int blockSize = 100;
-    cout << fixed << setprecision(4);
-    int Mode2;
-
-    vector<string> iset = {"Best", "Variant"};
-    vector<string> pats = {"Full", "Diagonal", "BlockDiagonal"};
-
-    if (argc < 3) {
-        cout << "Insufficient arguments... ";
-        cout << "\nColoring Algorithm [Ordering][Independent Set][Rho][Pattern][Blocksize] Matrix";
-        cout << "\nAlgorithm: |";
-        copy(algs.begin(), algs.end(), ostream_iterator<string>(cout, "|"));
-        cout << "\nOrdering: |";
-        copy(ords.begin(), ords.end(), ostream_iterator<string>(cout, "|"));
-        cout << "\nIndependent Set: |";
-        copy(iset.begin(), iset.end(), ostream_iterator<string>(cout, "|"));
-        cout << "\nRho [1|1.5..]";
-        cout << "\nPattern: |";
-        copy(pats.begin(), pats.end(), ostream_iterator<string>(cout, "|"));
-        cout << "\nBlocksize integer";
-        cout << "\nNote that not all parameters are required for all algorithms\n";
-        return -1;
-    }
-    string alg = argv[1];
-    if (find(algs.begin(), algs.end(), alg) == algs.end()) {
-        cout << "\nThe first argument must be the Coloring algorithm:";
-        copy(algs.begin(), algs.end(), ostream_iterator<string>(cout, "|"));
-        cout << endl;
-        return -1;
-    }
-
-    string ord = argv[2];
-    int Mode = 3;
-    if (string(argv[3]) == "Best") Mode = 3;
-    else if (string(argv[3]) == "Variant") Mode = 0;
-
-    if (Mode == 3) {
-        int rho = atoi(argv[4]);
-        if (rho != 0) {
-            Mode = 2 * rho;
-        }
-    }
-    if (Mode == 0) {
-        int rho = atoi(argv[4]);
-        if (rho != 0) {
-            Mode2 = 2 * rho;
-        }
-    }
-    string sparsify = argv[5];
-    if (sparsify == "BlockDiagonal") {
-        int bls = atoi(argv[6]);
-        if (bls != 0) blockSize = bls;
-    }
-
-    int el = atoi(argv[7]);
-
-    string filename;
-    filename.insert(0, argv[argc - 1]);
+    auto input = get_input_pars(argc, argv);
+    if(get<0>(input) == "" ) return -1;
+    //tuple<string,shared_ptr<Ordering>,string,int,string,int, int,string>
+    string alg = get<0>(input);
+    shared_ptr<Ordering> order = get<1>(input);
+    string pre_ord = get<2>(input);
+    int Mode = get<3>(input);
+    int Mode2 = get<4>(input);
+    string sparsify = get<5>(input);
+    int blockSize = get<6>(input);
+    int el = get<7>(input);
+    string filename = get<8>(input);
 
     //Initialize mm-object (matrixmarket)
-    matrix_market mm(argv[argc - 1]);
-
+    matrix_market mm(filename.c_str());
 
     //Initialize graph-object (boost)
     Graph G_b(2 * mm.nrows());
     vector<unsigned int> V_r, V_c;
-
     Graph G_ilu(mm.nrows());
-
-    vector<unsigned int> Ord_ilu;
-
     //Add vertices to graph
     for_each_v(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
-
     //Add edges to graph
     mm.MtxToBipGraph(G_b);
-
     //  graph2dot(G_b);
 //    cerr << "Matrix:_" << argv[1] << endl;
     rows = num_vertices(G_b) / 2;
@@ -123,10 +69,6 @@ int main(int argc, char* argv[]) {
 //    cout << "Density_pattern:_" << double(entries_pattern) / rows * 100 << endl;
 //    cout << "Mode:_" << Mode << endl;
 
-    size_t pos = ord.find("_");
-    string col_ord = ord.substr(0,pos);
-    string pre_ord = ord.substr(pos+1);
-    shared_ptr<Ordering> order = get_ordering(col_ord,Ord_ilu);
     generate_order(alg, order, G_b, V_r, V_c);
     //Coloring of the vertices
     getAlg(Mode2, alg, Mode, G_b, V_r, V_c, order) -> color();
@@ -144,7 +86,7 @@ int main(int argc, char* argv[]) {
     copy_if(edges(G_b).first,edges(G_b).second,back_inserter(edge_ordering),[&G_b](Edge e) {
         return get(edge_weight,G_b,e)==0;
     });
-//    sort(edge_ordering.begin(),edge_ordering.end(),le_cols(G_b));
+//   sort(edge_ordering.begin(),edge_ordering.end(),le_cols(G_b));
     int pot = potentialRequiredNonzerosD2(G_b, edge_ordering);
     matrix_market mm_p(G_b,"p",V_c.size(),V_r.size(),true);
     mm_p.writeToFile((char *) "matlab/pot.mtx");
@@ -209,7 +151,8 @@ int main(int argc, char* argv[]) {
     mm_NP.writeToFile((char *) "matlab/req_f.mtx");
 
     cout << "additionally weak:  " << num_edges(G_b3) << " "
-         << addReqElementsWeak(G_b3,edge_ordering3) << " "  << edge_ordering3.size()<< endl;
+         << addReqElementsWeak(G_b3,edge_ordering3) << " "
+         << edge_ordering3.size()<< endl;
 
     vector<pair<int,int>> ret = addReqElementsMat(mm_p, mm_NP);
     cout << "Additionally Matrix Version:" << ret.size() << endl;

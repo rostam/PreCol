@@ -1,18 +1,6 @@
-#include "PartialD2ColoringRestrictedOMP.hpp"
+#include "d2_color_omp.hpp"
 #include <omp.h>
 
-/**
- * \brief paralle computation of coloring
- * Compute a distance-2 coloring of a bipartite graph G_b restricted
- * to required edges
- *
- * Input:
- * - G_b bipartite graph with required egdes given as weights edge_weight
- * - V   contained vertices are colored in the given ordering v_1, ..., v_n 
- *
- * Output:
- * - G_b bipartite graph with colors as weights vertex_color
- */
 double ClockCounter;
 
 void tic()
@@ -79,8 +67,21 @@ int PartialD2ColoringRestrictedOMP3(Graph& G_b, const vector<unsigned int>& V) {
         PartialD2ColoringRestrictedOMP2(G_b,v);
     }
 }
+/**
+ * \brief paralle computation of coloring
+ * Compute a distance-2 coloring of a bipartite graph G_b restricted
+ * to required edges
+ *
+ * Input:
+ * - G_b bipartite graph with required egdes given as weights edge_weight
+ * - V   contained vertices are colored in the given ordering v_1, ..., v_n
+ *
+ * Output:
+ * - G_b bipartite graph with colors as weights vertex_color
+ */
 
-int PartialD2ColoringRestrictedOMP(Graph& G_b, const vector<unsigned int>& V) {
+int D2ColorOMP::color() {
+    vector<unsigned int> V = V_c;
     for(int i=1;i<=1;i++) {
         omp_set_num_threads(i);
         tic();

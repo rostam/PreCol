@@ -1,9 +1,6 @@
 #include "ISetVariant.hpp"
 
-vector<int> ISetVariant(Graph G_b,
-			vector<unsigned int> V_r,
-			vector<unsigned int> V_c,
-			float ratio)
+vector<int> ISetVariant::compute()
 {
   vector<int> IS;
   list<pair<unsigned int,unsigned int> > Degree_V_r;

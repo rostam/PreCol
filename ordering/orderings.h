@@ -14,7 +14,7 @@
 
 static vector<string> ords = {"LFO","SLO","IDO"};
 
-static shared_ptr<Ordering> get_ordering(const string& col_ord, vector<unsigned int>& order) {
+static shared_ptr<Ordering> get_color_ordering(const string& col_ord) {
     if(col_ord=="LFO") return shared_ptr<Ordering>(new LFO());
     else if(col_ord=="SLO") return shared_ptr<Ordering>(new SLO());
     else if(col_ord=="IDO") return shared_ptr<Ordering>(new IDO());

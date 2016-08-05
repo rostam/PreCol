@@ -7,8 +7,11 @@
 #include "boost/graph/graph_utility.hpp"
 #include "boost/graph/filtered_graph.hpp"
 #include "datatypes.hpp"
+#include "IndSet.h"
+class ISetColeman : public IndSet{
+public:
+	using IndSet::IndSet;
+	vector<int> compute();
+};
 
-vector<int> ISetColeman(Graph G_b,
-			vector<unsigned int> V_r,
-			vector<unsigned int> V_c);
 #endif

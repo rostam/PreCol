@@ -1,8 +1,6 @@
 #include "ISetRestricted.hpp"
 
-vector<int> ISetRestricted(const Graph& G_b,
-			   vector<unsigned int> V_r,
-			   vector<unsigned int> V_c,const int & mode)
+vector<int> ISetRestricted::compute()
 {
   vector<int> IS;
   list<graph_traits<Graph>::edge_iterator> E_1;

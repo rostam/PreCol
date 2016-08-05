@@ -25,31 +25,7 @@ int StarBicoloring::color()
     vector<int> num_colors;
     property_map<Graph, vertex_color_t>::type color = get(vertex_color, G_b);
 
-    //Compute independent set
-    if (Mode==1) {
-        IS = ISet(G_b,V_r,V_c,Mode2); //ISet = IS_Coleman(G_b,V_r,V_c);
-    } else if (Mode==2) {
-        IS = ISetVariant(G_b,V_r,V_c,1.0);
-    } else if (Mode==3) {
-        IS = ISetVariant(G_b,V_r,V_c,1.5);
-    } else if (Mode==4) {
-        IS = ISetVariant(G_b,V_r,V_c,2.0);
-    } else if (Mode==5) {
-        IS = ISetVariant(G_b,V_r,V_c,2.5);
-    } else if (Mode==6) {
-        IS = ISetVariant(G_b,V_r,V_c,3.0);
-    } else if (Mode==7) {
-        IS = ISetVariant(G_b,V_r,V_c,3.5);
-    } else if (Mode==8) {
-        IS = ISetVariant(G_b,V_r,V_c,4.0);
-    } else if (Mode==9) {
-        IS = ISetVariant(G_b,V_r,V_c,4.5);
-    } else if (Mode==10) {
-        IS = ISetVariant(G_b,V_r,V_c,5.0);
-    } else if (Mode==11) {
-        IS = ISetVariant(G_b,V_r,V_c,5.5);
-    }
-
+    IS = ind_set->compute();
     //Color vertices in independent set with color 0
     for (vector<int>::iterator IS_it = IS.begin();
          IS_it != IS.end();
@@ -141,22 +117,7 @@ int StarBicoloring::color_restricted()
 {
     vector<int> IS;
     property_map<Graph, vertex_color_t>::type color = get(vertex_color, G_b);
-    //Compute independent set
-    if (Mode==1) {
-        IS = ISetRestricted(G_b,V_r,V_c,Mode2);
-    } else if (Mode==2) {
-        IS = ISetVariantRestricted(G_b,V_r,V_c,1.0);
-    } else if (Mode==3) {
-        IS = ISetVariantRestricted(G_b,V_r,V_c,1.5);
-    } else if (Mode==4) {
-        IS = ISetVariantRestricted(G_b,V_r,V_c,2.0);
-    } else if (Mode==5) {
-        IS = ISetVariantRestricted(G_b,V_r,V_c,2.5);
-    } else if (Mode==6) {
-        IS = ISetVariantRestricted(G_b,V_r,V_c,3.0);
-    } else if (Mode==7) {
-        IS = ISetVariantRestricted(G_b,V_r,V_c,3.5);
-    }
+    IS = ind_set->compute();
 
     //Color vertices in independent set with color 0
     for (vector<int>::iterator IS_it = IS.begin();

@@ -1,8 +1,6 @@
 #include "ISetColeman.hpp"
 
-vector<int> ISetColeman(Graph G_b,
-			vector<unsigned int> V_r,
-			vector<unsigned int> V_c)
+vector<int> ISetColeman::compute()
 {
   vector<int> IS;
   vector<unsigned int>::iterator v_r;

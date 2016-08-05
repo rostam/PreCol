@@ -28,21 +28,55 @@ protected:
     int Mode, Mode2;
     Graph& G_b;
     shared_ptr<Ordering> ord;
+    shared_ptr<IndSet> ind_set;
     bool restricted;
 public:
-    ColAlg(Graph &G_b, vector<unsigned int> &V, bool restricted) : restricted(restricted), V_c(V), G_b(G_b) { };
+    ColAlg(Graph &G_b, vector<unsigned int> &V, bool restricted)
+            : restricted(restricted), V_c(V), G_b(G_b) { };
 
     ColAlg(Graph &G_b, vector<unsigned int> &V_r,
-           vector<unsigned int> &V_c, int Mode, bool restricted) : restricted(restricted), Mode(Mode), V_r(V_r),
-                                                                   V_c(V_c), G_b(G_b) { };
+           vector<unsigned int> &V_c, int Mode, bool restricted)
+            : restricted(restricted), Mode(Mode), V_r(V_r), V_c(V_c), G_b(G_b) {
+
+    };
 
     ColAlg(Graph &G_b, vector<unsigned int> &V_r,
            vector<unsigned int> &V_c, int Mode, int Mode2, bool restricted)
-            : restricted(restricted), Mode2(Mode2), Mode(Mode), V_r(V_r), V_c(V_c), G_b(G_b) { };
+            : restricted(restricted), Mode2(Mode2), Mode(Mode), V_r(V_r), V_c(V_c), G_b(G_b) {
+        //Compute independent set
+        if(restricted) {
+            if (Mode==1) {
+                ind_set = shared_ptr<IndSet>(new ISetRestricted(G_b,V_r,V_c,Mode2));
+            } else if (Mode==2) {
+                ind_set = shared_ptr<IndSet>(new ISetVariantRestricted(G_b,V_r,V_c,Mode/2.0));
+            }
+        } else {
+            if (Mode == 1) {
+                ind_set = shared_ptr<IndSet>(new ISet(G_b, V_r, V_c, Mode2)); //ISet = IS_Coleman(G_b,V_r,V_c);
+            } else {
+                ind_set = shared_ptr<IndSet>(new ISetVariant(G_b, V_r, V_c, Mode / 2.0));
+            }
+        }
+    };
 
     ColAlg(Graph &G_b, vector<unsigned int> &V_r,
            vector<unsigned int> &V_c, int Mode, int Mode2, shared_ptr<Ordering> ord, bool restricted)
-            : restricted(restricted), ord(ord), Mode2(Mode2), Mode(Mode), V_r(V_r), V_c(V_c), G_b(G_b) { };
+            : restricted(restricted), ord(ord), Mode2(Mode2), Mode(Mode), V_r(V_r), V_c(V_c), G_b(G_b) {
+        //Compute independent set
+        if(restricted) {
+            if (Mode==1) {
+                ind_set = shared_ptr<IndSet>(new ISetRestricted(G_b,V_r,V_c,Mode2));
+            } else if (Mode==2) {
+                ind_set = shared_ptr<IndSet>(new ISetVariantRestricted(G_b,V_r,V_c,Mode/2.0));
+            }
+        } else {
+            if (Mode == 1) {
+                ind_set = shared_ptr<IndSet>(new ISet(G_b, V_r, V_c, Mode2)); //ISet = IS_Coleman(G_b,V_r,V_c);
+            } else {
+                ind_set = shared_ptr<IndSet>(new ISetVariant(G_b, V_r, V_c, Mode / 2.0));
+            }
+        }
+    };
 
     virtual int color() = 0;
 };

@@ -21,7 +21,7 @@
  */
 class D2Color : public ColAlg {
 public:
-    D2Color(Graph &G_b, vector<unsigned int> &V, bool restricted) : ColAlg(G_b, V, restricted) {};
+    using ColAlg::ColAlg;
 
     int color() {
         vector<unsigned int> V = V_c;

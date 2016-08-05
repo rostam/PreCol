@@ -8,8 +8,11 @@
 #include "datatypes.hpp"
 #include "neighbors.hpp"
 
-vector<int> ISetVariantRestricted(Graph G_b,
-				  vector<unsigned int> V_r,
-				  vector<unsigned int> V_c,
-				  float ratio);
+#include "IndSet.h"
+class ISetVariantRestricted : public IndSet{
+public:
+	using IndSet::IndSet;
+	vector<int> compute();
+};
+
 #endif

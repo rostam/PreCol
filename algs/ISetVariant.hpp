@@ -9,8 +9,11 @@
 #include "datatypes.hpp"
 #include "neighbors.hpp"
 
-vector<int> ISetVariant(Graph G_b,
-			vector<unsigned int> V_r,
-			vector<unsigned int> V_c,
-			float ratio);
+#include "IndSet.h"
+class ISetVariant : public IndSet{
+public:
+	using IndSet::IndSet;
+	vector<int> compute();
+};
+
 #endif

@@ -9,10 +9,7 @@ struct has_weight_equal_to {
   Graph& g;
 };
 
-vector<int> ISetVariantRestricted(Graph G_b,
-				  vector<unsigned int> V_r,
-				  vector<unsigned int> V_c,
-				  float ratio)
+vector<int> ISetVariantRestricted::compute()
 {
   vector<int> IS;
   list<pair<unsigned int,unsigned int> > Degree_V_r;

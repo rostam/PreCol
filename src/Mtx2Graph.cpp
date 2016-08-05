@@ -124,7 +124,7 @@ bool matrix_market::writeToFile(char* filename) {
  * @param filename the name of the matrix file with format mtx
  * @return
  */
-matrix_market::matrix_market(char* filename) {
+matrix_market::matrix_market(const char* filename) {
     int ret_code;
     FILE *file;
     int i;
