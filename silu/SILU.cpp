@@ -123,12 +123,35 @@ int SILU::getFillinMinDeg(int el) {
             }
         });
     });
+
+//    vector<int> seen;
+//    for(int i=0;i< num_vertices(g);i++) {
+//        int min = 1000000;
+//        int min_v = 0;
+//        for_each(vertices(g).first,vertices(g).second, [&](Ver v) {
+//            if(find(seen.begin(),seen.end(),v)==seen.end()) {
+//                int ns = 0;
+//                for_each(adjacent_vertices(v, g).first, adjacent_vertices(v, g).second, [&](Ver a) {
+//                    if (find(seen.begin(), seen.end(), a) == seen.end()) ns++;
+//                });
+//                if (ns < min) {
+//                    min = ns;
+//                    min_v = v;
+//                }
+//            }
+//        });
+//        seen.push_back(min_v);
+//        ILUOneStep(g,min_v,el);
+//    }
+
     for_each(ord.begin(), ord.end(), [&](unsigned int i) {
         ILUOneStep(g, i, el);
     });
     int counter = 0;
     for_each_e(g,[&](Edge e) {
         if(get(edge_name,g,e) == "f") {
+            int diff = source(e,g) - target(e,g);
+            if(diff > 150) cout << "salam";
             counter++;
         }
     });
