@@ -7,6 +7,7 @@
 
 #include "ColAlg.h"
 #include "d2_color.h"
+#include "new_heuristic.h"
 #include "star_bicoloring.h"
 #include "star_bicoloring_dynamic.h"
 #include "star_bicoloring_vertex_cover.h"
@@ -38,7 +39,8 @@ static shared_ptr<ColAlg> getAlg(int Mode2, const string &alg, int Mode, Graph &
     } else if (alg == "PartialD2ColoringRows") {
         return shared_ptr<ColAlg>(new D2Color(G_b, V_r, false));
     } else if (alg == "PartialD2RestrictedColumns") {
-        return shared_ptr<ColAlg>(new D2Color(G_b, V_c, true));
+        //return shared_ptr<ColAlg>(new D2Color(G_b, V_c, true));
+        return shared_ptr<ColAlg>(new NewHeuristic(G_b, V_c, true));
     } else if (alg == "PartialD2ColoringRestrictedRows") {
         return shared_ptr<ColAlg>(new D2Color(G_b, V_r, true));
     } else if (alg == "StarBicoloringScheme") {
