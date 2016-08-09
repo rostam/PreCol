@@ -97,11 +97,20 @@ public:
                                 max_nreq_pos = nn;
                                 max_nreq_det = cnt_nreq_det;
                             }
+                            if(cnt_nreq_det < min_nreq_det) {
+                                min_nreq_pos = nn;
+                                min_nreq_det = cnt_nreq_det;
+                            }
                             pos_num[nn] = cnt_nreq_det;
                         }
                     });
+//                    for_each(pos_num.begin(), pos_num.end(), [&](auto map_elem) {
+//                        if (map_elem.second == max_nreq_det) {
+//                            put(color, map_elem.first, distance(forbiddenColors.begin(), result));
+//                        }
+//                    });
                     for_each(pos_num.begin(), pos_num.end(), [&](auto map_elem) {
-                        if (map_elem.second == max_nreq_det) {
+                        if (map_elem.second == min_nreq_det) {
                             put(color, map_elem.first, distance(forbiddenColors.begin(), result));
                         }
                     });
