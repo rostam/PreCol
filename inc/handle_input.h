@@ -13,7 +13,7 @@
  * @param argv the actual arguments
  * @return tuple<algorithm, col_ord,ilu_ord, mode, sparsify, block_size, level_ilu, matrix>
  */
-tuple<string,shared_ptr<Ordering>,string,int,int,string,int, int,string>
+tuple<string,shared_ptr<Ordering>,string,int,int,string,int, int,string, int>
     get_input_pars(int argc, char* argv[]) {
     vector<string> iset = {"Best", "Variant"};
     vector<string> pats = {"Full", "Diagonal", "BlockDiagonal"};
@@ -34,7 +34,7 @@ tuple<string,shared_ptr<Ordering>,string,int,int,string,int, int,string>
         cout << "\nBlocksize integer";
         cout << "\nLevel parameter";
         cout << "\nNote that not all parameters are required for all algorithms\n";
-        return make_tuple("", nullptr,"",0,0,"",0, 0,"");
+        return make_tuple("", nullptr,"",0,0,"",0, 0,"",0);
     }
 
     string alg = argv[1];
@@ -42,7 +42,7 @@ tuple<string,shared_ptr<Ordering>,string,int,int,string,int, int,string>
         cout << "\nThe first argument must be the Coloring algorithm:";
         copy(algs.begin(), algs.end(), ostream_iterator<string>(cout, "|"));
         cout << endl;
-        return make_tuple("", nullptr,"",0,0,"",0, 0,"");
+        return make_tuple("", nullptr,"",0,0,"",0, 0,"",0);
     }
 
     string ord = argv[2];
@@ -75,10 +75,11 @@ tuple<string,shared_ptr<Ordering>,string,int,int,string,int, int,string>
     }
 
     int el = atoi(argv[7]);
+    int alpha = atoi(argv[8]);
     string filename;
     filename.insert(0, argv[argc - 1]);
 
-    return make_tuple(alg,col_ord_c,pre_ord,Mode,Mode2,sparsify, blockSize, el,filename);
+    return make_tuple(alg,col_ord_c,pre_ord,Mode,Mode2,sparsify, blockSize, el,filename,alpha);
 }
 
 #endif //PRECOL_HANDLE_INPUT_H

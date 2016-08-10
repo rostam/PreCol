@@ -41,6 +41,7 @@ int main(int argc, char* argv[]) {
     int blockSize = get<6>(input);
     int el = get<7>(input);
     string filename = get<8>(input);
+    int alpha = get<9>(input);
 
     //Initialize mm-object (matrixmarket)
     matrix_market mm(filename.c_str());
@@ -71,7 +72,7 @@ int main(int argc, char* argv[]) {
 
     generate_order(alg, order, G_b, V_r, V_c);
     //Coloring of the vertices
-    getAlg(Mode2, alg, Mode, G_b, V_r, V_c, order) -> color();
+    getAlg(Mode2, alg, Mode, G_b, V_r, V_c, order, alpha) -> color();
     int max_color_col = *max_element(V_c.begin(), V_c.end(), [&](Ver v1, Ver v2) {
         return get(vertex_color, G_b, v1) < get(vertex_color, G_b, v2);
     });

@@ -36,9 +36,7 @@ public:
 
     ColAlg(Graph &G_b, vector<unsigned int> &V_r,
            vector<unsigned int> &V_c, int Mode, bool restricted)
-            : restricted(restricted), Mode(Mode), V_r(V_r), V_c(V_c), G_b(G_b) {
-
-    };
+            : restricted(restricted), Mode(Mode), V_r(V_r), V_c(V_c), G_b(G_b) {};
 
     ColAlg(Graph &G_b, vector<unsigned int> &V_r,
            vector<unsigned int> &V_c, int Mode, int Mode2, bool restricted)

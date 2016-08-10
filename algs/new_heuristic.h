@@ -7,10 +7,10 @@
 
 #include "ColAlg.h"
 /**
- * \brief Compute a distance-2 coloring of a bipartite graph G_b
+ * \brief Compute a distance-2 coloring of a bipartite graph G_b considering nonrequired elements
  *
  * It can be also restricted to some required edges if the
- * restricted value is equal to true
+ * restricted value is equal to true.
  *
  * Input:
  * - G_b bipartite graph
@@ -19,10 +19,12 @@
  * Output:
  * - G_b bipartite graph with colors as weights vertex_color
  */
-class NewHeuristic : public ColAlg {
+class D2ColorNonReq : public ColAlg {
+    int alpha = 0;
 public:
     using ColAlg::ColAlg;
-
+    D2ColorNonReq(Graph &G_b, vector<unsigned int> &V, bool restricted, int alpha)
+            : ColAlg(G_b, V, restricted),alpha(alpha) {}
     int color() {
         vector<unsigned int> V = V_c;
         property_map<Graph, vertex_color_t>::type color = get(vertex_color, G_b);
@@ -31,7 +33,7 @@ public:
         //All edges in E_S have edge_weight=1; otherwise edge_weight=0
         //Initialize colors
         for_each(V.begin(), V.end(), [&](Ver v) { put(color, v, 0); });
-        //reverse(V.begin(),V.end());
+        reverse(V.begin(),V.end());
         //Iterate over all vertices which should be colored
         for_each(V.begin(), V.end(), [&](unsigned int v) {
             if (get(vertex_color, G_b, v) == 0) {
@@ -112,7 +114,7 @@ public:
 //                    });
                     int cnt = 0;
                     for_each(pos_num.begin(), pos_num.end(), [&](auto map_elem) {
-                        if(cnt <= 5) {
+                        if(cnt <= alpha) {
                             if (map_elem.second == min_nreq_det) {
                                 cnt++;
                                 put(color, map_elem.first, distance(forbiddenColors.begin(), result));

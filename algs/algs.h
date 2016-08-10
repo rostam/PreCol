@@ -13,7 +13,8 @@
 #include "star_bicoloring_vertex_cover.h"
 
 static vector<string> algs = {"PartialD2ColoringColumns", "PartialD2ColoringRows",
-                       "PartialD2RestrictedColumns", "PartialD2RestrictedRows", "StarBicoloringScheme",
+                       "PartialD2RestrictedColumns","PartialD2RestrictedColumnsNonReq",
+                       "PartialD2RestrictedRows", "StarBicoloringScheme",
                        "StarBicoloringSchemeRestricted",
                        "StarBicoloringSchemeDynamicOrdering",
                        "StarBicoloringSchemeCombinedVertexCoverColoring",
@@ -32,15 +33,18 @@ static vector<string> algs = {"PartialD2ColoringColumns", "PartialD2ColoringRows
  * @param order the ordering of vertices for coloring
  * @return
  */
-static shared_ptr<ColAlg> getAlg(int Mode2, const string &alg, int Mode, Graph &G_b, vector<unsigned int> &V_r, vector<unsigned int> &V_c,
-               shared_ptr<Ordering> order) {
+static shared_ptr<ColAlg> getAlg(int Mode2, const string &alg,
+                                 int Mode, Graph &G_b, vector<unsigned int> &V_r,
+                                 vector<unsigned int> &V_c,
+                                 shared_ptr<Ordering> order, int alpha) {
     if (alg == "PartialD2ColoringCols") {
         return shared_ptr<ColAlg>(new D2Color(G_b, V_c, false));
     } else if (alg == "PartialD2ColoringRows") {
         return shared_ptr<ColAlg>(new D2Color(G_b, V_r, false));
     } else if (alg == "PartialD2RestrictedColumns") {
-        //return shared_ptr<ColAlg>(new D2Color(G_b, V_c, true));
-        return shared_ptr<ColAlg>(new NewHeuristic(G_b, V_c, true));
+        return shared_ptr<ColAlg>(new D2Color(G_b, V_c, true));
+    } else if (alg == "PartialD2RestrictedColumnsNonReq") {
+        return shared_ptr<ColAlg>(new D2ColorNonReq(G_b, V_c, true, alpha));
     } else if (alg == "PartialD2ColoringRestrictedRows") {
         return shared_ptr<ColAlg>(new D2Color(G_b, V_r, true));
     } else if (alg == "StarBicoloringScheme") {
