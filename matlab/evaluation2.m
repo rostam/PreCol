@@ -5,17 +5,18 @@ Fs1 = [];pots1=[];adds1 = [];
 Fs2 = [];pots2=[];adds2=[];
 cols = [];cols1=[];cols2=[];
 alpha=9;
-for i=1 : 1 :  50
+for i=1 : 1 :  70
     i
-    %[req,pot,add,F,c] = precol2('PartialD2RestrictedColumns','LFO','Nat',int2str(i),'2','nos3.mtx',1);
-    %Fs= [Fs nnz(F)];
-    %pots=[pots nnz(pot)];
-    %adds = [adds nnz(add)];
-    %cols = [cols c];
-    [req1,pot1,add1,F1,c1] = precol2('PartialD2RestrictedColumns','SLO','Nat',int2str(i),'2','ex33.mtx',1);
-    for al = 0 : 10 
-    [req2,pot2,add2,F2,c2] = precol2('PartialD2RestrictedColumnsNonReq','SLO','Nat',int2str(i),'2','ex33.mtx',al);
-    if(c2 == c1)
+%    [req,pot,add,F,c] = precol2('PartialD2RestrictedColumns','LFO','Nat',int2str(i),'2','ex33.mtx',1);
+%     Fs= [Fs nnz(F)];
+%     pots=[pots nnz(pot)];
+%     adds = [adds nnz(add)];
+%     cols = [cols c];
+    [req1,pot1,add1,F1,c1] = precol2('PartialD2RestrictedColumns','SLO','Nat',int2str(i),'2','nos3.mtx',1);
+    %for al = 0 : 15 
+    [req2,pot2,add2,F2,c2] = precol2('PartialD2RestrictedColumnsNonReq','LFO','Nat',int2str(i),'2','nos3.mtx',alpha);
+    
+    %if(abs(c2 - c1) <= 3)
       els = [els i];
       Fs1= [Fs1 nnz(F1)];
       pots1=[pots1 nnz(pot1)];
@@ -26,9 +27,9 @@ for i=1 : 1 :  50
       pots2=[pots2 nnz(pot2)];
       adds2 = [adds2 nnz(add2)];
       cols2 = [cols2 c2];
-      break;
-    end
-    end 
+%      break;
+    %end
+%    end 
 end
 
 %figure,plot(els,adds,'-r*','LineWidth',2)
@@ -37,8 +38,8 @@ shg, plot(els, adds1, '-g*', 'LineWidth',2)
 shg, plot(els, adds2, '-b*', 'LineWidth',2)
 xlabel('The block size parameter for sparsification','FontWeight','bold','FontSize',18);
 ylabel('The number of additionally required elements','FontWeight','bold','FontSize',18);
-h=legend('Greedy Coloring (Min Orderings)',...
-        ['New Coloring']);
+h=legend('Greedy Coloring',...
+        ['New Coloring with \alpha = ', num2str(alpha+1)]);
    set(h,'Location','Best',...
        'FontSize',22);
 
@@ -51,7 +52,7 @@ h=legend('Greedy Coloring (Min Orderings)',...
  ylabel('The number of colors','FontWeight','bold','FontSize',18);
  %set(gca,'yscale','log')
  h2=legend('Greedy Coloring',...
-         ['New Coloring']);
+         ['New Coloring with \alpha = ', num2str(alpha+1)]);
      set(h2,'Location','Best',...
          'FontSize',22);    
 
