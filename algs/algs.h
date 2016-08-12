@@ -44,21 +44,24 @@ static shared_ptr<ColAlg> getAlg(int Mode2, const string &alg,
     } else if (alg == "PartialD2RestrictedColumns") {
         return shared_ptr<ColAlg>(new D2Color(G_b, V_c, true));
     } else if (alg == "PartialD2RestrictedColumnsNonReq") {
-        return shared_ptr<ColAlg>(new D2ColorNonReq(G_b, V_c, true, alpha));
+        return shared_ptr<ColAlg>(new D2ColorNonReq(G_b, V_c, true, {{"alpha",alpha}}));
     } else if (alg == "PartialD2ColoringRestrictedRows") {
         return shared_ptr<ColAlg>(new D2Color(G_b, V_r, true));
     } else if (alg == "StarBicoloringScheme") {
-        return shared_ptr<ColAlg>(new StarBicoloring(G_b, V_r, V_c, Mode, Mode2, false));
+        return shared_ptr<ColAlg>(new StarBicoloring(G_b, V_r, V_c, false, {{"Mode", Mode},{"Mode2",Mode2}}));
     } else if (alg == "StarBicoloringSchemeRestricted") {
-        return shared_ptr<ColAlg>(new StarBicoloring(G_b, V_r, V_c, Mode, Mode2, true));
+        return shared_ptr<ColAlg>(new StarBicoloring(G_b, V_r, V_c, true, {{"Mode", Mode},{"Mode2",Mode2}}));
     } else if (alg == "StarBicoloringSchemeDynamicOrdering") {
-        return shared_ptr<ColAlg>(new StarBicoloringDynamic(G_b, V_r, V_c, Mode, Mode2, order, false));
+        return shared_ptr<ColAlg>(new StarBicoloringDynamic(G_b, V_r, V_c,
+               false, {{"Mode", Mode},{"Mode2",Mode2},{"order",order}}));
     } else if (alg == "StarBicoloringSchemeCombinedVertexCoverColoring") {
-        return shared_ptr<ColAlg>(new StarBicoloringVertexCover(G_b, V_r, V_c, Mode, Mode2, false));
+        return shared_ptr<ColAlg>(new StarBicoloringVertexCover(G_b, V_r, V_c,
+               false, {{"Mode", Mode},{"Mode2",Mode2}}));
     } else if (alg == "StarBicoloringSchemeDynamicOrderingRestricted") {
-        return shared_ptr<ColAlg>(new StarBicoloringDynamic(G_b, V_r, V_c, Mode, Mode2, order, true));
+        return shared_ptr<ColAlg>(new StarBicoloringDynamic(G_b, V_r, V_c,
+               true, {{"Mode", Mode},{"Mode2",Mode2},{"order",order}}));
     } else if (alg == "StarBicoloringSchemeCombinedVertexCoverColoringRestricted") {
-        return shared_ptr<ColAlg>(new StarBicoloringVertexCover(G_b, V_r, V_c, Mode, Mode2, true));
+        return shared_ptr<ColAlg>(new StarBicoloringVertexCover(G_b, V_r, V_c, true, {{"Mode", Mode},{"Mode2",Mode2}}));
     }
 }
 

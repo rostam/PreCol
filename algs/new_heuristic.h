@@ -20,11 +20,11 @@
  * - G_b bipartite graph with colors as weights vertex_color
  */
 class D2ColorNonReq : public ColAlg {
-    int alpha = 0;
+    //int alpha = 0;
 public:
     using ColAlg::ColAlg;
-    D2ColorNonReq(Graph &G_b, vector<unsigned int> &V, bool restricted, int alpha)
-            : ColAlg(G_b, V, restricted),alpha(alpha) {}
+//    D2ColorNonReq(Graph &G_b, vector<unsigned int> &V, bool restricted, int alpha)
+//            : ColAlg(G_b, V, restricted),alpha(alpha) {}
     int color() {
         vector<unsigned int> V = V_c;
         property_map<Graph, vertex_color_t>::type color = get(vertex_color, G_b);
@@ -108,7 +108,7 @@ public:
                     });
                     int cnt = 0;
                     for_each(pos_num.begin(), pos_num.end(), [&](auto map_elem) {
-                        if (cnt <= alpha) {
+                        if (cnt <= boost::any_cast<int>(pars["alpha"])) {
                             if (map_elem.second == min_nreq_det) {
                                 cnt++;
                                 put(color, map_elem.first, distance(forbiddenColors.begin(), result));

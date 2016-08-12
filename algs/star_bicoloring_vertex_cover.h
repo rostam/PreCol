@@ -10,9 +10,7 @@
 
 class StarBicoloringVertexCover : public ColAlg{
 public:
-    StarBicoloringVertexCover(Graph &G_b, vector<unsigned int> &V_r,
-            vector<unsigned int> &V_c, int Mode, int Mode2, bool restricted)
-    : ColAlg(G_b,V_r,V_c,Mode,Mode2,restricted) {};
+    using ColAlg::ColAlg;
     int color();
     int color_restricted();
 };

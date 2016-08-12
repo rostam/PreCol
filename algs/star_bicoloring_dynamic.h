@@ -9,9 +9,7 @@
 
 class StarBicoloringDynamic : public ColAlg {
 public:
-    StarBicoloringDynamic(Graph &G_b, vector<unsigned int> &V_r,
-            vector<unsigned int> &V_c, int Mode, int Mode2, shared_ptr<Ordering> ord, bool restricted)
-    : ColAlg(G_b,V_r,V_c,Mode,Mode2,ord,restricted){}
+    using ColAlg::ColAlg;
     int color();
     int color_restricted();
     bool color_rest();
