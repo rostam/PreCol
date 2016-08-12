@@ -23,6 +23,7 @@ class D2ColorNonReq : public ColAlg {
     //int alpha = 0;
 public:
     using ColAlg::ColAlg;
+
 //    D2ColorNonReq(Graph &G_b, vector<unsigned int> &V, bool restricted, int alpha)
 //            : ColAlg(G_b, V, restricted),alpha(alpha) {}
     int color() {
@@ -99,7 +100,7 @@ public:
                                 max_nreq_pos = nn;
                                 max_nreq_det = cnt_nreq_det;
                             }
-                            if(cnt_nreq_det < min_nreq_det) {
+                            if (cnt_nreq_det < min_nreq_det) {
                                 min_nreq_pos = nn;
                                 min_nreq_det = cnt_nreq_det;
                             }
@@ -115,8 +116,8 @@ public:
                             }
                         }
                     });
-                    int cnt_max =0;
-                    int mx= 0;
+                    int cnt_max = 0;
+                    int mx = 0;
                     int min_req = 10000;
                     int min_pos = -1;
                     int max_req = 0;
@@ -131,22 +132,22 @@ public:
                                              cnt_req++;
                                          }
                                      });
-                            if(cnt_req < min_req) {
+                            if (cnt_req < min_req) {
                                 min_req = cnt_req;
                                 min_pos = map_elem.first;
                             }
-                            if(cnt_req > max_req) {
-                                max_req= cnt_req;
+                            if (cnt_req > max_req) {
+                                max_req = cnt_req;
                                 max_pos = map_elem.first;
                             }
                         }
                     });
-                    if(min_pos != -1) {
+                    if (min_pos != -1) {
                         put(color, min_pos, distance(forbiddenColors.begin(), result));
                         //put(color, max_pos, distance(forbiddenColors.begin(), result));
                     }
                     if (max_nreq_pos != -1) {
- //                       put(color, max_nreq_pos, distance(forbiddenColors.begin(), result));
+                        //put(color, max_nreq_pos, distance(forbiddenColors.begin(), result));
                     }
                 } else {
                     put(color, v, 0);
