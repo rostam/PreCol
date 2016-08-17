@@ -56,4 +56,6 @@ static bool cmp_degrees(pair<int,pair<int,int> > t1, pair<int,pair<int,int> > t2
 	}
 }
 
+static bool mysymmetric = false;
+
 #endif

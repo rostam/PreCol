@@ -45,6 +45,7 @@ int main(int argc, char* argv[]) {
 
     //Initialize mm-object (matrixmarket)
     matrix_market mm(filename.c_str());
+    mysymmetric = mm.issym();
 
     //Initialize graph-object (boost)
     Graph G_b(2 * mm.nrows());
@@ -88,12 +89,14 @@ int main(int argc, char* argv[]) {
         return get(edge_weight,G_b,e)==0;
     });
 //   sort(edge_ordering.begin(),edge_ordering.end(),le_cols(G_b));
+
     int pot = potentialRequiredNonzerosD2(G_b, edge_ordering);
     matrix_market mm_p(G_b,"p",V_c.size(),V_r.size(),true);
     mm_p.writeToFile((char *) "matlab/pot.mtx");
 
     SILU silu(G_b, pre_ord);
     int fillin = silu.getFillinMinDeg(el);
+    
     matrix_market mm_f(silu.G_ilu,"f",V_c.size(),V_r.size(),false);
     mm_f.writeToFile((char *) "matlab/F.mtx");
 
@@ -112,6 +115,7 @@ int main(int argc, char* argv[]) {
         Ver src = source(e,silu.G_ilu);
         Ver tgt = target(e,silu.G_ilu);
         add_edge(src,tgt+V_c.size(),G_b2);
+
         add_edge(tgt,src+V_c.size(),G_b2);
         put(edge_weight, G_b2, edge(src, tgt + V_c.size(), G_b2).first, 3);
         put(edge_weight, G_b2, edge(tgt, src + V_c.size(), G_b2).first, 3);
