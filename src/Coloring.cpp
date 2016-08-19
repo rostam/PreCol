@@ -82,6 +82,8 @@ int main(int argc, char* argv[]) {
     });
     cout << "Row Colors:_" << get(vertex_color, G_b, max_color_row) << endl;
     cout << "Column Colors:_" << get(vertex_color, G_b, max_color_col) << endl;
+    cout << "All Colors:_" << get(vertex_color, G_b, max_color_row)
+                              + get(vertex_color, G_b, max_color_col) << endl;
     end = clock();
     //all edges A - \Rinit
     vector<Edge> edge_ordering;
@@ -90,7 +92,8 @@ int main(int argc, char* argv[]) {
     });
 //   sort(edge_ordering.begin(),edge_ordering.end(),le_cols(G_b));
 
-    int pot = potentialRequiredNonzerosD2(G_b, edge_ordering);
+    //int pot = potentialRequiredNonzerosD2(G_b, edge_ordering);
+    int pot = potentialRequiredNonzerosSB(G_b, edge_ordering);
     matrix_market mm_p(G_b,"p",V_c.size(),V_r.size(),true);
     mm_p.writeToFile((char *) "matlab/pot.mtx");
 

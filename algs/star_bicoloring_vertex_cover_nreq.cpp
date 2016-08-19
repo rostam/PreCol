@@ -2,7 +2,7 @@
 // Created by rostam on 20.07.16.
 //
 
-#include "star_bicoloring_vertex_cover.h"
+#include "star_bicoloring_vertex_cover_nreq.h"
 
 
 /**
@@ -21,7 +21,7 @@
  * Output:
  * - G_b bipartite graph with colors given as weights vertex_color
  */
-int StarBicoloringVertexCover::color()
+int StarBicoloringVertexCoverNonReq::color()
 {
     if(restricted)
         return color_restricted();
@@ -65,20 +65,14 @@ int StarBicoloringVertexCover::color()
         Degree_V_r_aux.push_back(make_pair(*v_r,degree(*v_r,G_b_aux)));
     }
 
-    for (vector<unsigned int>::iterator v_c = V_c_aux.begin();
-         v_c != V_c_aux.end();
-         ++v_c) {
+    for (vector<unsigned int>::iterator v_c = V_c_aux.begin(); v_c != V_c_aux.end(); ++v_c) {
         Degree_V_c_aux.push_back(make_pair(*v_c,degree(*v_c,G_b_aux)));
     }
 
     while(num_edges(G_b_aux)>0) {
-
         unsigned int max_degree_V_r_aux = 0;
         for (list<pair<unsigned int,unsigned int> >::iterator di =
-                Degree_V_r_aux.begin();
-             di != Degree_V_r_aux.end();
-             ++di) {
-
+                Degree_V_r_aux.begin(); di != Degree_V_r_aux.end(); ++di) {
             (*di).second = degree((*di).first,G_b_aux);
             unsigned int degree_v_r = (*di).second;
             if (degree_v_r > max_degree_V_r_aux) {
@@ -88,9 +82,7 @@ int StarBicoloringVertexCover::color()
 
         unsigned int max_degree_V_c_aux = 0;
         for (list<pair<unsigned int,unsigned int> >::iterator di =
-                Degree_V_c_aux.begin();
-             di != Degree_V_c_aux.end();
-             ++di) {
+                Degree_V_c_aux.begin(); di != Degree_V_c_aux.end(); ++di) {
 
             (*di).second = degree((*di).first,G_b_aux);
             unsigned int degree_v_c = (*di).second;
@@ -102,16 +94,11 @@ int StarBicoloringVertexCover::color()
         if (max_degree_V_r_aux >ratio * max_degree_V_c_aux) {
 
             for (list<pair<unsigned int,unsigned int> >::iterator di =
-                    Degree_V_r_aux.begin();
-                 di != Degree_V_r_aux.end();
-                 ++di) {
+                    Degree_V_r_aux.begin(); di != Degree_V_r_aux.end(); ++di) {
 
                 if (max_degree_V_r_aux==(*di).second) {
                     list<pair<unsigned int,unsigned int> >::iterator cr;
-                    for (cr =
-                                 copy_real_r.begin();
-                         cr != copy_real_r.end();
-                         ++cr) {
+                    for (cr = copy_real_r.begin(); cr != copy_real_r.end(); ++cr) {
                         if ((*cr).second==(*di).first) break;
                     }
                     vector<unsigned int>::iterator v;
@@ -119,48 +106,48 @@ int StarBicoloringVertexCover::color()
                         if ((*cr).first==(*v)) break;
                     }
 
-
                     clear_vertex((*di).first,G_b_aux);
                     di = Degree_V_r_aux.erase(di); --di;
 
-                    forbiddenColors[0]=*v;
+                    if (get(vertex_color, G_b, *v) == 0) {
+                        forbiddenColors[0] = *v;
 
-                    graph_traits<Graph>::adjacency_iterator w, w_end;
-                    for (tie(w,w_end) = adjacent_vertices(*v, G_b); w != w_end; w++) {
-                        if (get(vertex_color, G_b, *w)<=0) {
+                        graph_traits<Graph>::adjacency_iterator w, w_end;
+                        for (tie(w, w_end) = adjacent_vertices(*v, G_b); w != w_end; w++) {
+                            if (get(vertex_color, G_b, *w) <= 0) {
 
-                            graph_traits<Graph>::adjacency_iterator x, x_end;
-                            for (tie(x,x_end) = adjacent_vertices(*w, G_b); x != x_end; x++) {
-                                if (get(vertex_color, G_b, *x)>0) {
-                                    forbiddenColors[get(vertex_color, G_b, *x)]=*v;
+                                graph_traits<Graph>::adjacency_iterator x, x_end;
+                                for (tie(x, x_end) = adjacent_vertices(*w, G_b); x != x_end; x++) {
+                                    if (get(vertex_color, G_b, *x) > 0) {
+                                        forbiddenColors[get(vertex_color, G_b, *x)] = *v;
+                                    }
                                 }
-                            }
-                        } else { //Color[w]>0
+                            } else { //Color[w]>0
 
-                            graph_traits<Graph>::adjacency_iterator x, x_end;
-                            for (tie(x,x_end) = adjacent_vertices(*w, G_b); x != x_end; x++) {
-                                if (get(vertex_color, G_b, *x)>0) {
+                                graph_traits<Graph>::adjacency_iterator x, x_end;
+                                for (tie(x, x_end) = adjacent_vertices(*w, G_b); x != x_end; x++) {
+                                    if (get(vertex_color, G_b, *x) > 0) {
 
-                                    graph_traits<Graph>::adjacency_iterator y, y_end;
-                                    for (tie(y,y_end) = adjacent_vertices(*x, G_b); y != y_end; y++) {
-                                        if (get(vertex_color, G_b, *y)>0) {
-                                            if (get(vertex_color, G_b, *w)==get(vertex_color, G_b, *y) && *w!=*y) {
-                                                forbiddenColors[get(vertex_color, G_b, *x)]=*v;
+                                        graph_traits<Graph>::adjacency_iterator y, y_end;
+                                        for (tie(y, y_end) = adjacent_vertices(*x, G_b); y != y_end; y++) {
+                                            if (get(vertex_color, G_b, *y) > 0) {
+                                                if (get(vertex_color, G_b, *w) == get(vertex_color, G_b, *y) &&
+                                                    *w != *y) {
+                                                    forbiddenColors[get(vertex_color, G_b, *x)] = *v;
+                                                }
                                             }
                                         }
                                     }
                                 }
                             }
                         }
+                        //Find first color which can be assigned to v_c
+                        vector<int>::iterator color_v_it = find_if(forbiddenColors.begin(),
+                                                                   forbiddenColors.end(),
+                                                                   bind1st(not_equal_to<int>(), *v)
+                        );
+                        put(color, *v, distance(forbiddenColors.begin(), color_v_it));
                     }
-                    //Find first color which can be assigned to v_c
-                    vector<int>::iterator color_v_it = find_if(forbiddenColors.begin(),
-                                                               forbiddenColors.end(),
-                                                               bind1st(not_equal_to<int>(), *v)
-                    );
-                    put(color,*v,distance(forbiddenColors.begin(),color_v_it));
-
-
                 }
             }
         } else {
@@ -224,10 +211,6 @@ int StarBicoloringVertexCover::color()
                     );
                     put(color,*v,distance(forbiddenColors.begin(),color_v_it));
 
-
-
-
-
                 }
             }
         }
@@ -260,7 +243,7 @@ int StarBicoloringVertexCover::color()
     return EXIT_SUCCESS;
 }
 
-int StarBicoloringVertexCover::color_restricted() {
+int StarBicoloringVertexCoverNonReq::color_restricted() {
     vector<int> IS;
     property_map<Graph, vertex_color_t>::type color = get(vertex_color, G_b);
     vector<int> num_colors;
@@ -269,6 +252,9 @@ int StarBicoloringVertexCover::color_restricted() {
     Graph G_b_aux;
     copy_graph(G_b, G_b_aux);
     float ratio = 1;
+    int result = 0;
+    vector<unsigned int> N_2;
+    int curr_v = 0;
 
     if (get_par<int>("Mode") != 1) ratio = get_par<int>("Mode") / 2;
     //Compute independent set
@@ -310,7 +296,6 @@ int StarBicoloringVertexCover::color_restricted() {
     }
 
     while (num_edges(G_b_aux) > 0) {
-
         unsigned int max_degree_V_r_aux = 0;
         for (list<pair<unsigned int, unsigned int> >::iterator di =
                 Degree_V_r_aux.begin();
@@ -357,7 +342,6 @@ int StarBicoloringVertexCover::color_restricted() {
                         if ((*cr).first == (*v)) break;
                     }
 
-
                     clear_vertex((*di).first, G_b_aux);
                     di = Degree_V_r_aux.erase(di);
                     --di;
@@ -367,7 +351,6 @@ int StarBicoloringVertexCover::color_restricted() {
                     graph_traits<Graph>::adjacency_iterator w, w_end;
                     for (tie(w, w_end) = adjacent_vertices(*v, G_b); w != w_end; w++) {
                         if (get(vertex_color, G_b, *w) <= 0) {
-
                             graph_traits<Graph>::adjacency_iterator x, x_end;
                             for (tie(x, x_end) = adjacent_vertices(*w, G_b); x != x_end; x++) {
                                 if (get(vertex_color, G_b, *x) > 0) {
@@ -403,8 +386,9 @@ int StarBicoloringVertexCover::color_restricted() {
                                                                bind1st(not_equal_to<int>(), *v)
                     );
                     put(color, *v, distance(forbiddenColors.begin(), color_v_it));
-
-
+                    N_2 = neighbors::N_2restricted(G_b, *v);
+                    result = distance(forbiddenColors.begin(),color_v_it);
+                    curr_v = *v;
                 }
             }
         } else {
@@ -416,8 +400,7 @@ int StarBicoloringVertexCover::color_restricted() {
 
                 if (max_degree_V_c_aux == (*di).second) {
                     list<pair<unsigned int, unsigned int> >::iterator cr;
-                    for (cr =
-                                 copy_real_c.begin();
+                    for (cr = copy_real_c.begin();
                          cr != copy_real_c.end();
                          ++cr) {
                         if ((*cr).second == (*di).first) break;
@@ -473,8 +456,115 @@ int StarBicoloringVertexCover::color_restricted() {
                                                                bind1st(not_equal_to<int>(), *v)
                     );
                     put(color, *v, distance(forbiddenColors.begin(), color_v_it));
+                    N_2 = neighbors::N_2restricted(G_b, *v);
+                    result = distance(forbiddenColors.begin(),color_v_it);
+                    curr_v = *v;
                 }
             }
+        }
+
+        /////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////
+        vector<unsigned int> non_neighbours;
+        for_each(V_c.begin(), V_c.end(), [&](Ver vc) {
+            if (find(N_2.begin(), N_2.end(), vc) == N_2.end()) {
+                non_neighbours.push_back(vc);
+            }
+        });
+        for_each(V_r.begin(), V_r.end(), [&](Ver vc) {
+            if (find(N_2.begin(), N_2.end(), vc) == N_2.end()) {
+                non_neighbours.push_back(vc);
+            }
+        });
+        int max_nreq_det = 0;
+        int max_nreq_pos = -1;
+        int min_nreq_det = 1000;
+        int min_nreq_pos = -1;
+        //map from the positions to number of that nonrequired
+        map<unsigned int, int> pos_num;
+        //Iterate over distance-2 neighbors
+        for_each(non_neighbours.begin(), non_neighbours.end(), [&](unsigned int nn) {
+            int cnt_nreq_det = 0;
+            //Mark colors which are used by distance-2 neighbors in forbiddenColors
+            if (get(vertex_color, G_b, nn) == 0) {
+                for_each(adjacent_vertices(nn, G_b).first,
+                         adjacent_vertices(nn, G_b).second,
+                         [&](Ver adj_nn) {
+                             if (get(edge_weight, G_b, edge(nn, adj_nn, G_b).first) != 1) {
+                                 if (!edge(adj_nn, curr_v, G_b).second) {
+                                     cnt_nreq_det++;
+                                 }
+                             }
+                         });
+                for_each(adjacent_vertices(curr_v, G_b).first,
+                         adjacent_vertices(curr_v, G_b).second,
+                         [&](Ver adj_v) {
+                             if (get(edge_weight, G_b, edge(curr_v, adj_v, G_b).first) != 1) {
+                                 if (!edge(adj_v, nn, G_b).second) {
+                                     cnt_nreq_det++;
+                                 }
+                             }
+                         });
+                if (cnt_nreq_det > max_nreq_det) {
+                    max_nreq_pos = nn;
+                    max_nreq_det = cnt_nreq_det;
+                }
+                if (cnt_nreq_det < min_nreq_det) {
+                    min_nreq_pos = nn;
+                    min_nreq_det = cnt_nreq_det;
+                }
+                pos_num[nn] = cnt_nreq_det;
+            }
+        });
+        int cnt = 0;
+        for_each(pos_num.begin(), pos_num.end(), [&](auto map_elem) {
+            if (cnt <= boost::any_cast<int>(pars["alpha"])) {
+                if (map_elem.second == min_nreq_det) {
+                    cnt++;
+                    put(color, map_elem.first, result);
+                }
+            }
+        });
+        int cnt_max = 0;
+        int mx = 0;
+        int min_req = 10000;
+        int min_pos = -1;
+        int max_req = 0;
+        int max_pos = -1;
+        for_each(pos_num.begin(), pos_num.end(), [&](auto map_elem) {
+            if (map_elem.second == max_nreq_det) {
+                int cnt_req = 0;
+                for_each(adjacent_vertices(map_elem.first, G_b).first,
+                         adjacent_vertices(map_elem.first, G_b).second,
+                         [&](Ver adj_) {
+                             if (get(edge_weight, G_b, edge(map_elem.first, adj_, G_b).first) == 1) {
+                                 cnt_req++;
+                             }
+                         });
+                if (cnt_req < min_req) {
+                    min_req = cnt_req;
+                    min_pos = map_elem.first;
+                }
+                if (cnt_req > max_req) {
+                    max_req = cnt_req;
+                    max_pos = map_elem.first;
+                }
+            }
+        });
+//        for_each(pos_num.begin(), pos_num.end(), [&](auto map_elem) {
+//            //if (cnt <= boost::any_cast<int>(pars["alpha"])) {
+//            //    if (map_elem.second == max_nreq_det) {
+//                    cnt++;
+//                    put(color, map_elem.first, result);
+//                }
+//            }
+//        });
+        if (min_pos != -1) {
+            put(color, min_pos, result);
+            //put(color, max_pos, distance(forbiddenColors.begin(), result));
+        }
+        if (max_nreq_pos != -1) {
+        //    put(color, max_nreq_pos, result);
         }
     }
 
@@ -486,11 +576,8 @@ int StarBicoloringVertexCover::color_restricted() {
         IS.push_back((*di).first);
     }
 
-    for (list<pair<unsigned int, unsigned int> >::iterator di =
-            Degree_V_c_aux.begin();
-         di != Degree_V_c_aux.end();
-         ++di) {
-
+    for (list<pair<unsigned int, unsigned int> >::iterator di = Degree_V_c_aux.begin();
+         di != Degree_V_c_aux.end(); ++di) {
         IS.push_back((*di).first);
     }
     //Color vertices in independent set with color 0

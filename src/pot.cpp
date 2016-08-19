@@ -57,6 +57,7 @@ int potentialRequiredNonzerosSB(Graph& G_b,
 				const vector<graph_traits<Graph>::edge_descriptor>& edge_ordering) {
     property_map<Graph, vertex_color_t>::type color = get(vertex_color, G_b);
     property_map<Graph, edge_weight_t>::type weight = get(edge_weight, G_b);
+    property_map<Graph, edge_name_t>::type name = get(edge_name, G_b);
     //graph_traits<Graph>::edge_descriptor e;
     graph_traits<Graph>::adjacency_iterator w, w_end;
     graph_traits<Graph>::adjacency_iterator u, u_end;
@@ -113,6 +114,7 @@ int potentialRequiredNonzerosSB(Graph& G_b,
             // add element if possible
             if (validNewElement) {
                 put(weight, *e_it, 2);
+                put(name, *e_it, "p");
                 counter++;
             }
         }

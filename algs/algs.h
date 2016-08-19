@@ -11,6 +11,7 @@
 #include "star_bicoloring.h"
 #include "star_bicoloring_dynamic.h"
 #include "star_bicoloring_vertex_cover.h"
+#include "star_bicoloring_vertex_cover_nreq.h"
 
 static vector<string> algs = {"PartialD2ColoringColumns", "PartialD2ColoringRows",
                        "PartialD2RestrictedColumns","PartialD2RestrictedColumnsNonReq",
@@ -19,7 +20,8 @@ static vector<string> algs = {"PartialD2ColoringColumns", "PartialD2ColoringRows
                        "StarBicoloringSchemeDynamicOrdering",
                        "StarBicoloringSchemeCombinedVertexCoverColoring",
                        "StarBicoloringSchemeDynamicOrderingRestricted",
-                       "StarBicoloringSchemeCombinedVertexCoverColoringRestricted"};
+                       "StarBicoloringSchemeCombinedVertexCoverColoringRestricted",
+                       "StarBicoloringSchemeCombinedVertexCoverColoringRestrictedNonReq"};
 
 /**
  * \brief returns a pointer to the correct coloring algorithm
@@ -62,6 +64,9 @@ static shared_ptr<ColAlg> getAlg(int Mode2, const string &alg,
                true, {{"Mode", Mode},{"Mode2",Mode2},{"order",order}}));
     } else if (alg == "StarBicoloringSchemeCombinedVertexCoverColoringRestricted") {
         return shared_ptr<ColAlg>(new StarBicoloringVertexCover(G_b, V_r, V_c, true, {{"Mode", Mode},{"Mode2",Mode2}}));
+    } else if (alg == "StarBicoloringSchemeCombinedVertexCoverColoringRestrictedNonReq") {
+        return shared_ptr<ColAlg>(new StarBicoloringVertexCoverNonReq(G_b, V_r, V_c, true,
+                                   {{"Mode", Mode},{"Mode2",Mode2},{"alpha",alpha}}));
     }
 }
 
