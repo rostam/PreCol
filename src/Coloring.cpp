@@ -158,14 +158,14 @@ int main(int argc, char* argv[]) {
     matrix_market mm_NP(G_b3,"np",V_c.size(),V_r.size(),true);
     mm_NP.writeToFile((char *) "matlab/req_f.mtx");
 
-    cout << "additionally weak:  " << num_edges(G_b3) << " "
-         << addReqElementsWeak(G_b3,edge_ordering3) << " "
-         << edge_ordering3.size()<< endl;
-
-    vector<pair<int,int>> ret = addReqElementsMat(mm_p, mm_NP);
-    cout << "Additionally Matrix Version:" << ret.size() << endl;
-    matrix_market mm_amat(ret,V_c.size(),V_c.size(),false);
-    mm_amat.writeToFile((char *) "matlab/add_mat.mtx");
+//    cout << "additionally weak:  " << num_edges(G_b3) << " "
+//         << addReqElementsWeak(G_b3,edge_ordering3) << " "
+//         << edge_ordering3.size()<< endl;
+//
+//    vector<pair<int,int>> ret = addReqElementsMat(mm_p, mm_NP);
+//    cout << "Additionally Matrix Version:" << ret.size() << endl;
+//    matrix_market mm_amat(ret,V_c.size(),V_c.size(),false);
+//    mm_amat.writeToFile((char *) "matlab/add_mat.mtx");
     int add = num_addReqElements;
 //    int add = addReqElements(G_b, edge_ordering2);
 
