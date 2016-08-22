@@ -291,6 +291,87 @@ int StarBicoloringVertexCoverNonReq::color_restricted() {
          ++v_c) {
         Degree_V_c_aux.push_back(make_pair(*v_c, degree(*v_c, G_b_aux)));
     }
+    Degree_V_c_aux.sort([&](
+            pair<unsigned int, unsigned int> p1,pair<unsigned int, unsigned int> p2
+    ) {
+        list<pair<unsigned int, unsigned int> >::iterator cr1;
+        for (cr1 = copy_real_c.begin(); cr1 != copy_real_c.end(); ++cr1) {
+            if ((*cr1).second == (p1).first) break;
+        }
+
+        list<pair<unsigned int, unsigned int> >::iterator cr2;
+        for (cr2 = copy_real_c.begin(); cr2 != copy_real_c.end(); ++cr2) {
+            if ((*cr2).second == (p2).first) break;
+        }
+
+        vector<unsigned int>::iterator v1;
+        for (v1 = V_c.begin(); v1 != V_c.end(); v1++) {
+            if ((*cr1).first == (*v1)) break;
+        }
+
+        vector<unsigned int>::iterator v2;
+        for (v2 = V_c.begin(); v2 != V_c.end(); v2++) {
+            if ((*cr2).first == (*v2)) break;
+        }
+
+        int cnt_nreq1 = 0, cnt_nreq2 = 0;
+        for_each(adjacent_vertices(*v1, G_b).first,
+                 adjacent_vertices(*v1, G_b).second,
+                 [&](Ver adj_nn) {
+                     if (get(edge_weight, G_b, edge(*v1, adj_nn, G_b).first) != 1) {
+                         cnt_nreq1++;
+                     }
+                 });
+        for_each(adjacent_vertices(*v2, G_b).first,
+                 adjacent_vertices(*v2, G_b).second,
+                 [&](Ver adj_nn) {
+                     if (get(edge_weight, G_b, edge(*v2, adj_nn, G_b).first) != 1) {
+                         cnt_nreq2++;
+                     }
+                 });
+        return cnt_nreq1 > cnt_nreq2;
+    });
+
+    Degree_V_r_aux.sort([&](
+            pair<unsigned int, unsigned int> p1,pair<unsigned int, unsigned int> p2
+    ) {
+        list<pair<unsigned int, unsigned int> >::iterator cr1;
+        for (cr1 = copy_real_r.begin(); cr1 != copy_real_r.end(); ++cr1) {
+            if ((*cr1).second == (p1).first) break;
+        }
+
+        list<pair<unsigned int, unsigned int> >::iterator cr2;
+        for (cr2 = copy_real_r.begin(); cr2 != copy_real_r.end(); ++cr2) {
+            if ((*cr2).second == (p2).first) break;
+        }
+
+        vector<unsigned int>::iterator v1;
+        for (v1 = V_r.begin(); v1 != V_r.end(); v1++) {
+            if ((*cr1).first == (*v1)) break;
+        }
+
+        vector<unsigned int>::iterator v2;
+        for (v2 = V_r.begin(); v2 != V_r.end(); v2++) {
+            if ((*cr2).first == (*v2)) break;
+        }
+
+        int cnt_nreq1 = 0, cnt_nreq2 = 0;
+        for_each(adjacent_vertices(*v1, G_b).first,
+                 adjacent_vertices(*v1, G_b).second,
+                 [&](Ver adj_nn) {
+                     if (get(edge_weight, G_b, edge(*v1, adj_nn, G_b).first) != 1) {
+                         cnt_nreq1++;
+                     }
+                 });
+        for_each(adjacent_vertices(*v2, G_b).first,
+                 adjacent_vertices(*v2, G_b).second,
+                 [&](Ver adj_nn) {
+                     if (get(edge_weight, G_b, edge(*v2, adj_nn, G_b).first) != 1) {
+                         cnt_nreq2++;
+                     }
+                 });
+        return cnt_nreq1 > cnt_nreq2;
+    });
 
     while (num_edges(G_b_aux) > 0) {
 
@@ -405,46 +486,7 @@ int StarBicoloringVertexCoverNonReq::color_restricted() {
         } else {
             int cnt = 0;
             int first_v=0;
-            Degree_V_c_aux.sort([&](
-                    pair<unsigned int, unsigned int> p1,pair<unsigned int, unsigned int> p2
-            ) {
-                list<pair<unsigned int, unsigned int> >::iterator cr1;
-                for (cr1 = copy_real_c.begin(); cr1 != copy_real_c.end(); ++cr1) {
-                    if ((*cr1).second == (p1).first) break;
-                }
 
-                list<pair<unsigned int, unsigned int> >::iterator cr2;
-                for (cr2 = copy_real_c.begin(); cr2 != copy_real_c.end(); ++cr2) {
-                    if ((*cr2).second == (p2).first) break;
-                }
-
-                vector<unsigned int>::iterator v1;
-                for (v1 = V_c.begin(); v1 != V_c.end(); v1++) {
-                    if ((*cr1).first == (*v1)) break;
-                }
-
-                vector<unsigned int>::iterator v2;
-                for (v2 = V_c.begin(); v2 != V_c.end(); v2++) {
-                    if ((*cr2).first == (*v2)) break;
-                }
-
-                int cnt_nreq1 = 0, cnt_nreq2 = 0;
-                for_each(adjacent_vertices(*v1, G_b).first,
-                         adjacent_vertices(*v1, G_b).second,
-                         [&](Ver adj_nn) {
-                             if (get(edge_weight, G_b, edge(*v1, adj_nn, G_b).first) != 1) {
-                                 cnt_nreq1++;
-                             }
-                         });
-                for_each(adjacent_vertices(*v2, G_b).first,
-                         adjacent_vertices(*v2, G_b).second,
-                         [&](Ver adj_nn) {
-                             if (get(edge_weight, G_b, edge(*v2, adj_nn, G_b).first) != 1) {
-                                 cnt_nreq2++;
-                             }
-                         });
-                return cnt_nreq1 > cnt_nreq2;
-            });
             for (list<pair<unsigned int, unsigned int> >::iterator di =
                     Degree_V_c_aux.begin();
                  di != Degree_V_c_aux.end();

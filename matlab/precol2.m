@@ -1,7 +1,7 @@
 function [req,pot,add,F,num_col] = precol2(col,col_ord,ilu_ord,bls,el,MatrixName, alpha)
 com = './precol.out';
 pars=[' ',col,' ',col_ord,'_',ilu_ord];
-pars = [pars,' Best 1.0 BlockDiagonal ',bls,' ',el,' ',num2str(alpha),' '];
+pars = [pars,' Best 1.5 BlockDiagonal ',bls,' ',el,' ',num2str(alpha),' '];
 %pars = ' PartialD2RestrictedColumns SLO_Nat Best 1.0 BlockDiagonal 10 2';
 %[com,pars,MatrixName]
 [status,cmdout]=system([com,pars,MatrixName]);

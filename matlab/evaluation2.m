@@ -5,7 +5,7 @@ Fs1 = [];pots1=[];adds1 = [];
 Fs2 = [];pots2=[];adds2=[];
 cols = [];cols1=[];cols2=[];
 alpha=9;
-for i=1 : 2 :  40
+for i=1 : 1 :  100
     i
 %    [req,pot,add,F,c] = precol2('PartialD2RestrictedColumns','LFO','Nat',int2str(i),'2','ex33.mtx',1);
 %     Fs= [Fs nnz(F)];
@@ -38,12 +38,11 @@ shg, plot(els, pots1, '-g*', 'LineWidth',2)
 shg, plot(els, pots2, '-b*', 'LineWidth',2)
 xlabel('The block size parameter for sparsification','FontWeight','bold','FontSize',18);
 ylabel('The number of additionally required elements','FontWeight','bold','FontSize',18);
-h=legend('Greedy Coloring',...
-        ['New Coloring with \alpha = ', num2str(alpha+1)]);
+h=legend('Restricted Star Bicoloring',...
+        ['Restricted Star Bicoloring (new heuristic)']);
    set(h,'Location','Best',...
        'FontSize',22);
 
- 
  %figure,plot(els,cols,'-r*','LineWidth',2)
  figure,hold on
  shg, plot(els, cols1, '-g*', 'LineWidth',2)
@@ -51,11 +50,10 @@ h=legend('Greedy Coloring',...
  xlabel('The block size parameter for sparsification','FontWeight','bold','FontSize',18);
  ylabel('The number of colors','FontWeight','bold','FontSize',18);
  %set(gca,'yscale','log')
- h2=legend('Greedy Coloring',...
-         ['New Coloring with \alpha = ', num2str(alpha+1)]);
-     set(h2,'Location','Best',...
-         'FontSize',22);    
-
+ h=legend('Restricted Star Bicoloring',...
+        ['Restricted Star Bicoloring (new heuristic)']);
+   set(h,'Location','Best',...
+       'FontSize',22);
 
 % figure,plot(els, pots,'-r*','LineWidth',2)
 % hold on
