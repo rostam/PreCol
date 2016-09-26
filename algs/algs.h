@@ -8,6 +8,7 @@
 #include "ColAlg.h"
 #include "d2_color.h"
 #include "new_heuristic.h"
+#include "new_heuristic_diag.h"
 #include "star_bicoloring.h"
 #include "star_bicoloring_dynamic.h"
 #include "star_bicoloring_vertex_cover.h"
@@ -15,6 +16,7 @@
 
 static vector<string> algs = {"PartialD2ColoringColumns", "PartialD2ColoringRows",
                        "PartialD2RestrictedColumns","PartialD2RestrictedColumnsNonReq",
+                              "PartialD2RestrictedColumnsNonReqDiag",
                        "PartialD2RestrictedRows", "StarBicoloringScheme",
                        "StarBicoloringSchemeRestricted",
                        "StarBicoloringSchemeDynamicOrdering",
@@ -47,6 +49,8 @@ static shared_ptr<ColAlg> getAlg(int Mode2, const string &alg,
         return shared_ptr<ColAlg>(new D2Color(G_b, V_c, true));
     } else if (alg == "PartialD2RestrictedColumnsNonReq") {
         return shared_ptr<ColAlg>(new D2ColorNonReq(G_b, V_c, true, {{"alpha",alpha}}));
+    } else if (alg == "PartialD2RestrictedColumnsNonReqDiag") {
+        return shared_ptr<ColAlg>(new D2ColorNonReqDiag(G_b, V_c, true, {{"alpha",alpha}}));
     } else if (alg == "PartialD2ColoringRestrictedRows") {
         return shared_ptr<ColAlg>(new D2Color(G_b, V_r, true));
     } else if (alg == "StarBicoloringScheme") {
