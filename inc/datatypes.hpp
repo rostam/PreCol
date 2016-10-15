@@ -6,6 +6,8 @@
 #include "boost/cstdlib.hpp"
 #include <memory>
 #include <iostream>
+#include <fstream>
+#include <boost/dynamic_bitset.hpp>
 
 using namespace std;
 using boost::property;
@@ -27,6 +29,7 @@ typedef boost::graph_traits<Graph>::edge_iterator E_iter;
 typedef Graph::vertex_descriptor Ver;
 typedef Graph::edge_descriptor Edge;
 typedef boost::property_map<Graph, boost::edge_weight_t>::type edge_weight_type;
+typedef boost::dynamic_bitset<> dynbit;
 
 template<typename Lambda>
 static void for_each_v(Graph& g, Lambda func) {
@@ -57,5 +60,38 @@ static bool cmp_degrees(pair<int,pair<int,int> > t1, pair<int,pair<int,int> > t2
 }
 
 static bool mysymmetric = false;
+
+/**
+ * \brief Computes the fill-reducing ordering
+ *
+ * @param g the given simple graph which would be converted to a metis input format
+ * @param name the name of the file which is given to metis command
+ * @param met_ord the computed ordering in Metis
+ */
+static void getMetisOrdering(Graph& g, string name, vector<unsigned int>& met_ord) {
+    ofstream of;
+    of.open(name);
+    of << num_vertices(g) << " " << num_edges(g)/2 << endl;
+    for (int i = 0; i < num_vertices(g); i++) {
+        string tmp = "";
+        for (int j = 0; j < num_vertices(g); j++) {
+            if (edge(i, j, g).second) {
+                tmp += to_string(j + 1) + " ";
+            }
+        }
+        of << tmp << endl;
+    }
+    of.flush();
+    of.close();
+    system(("ndmetis "+name).c_str());
+    ifstream in((name + ".iperm").c_str());
+    while (in.good()) {
+        int i;
+        in >> i;
+        met_ord.push_back(i);
+    }
+    in.close();
+}
+
 
 #endif
