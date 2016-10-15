@@ -9,7 +9,7 @@
 class D2ColorOMP : public ColAlg {
 public:
     using ColAlg::ColAlg;
-    int color();
+    pair<int,int> color();
 };
 
 #endif

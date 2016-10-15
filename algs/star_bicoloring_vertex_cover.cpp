@@ -21,10 +21,12 @@
  * Output:
  * - G_b bipartite graph with colors given as weights vertex_color
  */
-int StarBicoloringVertexCover::color()
+pair<int,int> StarBicoloringVertexCover::color()
 {
-    if(restricted)
-        return color_restricted();
+    if(restricted) {
+        color_restricted();
+        return num_colors_sb(G_b);
+    }
     vector<int> IS;
     property_map<Graph, vertex_color_t>::type color = get(vertex_color, G_b);
     vector<int> num_colors;
@@ -256,8 +258,7 @@ int StarBicoloringVertexCover::color()
         put(color,*IS_it,0);
     }
 
-
-    return EXIT_SUCCESS;
+    return num_colors_sb(G_b);
 }
 
 int StarBicoloringVertexCover::color_restricted() {

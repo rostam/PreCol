@@ -55,6 +55,7 @@ int main(int argc, char* argv[]) {
     for_each_v(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
     //Add edges to graph
     mm.MtxToBipGraph(G_b);
+    
     //  graph2dot(G_b);
 //    cerr << "Matrix:_" << argv[1] << endl;
     rows = num_vertices(G_b) / 2;
@@ -73,17 +74,11 @@ int main(int argc, char* argv[]) {
 
     generate_order(alg, order, G_b, V_r, V_c);
     //Coloring of the vertices
-    getAlg(Mode2, alg, Mode, G_b, V_r, V_c, order, alpha) -> color();
-    int max_color_col = *max_element(V_c.begin(), V_c.end(), [&](Ver v1, Ver v2) {
-        return get(vertex_color, G_b, v1) < get(vertex_color, G_b, v2);
-    });
-    int max_color_row = *max_element(V_r.begin(), V_r.end(), [&](Ver v1, Ver v2) {
-        return get(vertex_color, G_b, v1) < get(vertex_color, G_b, v2);
-    });
-    cout << "Row Colors:_" << get(vertex_color, G_b, max_color_row) << endl;
-    cout << "Column Colors:_" << get(vertex_color, G_b, max_color_col) << endl;
-    cout << "All Colors:_" << get(vertex_color, G_b, max_color_row)
-                              + get(vertex_color, G_b, max_color_col) << endl;
+    pair<int,int> cols = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, order, alpha) -> color();
+
+    cout << "Row Colors:_" << cols.first << endl;
+    cout << "Column Colors:_" << cols.second << endl;
+    cout << "All Colors:_" << cols.first+cols.second << endl;
     end = clock();
     //all edges A - \Rinit
     vector<Edge> edge_ordering;

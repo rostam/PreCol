@@ -23,7 +23,7 @@ class D2Color : public ColAlg {
 public:
     using ColAlg::ColAlg;
 
-    int color() {
+    pair<int,int> color() {
         vector<unsigned int> V = V_c;
         property_map<Graph, vertex_color_t>::type color = get(vertex_color, G_b);
         vector<unsigned int> N_2;
@@ -58,7 +58,7 @@ public:
                 put(color, v, 0);
             }
         });
-        return EXIT_SUCCESS;
+        return num_colors_d2(G_b);
     }
 };
 

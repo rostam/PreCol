@@ -33,6 +33,25 @@ protected:
     shared_ptr<IndSet> ind_set;
     bool restricted;
     map<string, boost::any> pars;
+    pair<int,int> num_colors_d2(Graph& G_b) {
+        int max_color_col = *max_element(V_c.begin(), V_c.end(), [&](Ver v1, Ver v2) {
+            return get(vertex_color, G_b, v1) < get(vertex_color, G_b, v2);
+        });
+        for_each_v(G_b,[&](unsigned int v) {cout << get(vertex_color, G_b, v) << " ";});
+        return make_pair(0,get(vertex_color, G_b, max_color_col) + 1);
+    };
+
+    pair<int,int> num_colors_sb(Graph& G_b) {
+        int max_color_col = *max_element(V_c.begin(), V_c.end(), [&](Ver v1, Ver v2) {
+            return get(vertex_color, G_b, v1) < get(vertex_color, G_b, v2);
+        });
+        int max_color_row = *max_element(V_r.begin(), V_r.end(), [&](Ver v1, Ver v2) {
+            return get(vertex_color, G_b, v1) < get(vertex_color, G_b, v2);
+        });
+
+        return make_pair(get(vertex_color, G_b, max_color_row),
+                         get(vertex_color, G_b, max_color_col));
+    };
 public:
     ColAlg(Graph& G_b, vector<unsigned int> &V, bool restricted, map<string, any> pars = {})
             : restricted(restricted), V_c(V), G_b(G_b), pars(pars) { };
@@ -56,7 +75,7 @@ public:
         }
     };
 
-    virtual int color() = 0;
+    virtual pair<int,int> color() = 0;
     template <class T>
     T get_par(string name) {
         return  any_cast<T>(pars[name]);

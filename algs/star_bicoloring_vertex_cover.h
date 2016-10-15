@@ -11,7 +11,7 @@
 class StarBicoloringVertexCover : public ColAlg{
 public:
     using ColAlg::ColAlg;
-    int color();
+    pair<int,int> color();
     int color_restricted();
 };
 

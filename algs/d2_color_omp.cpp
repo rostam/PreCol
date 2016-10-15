@@ -80,7 +80,7 @@ int PartialD2ColoringRestrictedOMP3(Graph& G_b, const vector<unsigned int>& V) {
  * - G_b bipartite graph with colors as weights vertex_color
  */
 
-int D2ColorOMP::color() {
+pair<int,int> D2ColorOMP::color() {
     vector<unsigned int> V = V_c;
     for(int i=1;i<=1;i++) {
         omp_set_num_threads(i);
@@ -101,5 +101,6 @@ int D2ColorOMP::color() {
             });
         }
         cout << "Colors:_" << get(vertex_color,G_b,max_color_col) << endl;
+        return make_pair(get(vertex_color,G_b,max_color_col)+1, 0);
     }
 }
