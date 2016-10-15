@@ -55,7 +55,6 @@ int main(int argc, char* argv[]) {
     for_each_v(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
     //Add edges to graph
     mm.MtxToBipGraph(G_b);
-    
     //  graph2dot(G_b);
 //    cerr << "Matrix:_" << argv[1] << endl;
     rows = num_vertices(G_b) / 2;
