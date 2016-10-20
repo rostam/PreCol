@@ -37,7 +37,6 @@ protected:
         int max_color_col = *max_element(V_c.begin(), V_c.end(), [&](Ver v1, Ver v2) {
             return get(vertex_color, G_b, v1) < get(vertex_color, G_b, v2);
         });
-        for_each_v(G_b,[&](unsigned int v) {cout << get(vertex_color, G_b, v) << " ";});
         return make_pair(0,get(vertex_color, G_b, max_color_col) + 1);
     };
 

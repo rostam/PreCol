@@ -50,7 +50,7 @@ int PartialD2ColoringRestrictedOMP2(Graph& G_b, const vector<unsigned int>& V) {
     return EXIT_SUCCESS;
 }
 
-int PartialD2ColoringRestrictedOMP3(Graph& G_b, const vector<unsigned int>& V) {
+int D2ColorRestrictedOMP(Graph &G_b, const vector<unsigned int> &V) {
 #pragma omp parallel for
     for(int i=0;i<10;i++) {
         cout << i;
@@ -85,7 +85,7 @@ pair<int,int> D2ColorOMP::color() {
     for(int i=1;i<=1;i++) {
         omp_set_num_threads(i);
         tic();
-        PartialD2ColoringRestrictedOMP3(G_b, V);
+        D2ColorRestrictedOMP(G_b, V);
         double time_wall = toc();
         std::cout << "threads " << i << "\telapsed: " << time_wall << std::endl;
         int max_color_col = *max_element(vertices(G_b).first,vertices(G_b).second,[&](Ver v1, Ver v2){

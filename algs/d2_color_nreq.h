@@ -23,9 +23,6 @@ class D2ColorNonReq : public ColAlg {
     //int alpha = 0;
 public:
     using ColAlg::ColAlg;
-
-//    D2ColorNonReq(Graph &G_b, vector<unsigned int> &V, bool restricted, int alpha)
-//            : ColAlg(G_b, V, restricted),alpha(alpha) {}
     pair<int,int> color() {
         vector<unsigned int> V = V_c;
         property_map<Graph, vertex_color_t>::type color = get(vertex_color, G_b);
@@ -157,7 +154,7 @@ public:
         int max_color_col = *max_element(V_c.begin(), V_c.end(), [&](Ver v1, Ver v2) {
             return get(vertex_color, G_b, v1) < get(vertex_color, G_b, v2);
         });
-        return make_pair(max_color_col + 1,0);
+        return num_colors_d2(G_b);
     }
 };
 

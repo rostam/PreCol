@@ -7,8 +7,8 @@
 
 #include "ColAlg.h"
 #include "d2_color.h"
-#include "new_heuristic.h"
-#include "new_heuristic_diag.h"
+#include "d2_color_nreq.h"
+#include "d2_color_diag.h"
 #include "star_bicoloring_vertex_cover.h"
 #include "star_bicoloring_vertex_cover_nreq.h"
 

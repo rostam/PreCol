@@ -58,15 +58,7 @@ int main(int argc, char* argv[]) {
     mm.MtxToBipGraph(G_b);
     Graph G_c;
     G_bToG_c(G_b,V_c,G_c);
-    cerr <<"salam " << num_vertices(G_c) << " " << V_c.size();
-    vector<unsigned int> met_ord;
-    getMetisOrdering(G_c,"graph",met_ord);
-    cerr << endl << "satt" << met_ord.size();
-    set<dynbit> F;
-//    gen_ind_set(G_c,[&](dynbit ind1) {
-//        F.insert(ind1);
-//    });
-    return 0;
+
     //  graph2dot(G_b);
 //    cerr << "Matrix:_" << argv[1] << endl;
     rows = num_vertices(G_b) / 2;
