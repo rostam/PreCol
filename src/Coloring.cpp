@@ -93,13 +93,13 @@ int main(int argc, char* argv[]) {
     //int pot = potentialRequiredNonzerosD2(G_b, edge_ordering);
     int pot = potentialRequiredNonzerosSB(G_b, edge_ordering);
     matrix_market mm_p(G_b,"p",V_c.size(),V_r.size(),true);
-    mm_p.writeToFile((char *) "matlab/pot.mtx");
+    mm_p.writeToFile((char *) "pot.mtx");
 
     SILU silu(G_b, pre_ord);
     int fillin = silu.getFillinMinDeg(el);
     
     matrix_market mm_f(silu.G_ilu,"f",V_c.size(),V_r.size(),false);
-    mm_f.writeToFile((char *) "matlab/F.mtx");
+    mm_f.writeToFile((char *) "F.mtx");
 
     Graph G_b2(mm.nrows()*2);
     Graph G_b3(mm.nrows()*2);
@@ -154,7 +154,7 @@ int main(int argc, char* argv[]) {
     } while(num_addReqElements_cur>0);
 
     matrix_market mm_NP(G_b3,"np",V_c.size(),V_r.size(),true);
-    mm_NP.writeToFile((char *) "matlab/req_f.mtx");
+    mm_NP.writeToFile((char *) "req_f.mtx");
 
 //    cout << "additionally weak:  " << num_edges(G_b3) << " "
 //         << addReqElementsWeak(G_b3,edge_ordering3) << " "
@@ -163,18 +163,18 @@ int main(int argc, char* argv[]) {
 //    vector<pair<int,int>> ret = addReqElementsMat(mm_p, mm_NP);
 //    cout << "Additionally Matrix Version:" << ret.size() << endl;
 //    matrix_market mm_amat(ret,V_c.size(),V_c.size(),false);
-//    mm_amat.writeToFile((char *) "matlab/add_mat.mtx");
+//    mm_amat.writeToFile((char *) "add_mat.mtx");
     int add = num_addReqElements;
 //    int add = addReqElements(G_b, edge_ordering2);
 
     matrix_market mm_a(G_b2,"a",V_c.size(),V_r.size(),true);
-    mm_a.writeToFile((char *) "matlab/add.mtx");
+    mm_a.writeToFile((char *) "add.mtx");
 
     matrix_market mm_a2(G_b3,"a",V_c.size(),V_r.size(),true);
-    mm_a2.writeToFile((char *) "matlab/add2.mtx");
+    mm_a2.writeToFile((char *) "add2.mtx");
 
     matrix_market mm_r(G_b,"r",V_c.size(),V_r.size(),true );
-    mm_r.writeToFile((char *) "matlab/req.mtx");
+    mm_r.writeToFile((char *) "req.mtx");
     //graph2dot(G_ilu);
     cout << "Potentially Required:_" << pot << endl;
     cout << "Additionally Required:_" << add  <<  " " << endl;
