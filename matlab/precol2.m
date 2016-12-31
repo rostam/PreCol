@@ -1,18 +1,19 @@
-function [req,pot,add,F,num_col] = precol2(col,col_ord,ilu_ord,bls,el,MatrixName, alpha)
-com = './precol.out';
-pars=[' ',col,' ',col_ord,'_',ilu_ord];
-pars = [pars,' Best 1.5 BlockDiagonal ',bls,' ',el,' ',num2str(alpha),' '];
-%pars = ' PartialD2RestrictedColumns SLO_Nat Best 1.0 BlockDiagonal 10 2';
-%[com,pars,MatrixName]
-[status,cmdout]=system([com,pars,MatrixName]);
-%cmdout
-pot = mmread('matlab/pot.mtx');
+function [req,pot,add,F,num_col] = precol2(c,co,io,bl,el,m,a)
+% function  [req,pot,add,F,num_col] = precol5(c,co,io,bl,el,m,a)
+%      c coloring algorithm, co coloring order, io ilu ordering
+%      bl block size, el ilu level parameter, m matrix, a alpha
+
+com = '/home/rostam/.CLion2016.2/system/cmake/generated/precol-3be4ce3/3be4ce3/Release/precol';
+pars=[' ',c,' ',co,'_',io];
+pars = [pars,' Best 1.5 BlockDiagonal ',bl,' ',el,' ',num2str(a),' '];
+[status,cmdout]=system([com,pars,m]);
+pot = mmread('pot.mtx');
 pot = spones(pot);
-add = mmread('matlab/add.mtx');
+add = mmread('add.mtx');
 add = spones(add);
-req = mmread('matlab/req.mtx');
+req = mmread('req.mtx');
 req = spones(req);
-F = mmread('matlab/F.mtx');
+F = mmread('F.mtx');
 F = spones(F);
 num_col = str2num(cmdout(findstr(cmdout,'Column Colors:_')+15:findstr(cmdout,'Column Colors:_')+15+1));
 end

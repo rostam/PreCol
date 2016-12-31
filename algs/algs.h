@@ -12,13 +12,13 @@
 #include "star_bicoloring_vertex_cover.h"
 #include "star_bicoloring_vertex_cover_nreq.h"
 
-static vector<string> algs = {"PartialD2ColoringColumns", "PartialD2ColoringRows",
-                       "PartialD2RestrictedColumns","PartialD2RestrictedColumnsNonReq",
+static vector<string> algs = {"D2Columns", "D2Rows",
+                       "D2RestrictedColumns","D2RestrictedColumnsNonReq",
                               "PartialD2RestrictedColumnsNonReqDiag",
-                       "PartialD2RestrictedRows",
-                       "StarBicoloringSchemeCombinedVertexCoverColoring",
-                       "StarBicoloringSchemeCombinedVertexCoverColoringRestricted",
-                       "StarBicoloringSchemeCombinedVertexCoverColoringRestrictedNonReq"};
+                       "D2RestrictedRows",
+                       "SBSchemeCombinedVertexCoverColoring",
+                       "SBSchemeCombinedVertexCoverColoringRestricted",
+                       "SBSchemeCombinedVertexCoverColoringRestrictedNonReq"};
 
 /**
  * \brief returns a pointer to the correct coloring algorithm
@@ -36,24 +36,24 @@ static shared_ptr<ColAlg> getAlg(int Mode2, const string &alg,
                                  int Mode, Graph &G_b, vector<unsigned int> &V_r,
                                  vector<unsigned int> &V_c,
                                  shared_ptr<Ordering> order, int alpha) {
-    if (alg == "PartialD2ColoringCols") {
+    if (alg == "D2ColoringCols") {
         return shared_ptr<ColAlg>(new D2Color(G_b, V_c, false));
-    } else if (alg == "PartialD2ColoringRows") {
+    } else if (alg == "D2Rows") {
         return shared_ptr<ColAlg>(new D2Color(G_b, V_r, false));
-    } else if (alg == "PartialD2RestrictedColumns") {
+    } else if (alg == "D2RestrictedColumns") {
         return shared_ptr<ColAlg>(new D2Color(G_b, V_c, true));
-    } else if (alg == "PartialD2RestrictedColumnsNonReq") {
+    } else if (alg == "D2RestrictedColumnsNonReq") {
         return shared_ptr<ColAlg>(new D2ColorNonReq(G_b, V_c, true, {{"alpha",alpha}}));
-    } else if (alg == "PartialD2RestrictedColumnsNonReqDiag") {
+    } else if (alg == "D2RestrictedColumnsNonReqDiag") {
         return shared_ptr<ColAlg>(new D2ColorNonReqDiag(G_b, V_c, true, {{"alpha",alpha}}));
-    } else if (alg == "PartialD2ColoringRestrictedRows") {
+    } else if (alg == "D2RestrictedRows") {
         return shared_ptr<ColAlg>(new D2Color(G_b, V_r, true));
-    } else if (alg == "StarBicoloringSchemeCombinedVertexCoverColoring") {
+    } else if (alg == "SBSchemeCombinedVertexCoverColoring") {
         return shared_ptr<ColAlg>(new StarBicoloringVertexCover(G_b, V_r, V_c,
                false, {{"Mode", Mode},{"Mode2",Mode2}}));
-    } else if (alg == "StarBicoloringSchemeCombinedVertexCoverColoringRestricted") {
+    } else if (alg == "SBSchemeCombinedVertexCoverColoringRestricted") {
         return shared_ptr<ColAlg>(new StarBicoloringVertexCover(G_b, V_r, V_c, true, {{"Mode", Mode},{"Mode2",Mode2}}));
-    } else if (alg == "StarBicoloringSchemeCombinedVertexCoverColoringRestrictedNonReq") {
+    } else if (alg == "SBSchemeCombinedVertexCoverColoringRestrictedNonReq") {
         return shared_ptr<ColAlg>(new StarBicoloringVertexCoverNonReq(G_b, V_r, V_c, true,
                                    {{"Mode", Mode},{"Mode2",Mode2},{"alpha",alpha}}));
     }
