@@ -23,9 +23,7 @@ for i = 1 : 70
   cols1 = [cols1 c1];
   
 end
-%pots
-%adds
-%cols
+% 
 % figure, hold on
 % shg, plot(els, pots, '-g*', 'LineWidth',2)
 % shg, plot(els, pots1, '-b*', 'LineWidth',2)
@@ -34,8 +32,8 @@ end
 % h=legend('Algorithm 3.1',...
 %          'Algorithm 3.2');
 %    set(h,'Location','Best',...
-%        'FontSize',22);
-%    
+%         'FontSize',22);
+   
 % figure, hold on
 % shg, plot(els, adds, '-g*', 'LineWidth',2)
 % shg, plot(els, adds1, '-b*', 'LineWidth',2)
@@ -46,4 +44,13 @@ end
 %    set(h,'Location','Best',...
 %        'FontSize',22);
 
+figure, hold on
+shg, plot(els, cols, '-g*', 'LineWidth',2)
+shg, plot(els, cols1, '-b*', 'LineWidth',2)
+xlabel('The block size','FontWeight','bold','FontSize',18);
+ylabel('The number of colors','FontWeight','bold','FontSize',18);
+h=legend('Algorithm 3.1',...
+         'Algorithm 3.2');
+   set(h,'Location','Best',...
+       'FontSize',22);
 
