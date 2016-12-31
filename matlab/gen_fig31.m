@@ -43,14 +43,14 @@ end
 %          'Algorithm 3.2');
 %    set(h,'Location','Best',...
 %        'FontSize',22);
-
-figure, hold on
-shg, plot(els, cols, '-g*', 'LineWidth',2)
-shg, plot(els, cols1, '-b*', 'LineWidth',2)
-xlabel('The block size','FontWeight','bold','FontSize',18);
-ylabel('The number of colors','FontWeight','bold','FontSize',18);
-h=legend('Algorithm 3.1',...
-         'Algorithm 3.2');
-   set(h,'Location','Best',...
-       'FontSize',22);
+% 
+% figure, hold on
+% shg, plot(els, cols, '-g*', 'LineWidth',2)
+% shg, plot(els, cols1, '-b*', 'LineWidth',2)
+% xlabel('The block size','FontWeight','bold','FontSize',18);
+% ylabel('The number of colors','FontWeight','bold','FontSize',18);
+% h=legend('Algorithm 3.1',...
+%          'Algorithm 3.2');
+%    set(h,'Location','Best',...
+%        'FontSize',22);
 

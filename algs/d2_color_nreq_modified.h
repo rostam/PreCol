@@ -2,8 +2,8 @@
 // Created by rostam on 20.07.16.
 //
 
-#ifndef PRECOL_NEWHEURISTIC
-#define PRECOL_NEWHEURISTIC
+#ifndef PRECOL_D2ColorNonReqBalanced
+#define PRECOL_D2ColorNonReqBalanced
 
 #include "ColAlg.h"
 /**
@@ -19,7 +19,7 @@
  * Output:
  * - G_b bipartite graph with colors as weights vertex_color
  */
-class D2ColorNonReq : public ColAlg {
+class D2ColorNonReqBalanced : public ColAlg {
     //int alpha = 0;
 public:
     using ColAlg::ColAlg;
