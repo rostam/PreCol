@@ -137,11 +137,15 @@ public:
                         }
                     });
                     if (min_pos != -1) {
-//                        put(color, min_pos, distance(forbiddenColors.begin(), result));
+                        if (boost::any_cast<int>(pars["alpha"]) == -1) {
+                            put(color, min_pos, distance(forbiddenColors.begin(), result));
+                        }
                         //put(color, max_pos, distance(forbiddenColors.begin(), result));
                     }
                     if (max_nreq_pos != -1) {
-                        put(color, max_nreq_pos, distance(forbiddenColors.begin(), result));
+                        if (boost::any_cast<int>(pars["alpha"]) != -1) {
+                            put(color, max_nreq_pos, distance(forbiddenColors.begin(), result));
+                        }
                     }
                 } else {
                     put(color, v, 0);
