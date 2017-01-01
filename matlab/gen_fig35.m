@@ -9,9 +9,10 @@ mats = {'steam1.mtx','steam2.mtx','nos3.mtx','ex7.mtx', ...
  'ex33.mtx','crystm01.mtx', 'coater1.mtx','pesa.mtx'};
 
 for i = 1 : 70
+  i
   els = [els i];
-  [req,pot,add,F,c] = precol2('D2RestrictedColumnsNonReq','SLO','Nat',num2str(i),'2','ex33.mtx',-1);
-  [req1,pot1,add1,F1,c1] = precol2('D2RestrictedColumnsNonReqBalanced','SLO','Nat',num2str(i),'2','ex33.mtx',-1);
+  [req,pot,add,F,c] = precol2('D2RestrictedColumnsNonReq','LFO','Nat',num2str(i),'2','ex33.mtx',-1);
+  [req1,pot1,add1,F1,c1] = precol2('D2RestrictedColumnsNonReqBalanced','LFO','Nat',num2str(i),'2','ex33.mtx',-1);
   Fs= [Fs nnz(F)];
   pots=[pots nnz(pot)];
   adds = [adds nnz(add)];
