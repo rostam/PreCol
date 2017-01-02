@@ -40,8 +40,8 @@ shg, plot(els, adds, '-g*', 'LineWidth',2)
 shg, plot(els, adds1, '-b*', 'LineWidth',2)
 xlabel('The block size','FontWeight','bold','FontSize',18);
 ylabel('The number of additionally required elements','FontWeight','bold','FontSize',18);
-h=legend('Algorithm 3.1',...
-         'Algorithm 3.2');
+h=legend('Algorithm 3.2',...
+         'Algorithm 3.4');
    set(h,'Location','Best',...
        'FontSize',22);
 
