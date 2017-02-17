@@ -13,7 +13,8 @@ DirName = 'figs';
 FontSize = 14;
 B = load('co2_jac_first_iteration.mat');
 A = B.jac; %mmread(MatrixName);
-[req,pot,add,add2,F] = precol4(MatrixName);
+[req,pot,add,F,c] = precol2('D2RestrictedColumns','Nat','Nat','15','2','result.mtx',-1);
+[req2,pot2,add2,F2,c2] = precol2('D2RestrictedColumnsNonReq','Nat','Nat','15','2','result.mtx',-1);
 b = sum(A,2);
 
 [L_block,U_block] = ILUR(req.*A,req+F);
@@ -32,6 +33,7 @@ disp('Solve with block + add PC')
 disp('Solve with block PC')
 [x_orig,residual_block] = SolveLinearSystem(A,b,restart,tol,maxit,method,L_block,U_block);
 
+set(0,'defaulttextinterpreter','latex')
  figure,shg,semilogy(residual,'-r','LineWidth',2)
     hold on
     shg,semilogy(residual_block,'-b','LineWidth',2)
@@ -39,18 +41,20 @@ disp('Solve with block PC')
     shg,semilogy(residual_block_add2,'-g','LineWidth',2)
     axis tight
     
-    xlabel('Matrix Vector Product n',...
+    xlabel('Matrix-vector products',...
         'FontSize',FontSize)
-    ylabel('Residual Norm  || r_n ||_2',...
+    ylabel('Residual norm  $\| r_n \|_2$',...
         'FontSize',FontSize)
-    h=legend('Without Preconditioning',...
-        ['ILU(',num2str(el),'), Init'],...
-        ['ILU(',num2str(el),'), Init & Add (Greedy Coloring)'],...
-        ['ILU(',num2str(el),'), Init & Add (New Coloring)']);
+    h=legend('Without preconditioning',...
+        ['ILU(',num2str(el),'), $R_i$'],...
+        ['ILU(',num2str(el),'), $R_i\cup R_a$ (Algorithm 3.1)'],...
+        ['ILU(',num2str(el),'), $R_i\cup R_a$ (Algorithm 3.5)']);
     set(h,'Location','Best',...
         'FontSize',FontSize);
+    set(h,'Interpreter','Latex');
     %title(['Convergence History of ', ...
     %    upper(method), ' for ', MatrixName],...
     %s    'FontSize',FontSize)
     set(gca,'FontSize',FontSize)
+    ylim(gca,[10^-14 10^2])
     %myprint('convergence.png',MatrixName,DirName,h);

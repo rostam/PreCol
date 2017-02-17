@@ -15,8 +15,8 @@
 
 static vector<string> algs = {"D2Columns", "D2Rows",
                        "D2RestrictedColumns","D2RestrictedColumnsNonReq",
-                              "PartialD2RestrictedColumnsNonReqDiag",
-                              "D2RestrictedColumnsNonReqBalanced",
+                       "PartialD2RestrictedColumnsNonReqDiag",
+                       "D2RestrictedColumnsNonReqBalanced",
                        "D2RestrictedRows",
                        "SBSchemeCombinedVertexCoverColoring",
                        "SBSchemeCombinedVertexCoverColoringRestricted",
