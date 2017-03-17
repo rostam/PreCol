@@ -31,7 +31,7 @@
 % xlabel('The block size','FontWeight','bold','FontSize',18);
 % ylabel('The number of additionally required elements','FontWeight','bold','FontSize',18);
 % h=legend('Algorithm 3.6',...
-%          'Our new star bicoloring');
+%          'Algorithm 3.7');
 %    set(h,'Location','Best',...
 %        'FontSize',22);
 
@@ -41,7 +41,7 @@ shg, plot(els, cols1, '-b*', 'LineWidth',2)
 xlabel('The block size','FontWeight','bold','FontSize',18);
 ylabel('The number of colors','FontWeight','bold','FontSize',18);
 h=legend('Algorithm 3.6',...
-         'Our new star bicoloring');
+         'Algorithm 3.7');
    set(h,'Location','Best',...
        'FontSize',22);
 
