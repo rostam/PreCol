@@ -7,3 +7,7 @@ silu: The symbolic ILU factorization
 src: Some helper functions
 CMakeLists.txt: The cmake file for the project
 
+
+Needed Libraries:
+$ sudo apt-get install build-essentials libboost-all-dev libmetis-dev metis
+
