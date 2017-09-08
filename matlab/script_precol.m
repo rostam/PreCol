@@ -1,6 +1,6 @@
 close all;
 
-MatrixName= 'result.mtx';
+MatrixName= 'can_96.mtx';
 method ='bicgstab';
 %method ='gmres';
 el = 2;
@@ -11,10 +11,11 @@ maxit = 100;
 
 DirName = 'figs';
 FontSize = 14;
-B = load('co2_jac_first_iteration.mat');
-A = B.jac; %mmread(MatrixName);
-[req,pot,add,F,c] = precol2('D2RestrictedColumns','Nat','Nat','15','2','result.mtx',-1);
-[req2,pot2,add2,F2,c2] = precol2('D2RestrictedColumnsNonReq','Nat','Nat','15','2','result.mtx',-1);
+%B = load('co2_jac_first_iteration.mat');
+%A = B.jac; %mmread(MatrixName);
+A = mmread(MatrixName);
+[req,pot,add,F,c] = precol2('D2RestrictedColumns','Nat','Nat','15','2','can_96.mtx',-1);
+[req2,pot2,add2,F2,c2] = precol2('D2RestrictedColumnsNonReq','Nat','Nat','15','2','can_96.mtx',-1);
 b = sum(A,2);
 
 [L_block,U_block] = ILUR(req.*A,req+F);

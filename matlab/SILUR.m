@@ -1,4 +1,15 @@
-e
+function [F] = SILUR(A,el)
+%SILUC  Computes an ILU(el) decomposition of an n x n matrix A symbolically
+%        S_ymbolic
+%        I_ncomplete
+%        LU decompostion
+%        Row-oriented classical form
+%
+% Output:
+% F matrix representing the nonzero pattern of the filled n x n matrix
+%    with F(i,j) = 1 iff there is a nonzero in the filled matrix.
+
+% 08/30/10 by M. Buecker, RWTH Aachen University
 
 % Check on inputs
 if nargin~=2
