@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.2.2)
 project(precol)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -fopenmp -lmetis")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -fopenmp  -D_GLIBCXX_PARALLEL")
 include_directories(inc/)
