@@ -7,6 +7,7 @@ The heuristics for Rostami's dissertation
 
 
 Needed Libraries:
+Boost library and 
 ```
 $ sudo apt-get install build-essentials libboost-all-dev libmetis-dev metis
 ```
