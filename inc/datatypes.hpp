@@ -68,7 +68,7 @@ static bool mysymmetric = false;
  * @param name the name of the file which is given to metis command
  * @param met_ord the computed ordering in Metis
  */
-static void getMetisOrdering(Graph& g, string name, vector<unsigned int>& met_ord) {
+static void getMetisOrdering(Graph& g, const string& name, vector<unsigned int>& met_ord) {
     ofstream of;
     of.open(name);
     of << num_vertices(g) << " " << num_edges(g)/2 << endl;

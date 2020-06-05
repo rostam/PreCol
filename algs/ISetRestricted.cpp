@@ -97,7 +97,7 @@ vector<int> ISetRestricted::compute() {
             graph_traits<Graph>::adjacency_iterator n_1, n_1_end;
             for (tie(n_1, n_1_end) = adjacent_vertices(v_r, G_b); n_1 != n_1_end; n_1++) {
 
-                bool is_deleted = 0;
+                bool is_deleted = false;
 
                 //E_1 -> E_3
                 //Emulate reverse_iterator because of erase-operation
@@ -109,7 +109,7 @@ vector<int> ISetRestricted::compute() {
 
                         if (!is_deleted) {
                             V_c.erase(find(V_c.begin(), V_c.end(), *n_1));
-                            is_deleted++;
+                            is_deleted = true;
                         }
 
                         E_3.push_back(*e);
@@ -141,7 +141,7 @@ vector<int> ISetRestricted::compute() {
             graph_traits<Graph>::adjacency_iterator n_1, n_1_end;
             for (tie(n_1, n_1_end) = adjacent_vertices(v_c, G_b); n_1 != n_1_end; n_1++) {
 
-                bool is_deleted = 0;
+                bool is_deleted = false;
 
                 //E_1 -> E_2
                 //Emulate reverse_iterator because of erase-operation
@@ -154,7 +154,7 @@ vector<int> ISetRestricted::compute() {
                         //Delete adjacent vertices
                         if (!is_deleted) {
                             V_r.erase(find(V_r.begin(), V_r.end(), *n_1));
-                            is_deleted++;
+                            is_deleted = true;
                         }
 
                         E_2.push_back(*e);

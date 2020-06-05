@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
     int rows = 0;
     int entries = 0;
     auto input = get_input_pars(argc, argv);
-    if(get<0>(input) == "" ) return -1;
+    if(get<0>(input).empty() ) return -1;
     //tuple<string,shared_ptr<Ordering>,string,int,string,int, int,string>
     string alg = get<0>(input);
     shared_ptr<Ordering> order = get<1>(input);

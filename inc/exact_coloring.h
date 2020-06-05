@@ -31,7 +31,7 @@ static void gen_ind_set(Graph g,Lambda func) {
     power_set(num_vertices(g), [&](dynbit vi) {
         if (is_indep_set(g, vi)) {
             cerr << vi << endl;
-        //    func(vi);
+            func(vi);
         }
     });
 }
