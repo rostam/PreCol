@@ -19,7 +19,7 @@
 /*! \mainpage PreCol - A Brief Description.
  * This software considers three computation ingredients needed in the field of
  * computational science: sparsification of a matrix, preconditioning, and coloring.
- \image html logo.png
+ \image html image.png
  \section Extension
  \section Downloads
  <A HREF="precol.out"> PreCol for Linux</A><BR/>
