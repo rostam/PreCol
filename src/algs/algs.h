@@ -14,7 +14,8 @@
 #include "star_bicoloring_vertex_cover_nreq.h"
 
 static vector<string> algs = {"D2Columns", "D2Rows",
-                       "D2RestrictedColumns","D2RestrictedColumnsNonReq",
+                       "D2RestrictedColumns", "D2RestrictedRows",
+                       "D2RestrictedColumnsNonReq",
                        "PartialD2RestrictedColumnsNonReqDiag",
                        "D2RestrictedColumnsNonReqBalanced",
                        "D2RestrictedRows",
@@ -44,6 +45,8 @@ static shared_ptr<ColAlg> getAlg(int Mode2, const string &alg,
         return shared_ptr<ColAlg>(new D2Color(G_b, V_r, false));
     } else if (alg == "D2RestrictedColumns") {
         return shared_ptr<ColAlg>(new D2Color(G_b, V_c, true));
+    } else if (alg == "D2RestrictedRows") {
+        return shared_ptr<ColAlg>(new D2Color(G_b, V_r, true));
     } else if (alg == "D2RestrictedColumnsNonReq") {
         return shared_ptr<ColAlg>(new D2ColorNonReq(G_b, V_c, true, {{"alpha",alpha}}));
     } else if (alg == "D2RestrictedColumnsNonReqBalanced") {
