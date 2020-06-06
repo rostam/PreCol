@@ -36,26 +36,28 @@ namespace precol {
     typedef boost::property_map<Graph, boost::vertex_index_t>::const_type vertex_index_map;
 
     /**
+     * \brief iterate on the vertices of graph
      *
      * @tparam Lambda
      * @param g
      * @param func
      */
     template<typename Lambda>
-    static void for_each_v(Graph &g, Lambda func) {
+    void for_each_v(Graph &g, Lambda func) {
         V_iter vi, vi_end;
         tie(vi, vi_end) = vertices(g);
         std::for_each(vi, vi_end, func);
     }
 
     /**
+     * \brief iterate on the edges of graph
      *
      * @tparam Lambda
      * @param g
      * @param func
      */
     template<typename Lambda>
-    static void for_each_e(Graph &g, Lambda func) {
+    void for_each_e(Graph &g, Lambda func) {
         E_iter ei, ei_end;
         tie(ei, ei_end) = edges(g);
         std::for_each(ei, ei_end, func);
@@ -115,7 +117,8 @@ namespace precol {
     }
 
     /**
-    * for each neighbor of v
+    * \brief iterate on the neighbors of v
+     *
     * @tparam Lambda
     * @param g
     * @param v
@@ -128,7 +131,8 @@ namespace precol {
     }
 
     /**
-     * for each distance-2 neighbor of v
+     * \brief iterate on the distance-2 neighbors of v
+     *
      * @tparam Lambda
      * @param g
      * @param v
