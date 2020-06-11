@@ -2,7 +2,7 @@
 
 ![PreCol](https://github.com/rostam/precol/blob/master/doc/images/image.png)
 
-The heuristics for [Rostami's dissertation] (https://cuvillier.de/en/shop/publications/7637-combining-partial-jacobian-computation-and-preconditioning-new-heuristics-educational-modules-and-applications)
+The heuristics for [Rostami's dissertation](https://cuvillier.de/en/shop/publications/7637-combining-partial-jacobian-computation-and-preconditioning-new-heuristics-educational-modules-and-applications)
 
 - doc: The doxygen config file, the generated html files are available under https://rostam.github.io/precol/index.html
 - matlab: Matlab scripts to compute the diagrams in Rostami's dissertation
