@@ -25,6 +25,7 @@
 # The default value is: UTF-8.
 
 DOXYFILE_ENCODING      = UTF-8
+Ordering = ....
 
 # The PROJECT_NAME tag is a single word (or a sequence of words surrounded by
 # double-quotes, unless you are using Doxywizard) that should identify the
