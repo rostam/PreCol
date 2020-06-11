@@ -1,3 +1,7 @@
+# PreCol
+
+![PreCol](https://github.com/rostam/precol/blob/master/doc/images/image.png)
+
 The heuristics for Rostami's dissertation
 
 - doc: The doxygen config file, the generated html files are available under https://rostam.github.io/precol/index.html
