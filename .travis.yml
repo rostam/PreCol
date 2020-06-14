@@ -1,8 +1,7 @@
 language: cpp
 
 install:
-  sudo apt-get install libboost-dev
-  sudo apt install libmetis-dev
+  sudo apt-get install libboost-dev libmetis-dev
 
 script:
   - cmake .
