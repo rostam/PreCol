@@ -2,3 +2,7 @@ language: cpp
 
 install:
   sudo apt-get install libboost-dev
+
+script:
+  - cmake .
+  - cmake --build .
