@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/rostam/PreCol.svg?branch=master)](https://travis-ci.org/rostam/PreCol)
 # PreCol
 
 ![PreCol](https://github.com/rostam/precol/blob/master/doc/images/image.png)
