@@ -24,13 +24,62 @@
 #include "exact_coloring.h"
 
 BOOST_AUTO_TEST_SUITE(GeneratorsTestSuite)
-    BOOST_AUTO_TEST_CASE(ColoringTest) {
-        std::string algo = "D2Columns";
-        std::string col_ord_c = "LFO";
+    BOOST_AUTO_TEST_CASE(DummyTest) {
+        std::string alg = "D2Columns";
+        std::string col_ord = "LFO";
+        shared_ptr<Ordering> col_ord_c = get_color_ordering(col_ord);
         std::string pre_ord = "Nat";
-        std::string filename = "../mats/arrow_shaped.mtx";
-        std::string sparsify = "BlockDiagonal";
+        std::string filename = "mats/arrow-shaped.mtx";
+        std::string sparsify = "Full";
+        int blockSize = 30;
+        int el = 2;
+        int Mode = 0;
+        int Mode2 = 0;
+        int alpha = 10;
         auto input = make_tuple(alg,col_ord_c,pre_ord,Mode,Mode2,sparsify, blockSize, el,filename,alpha);
+        matrix_market mm(filename.c_str());
+        mysymmetric = mm.issym();
+        Graph G_b(2 * mm.nrows());
+        vector<unsigned int> V_r, V_c;
+        //Add vertices to graph
+        for_each_v(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
+        BOOST_CHECK_EQUAL(20,20);
+    }
+    BOOST_AUTO_TEST_CASE(ColoringTest) {
+        std::string alg = "D2Columns";
+        std::string col_ord = "LFO";
+        shared_ptr<Ordering> col_ord_c = get_color_ordering(col_ord);
+        std::string pre_ord = "Nat";
+        std::string filename = "mats/arrow-shaped.mtx";
+        std::string sparsify = "Full";
+        int blockSize = 30;
+        int el = 2;
+        int Mode = 0;
+        int Mode2 = 0;
+        int alpha = 10;
+        auto input = make_tuple(alg,col_ord_c,pre_ord,Mode,Mode2,sparsify, blockSize, el,filename,alpha);
+        matrix_market mm(filename.c_str());
+        mysymmetric = mm.issym();
+        Graph G_b(2 * mm.nrows());
+        vector<unsigned int> V_r, V_c;
+        //Add vertices to graph
+        for_each_v(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
+        //Add edges to graph
+        mm.MtxToBipGraph(G_b);
+        int rows = num_vertices(G_b) / 2;
+        int entries = num_edges(G_b);
+        cout << "Rows:_" << rows << endl;
+        cout << "Entries:_" << entries << endl;
+        cout << "alg" << alg << endl;
+        shared_ptr<ColAlg> ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
+        pair<int,int> cols = ret -> color();
+//        pair<int,int> cols = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha) -> color();
+//
+        cout << "Row Colors:_" << cols.first << endl;
+        cout << "Column Colors:_" << cols.second << endl;
+        cout << "All Colors:_" << cols.first+cols.second << endl;
+        BOOST_CHECK_EQUAL(cols.first,20);
+//        BOOST_CHECK_EQUAL(20,20);
 //        string alg = get<0>(input);
 //        shared_ptr<Ordering> order = get<1>(input);
 //        string pre_ord = get<2>(input);
@@ -41,5 +90,6 @@ BOOST_AUTO_TEST_SUITE(GeneratorsTestSuite)
 //        int el = get<7>(input);
 //        string filename = get<8>(input);
 //        int alpha = get<9>(input);
+
     }
 BOOST_AUTO_TEST_SUITE_END()

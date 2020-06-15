@@ -93,9 +93,9 @@ So, the user needs to specify different
 options for coloring algorithms, orderings, the block size, and so on.
 These options can be entered directly in the terminal.
 An example is as follows.
-\begin{lstlisting}
+```
 precol PartialD2RestrictedColumns LFO_Nat BlockDiagonal 30 2 ex33.mtx
-\end{lstlisting}
+```
 in which the \textit{PartialD2RestrictedColumns} is the coloring algorithm,
 the string \textit{LFO\_Nat} containing
 two strings \textit{LFO} and \textit{Nat} are for the coloring and ILU orderings.

@@ -39,7 +39,7 @@ static shared_ptr<ColAlg> getAlg(int Mode2, const string &alg,
                                  int Mode, Graph &G_b, vector<unsigned int> &V_r,
                                  vector<unsigned int> &V_c,
                                  shared_ptr<Ordering> order, int alpha) {
-    if (alg == "D2ColoringCols") {
+    if (alg == "D2Columns") {
         return shared_ptr<ColAlg>(new D2Color(G_b, V_c, false));
     } else if (alg == "D2Rows") {
         return shared_ptr<ColAlg>(new D2Color(G_b, V_r, false));
@@ -63,6 +63,8 @@ static shared_ptr<ColAlg> getAlg(int Mode2, const string &alg,
     } else if (alg == "SBSchemeCombinedVertexCoverColoringRestrictedNonReq") {
         return shared_ptr<ColAlg>(new StarBicoloringVertexCoverNonReq(G_b, V_r, V_c, true,
                                    {{"Mode", Mode},{"Mode2",Mode2},{"alpha",alpha}}));
+    } else {
+        return shared_ptr<ColAlg>(new D2Color(G_b, V_c, false));
     }
 }
 
