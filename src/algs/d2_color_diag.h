@@ -79,10 +79,7 @@ public:
                 else put(color, target(e,G_b), col2);
             }
         });
-        int max_color_col = *max_element(V_c.begin(), V_c.end(), [&](Ver v1, Ver v2) {
-            return get(vertex_color, G_b, v1) < get(vertex_color, G_b, v2);
-        });
-        return make_pair(max_color_col + 1,0);
+        return num_colors_bipartite(ColumnColoring);
     }
 };
 

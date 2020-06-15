@@ -109,10 +109,7 @@ public:
                 }
             }
         });
-        int max_color_col = *max_element(V_c.begin(), V_c.end(), [&](Ver v1, Ver v2) {
-            return get(vertex_color, G_b, v1) < get(vertex_color, G_b, v2);
-        });
-        return num_colors_d2(G_b);
+        return num_colors_bipartite(ColumnColoring);
     }
 };
 

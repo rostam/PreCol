@@ -57,7 +57,7 @@ public:
                 put(color, v, 0);
             }
         });
-        return num_colors_d2(G_b);
+        return num_colors_bipartite(ColumnColoring);
     }
 };
 

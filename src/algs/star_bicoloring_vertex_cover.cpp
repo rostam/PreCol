@@ -25,7 +25,7 @@ pair<int,int> StarBicoloringVertexCover::color()
 {
     if(restricted) {
         color_restricted();
-        return num_colors_sb(G_b);
+        return num_colors_bipartite(TwoSidedColoring);
     }
     vector<int> IS;
     property_map<Graph, vertex_color_t>::type color = get(vertex_color, G_b);
@@ -257,8 +257,7 @@ pair<int,int> StarBicoloringVertexCover::color()
 
         put(color,*IS_it,0);
     }
-
-    return num_colors_sb(G_b);
+    return num_colors_bipartite(TwoSidedColoring);
 }
 
 int StarBicoloringVertexCover::color_restricted() {

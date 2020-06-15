@@ -27,29 +27,42 @@ using boost::any_cast;
 
 class ColAlg {
 protected:
+    enum BipartiteGraphColoringType {RowColoring, ColumnColoring, TwoSidedColoring};
     vector<unsigned int> V_c; //!< The set of column vertices
     vector<unsigned int> V_r; //!< The set of row vertices
     Graph& G_b;
     shared_ptr<IndSet> ind_set;
     bool restricted;
     map<string, boost::any> pars;
-    pair<int,int> num_colors_d2(Graph& G_b) {
-        int max_color_col = *max_element(V_c.begin(), V_c.end(), [&](Ver v1, Ver v2) {
-            return get(vertex_color, G_b, v1) < get(vertex_color, G_b, v2);
-        });
-        return make_pair(0,get(vertex_color, G_b, max_color_col) + 1);
-    };
-
-    pair<int,int> num_colors_sb(Graph& G_b) {
+    /**
+     * Return the numbre of colors in bipartite graph coloring
+     * based on the type of coloring
+     *
+     * @param G_b The given bipartite graph
+     * @param type The given type of bipartite coloring
+     * @return a pair of coloring number for rows and columns
+     */
+    pair<int,int> num_colors_bipartite(BipartiteGraphColoringType type) {
+        pair<int,int> ret;
         int max_color_col = *max_element(V_c.begin(), V_c.end(), [&](Ver v1, Ver v2) {
             return get(vertex_color, G_b, v1) < get(vertex_color, G_b, v2);
         });
         int max_color_row = *max_element(V_r.begin(), V_r.end(), [&](Ver v1, Ver v2) {
             return get(vertex_color, G_b, v1) < get(vertex_color, G_b, v2);
         });
-
-        return make_pair(get(vertex_color, G_b, max_color_row),
-                         get(vertex_color, G_b, max_color_col));
+        switch(type) {
+            case ColumnColoring:
+                ret = make_pair(0, get(vertex_color, G_b, max_color_col) + 1);
+                break;
+            case RowColoring:
+                ret = make_pair(get(vertex_color, G_b, max_color_row) + 1, 0);
+                break;
+            case TwoSidedColoring:
+                ret = make_pair(get(vertex_color, G_b, max_color_row),
+                        get(vertex_color, G_b, max_color_col));
+                break;
+        }
+        return ret;
     };
 public:
     ColAlg(Graph& G_b, vector<unsigned int> &V, bool restricted, map<string, any> pars = {})
