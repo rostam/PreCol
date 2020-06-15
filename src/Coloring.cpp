@@ -6,7 +6,7 @@
 #include "ConvertGraph.hpp"
 #include "kClique.hpp"
 #include "orderings.h"
-#include "algs/d2_color_omp.hpp"
+#include "algs/d2_color_omp.h"
 #include "output_graph.hpp"
 #include "pot.hpp"
 #include "add.hpp"
