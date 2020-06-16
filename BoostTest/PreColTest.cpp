@@ -71,6 +71,7 @@ BOOST_AUTO_TEST_SUITE(GeneratorsTestSuite)
         for_each_v(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
         BOOST_CHECK_EQUAL(V_r.size(),6);
         BOOST_CHECK_EQUAL(V_c.size(),6);
+        int entries_pattern = sparsifier(G_b, sparsify, mm.nrows(),blockSize);
         shared_ptr<ColAlg> ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
         pair<int,int> cols = ret -> color();
 //        pair<int,int> cols = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha) -> color();
