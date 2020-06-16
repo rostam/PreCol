@@ -235,6 +235,7 @@ struct matrix_market
  * @return
  */
     bool MtxToILUGraph(Graph& G_ilu) {
+
         if (mm_is_symmetric(matcode)) {
             // add the edges to the graph object
             for (int i = 0; i < nz; ++i) {
@@ -246,6 +247,7 @@ struct matrix_market
             }
         } else {
             // add the edges to the graph object
+
             for (int i = 0; i < nz; ++i) {
                 add_edge(I[i], J[i], 0, G_ilu);
             }
@@ -258,10 +260,9 @@ struct matrix_market
         free(J);
     }
 
-
-
     inline unsigned int nrows() const { return M; }
-  inline unsigned int issym() const { return mm_is_symmetric(matcode); }
+    inline unsigned int issym() const { return mm_is_symmetric(matcode); }
+    inline unsigned int nnz() const {return nz;}
 
   int M;
   int N;
