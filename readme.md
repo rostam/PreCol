@@ -19,7 +19,6 @@ and
 [Rostami's dissertation](https://cuvillier.de/en/shop/publications/7637-combining-partial-jacobian-computation-and-preconditioning-new-heuristics-educational-modules-and-applications).
 
 
-
 ## Coloring Algorithms
 
 The list of our implemented algorithms are as follows. The only non-bipartite graph model is Algorithm~\ref{CIG} one so far. Except Algorithms~\ref{MaxGain} and ~\ref{MaxDiscovered} all of algorithms are explained in L{\"u}lfesmann's thesis~\cite{phd:luelfesmann} and Rostami's thesis~\cite{phd_rostami}.
@@ -48,9 +47,9 @@ Other required parameters can be listed as follows,
 
 
 A categorization of these algorithms is given in Table~\ref{t:category}
-            & Full & Partial \\\hline
-  One-sided & 1, 2, 3, 13, 14 & 4, 5, 6, 7, 8 \\\hline
-  Two-sided & 9 & 10, 11, 12 \\
+            | Full | Partial \\\hline
+  One-sided | 1, 2, 3, 13, 14 | 4, 5, 6, 7, 8 \\\hline
+  Two-sided | 9 & 10, 11, 12 | \\
 
 
 ## Implementation
