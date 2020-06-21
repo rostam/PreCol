@@ -48,6 +48,7 @@ Other required parameters can be listed as follows,
 
 A categorization of these algorithms is given in Table~\ref{t:category}
             | Full | Partial \\\hline
+  ----------|------------ | -------------
   One-sided | 1, 2, 3, 13, 14 | 4, 5, 6, 7, 8 \\\hline
   Two-sided | 9 & 10, 11, 12 | \\
 
