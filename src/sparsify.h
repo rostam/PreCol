@@ -48,6 +48,10 @@ static int sparsifier(Graph& G_b, string sparsify, int nrows, int blockSize, std
                 put(weight, e, 1);
                 put(name, e, "r");
                 entries_pattern++;
+            } else if (source(e, G_b) == target(e, G_b) + nrows) {
+                put(weight, e, 1);
+                put(name, e, "r");
+                entries_pattern++;
             }
         } else if (sparsify == "BlockDiagonal") {
             int RowCoordinate = source(e, G_b) + nrows;

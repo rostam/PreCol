@@ -56,7 +56,11 @@ BOOST_AUTO_TEST_SUITE(GeneratorsTestSuite)
         int num_of_colors = ret -> color();
         BOOST_CHECK_EQUAL(num_of_colors,6);
 
-        //std::string sparsify = "Full";
+        sparsify = "Diagonal";
+        entries_pattern = sparsifier(G_b, sparsify, mm.nrows(),blockSize,"");
+        BOOST_CHECK_EQUAL(entries_pattern,6);
+        num_of_colors = ret -> color();
+        BOOST_CHECK_EQUAL(num_of_colors,3);
     }
 
     BOOST_AUTO_TEST_CASE(ArrowShapedPlusOneTest) {
@@ -97,6 +101,12 @@ BOOST_AUTO_TEST_SUITE(GeneratorsTestSuite)
         BOOST_CHECK_EQUAL(entries_pattern,9);
         num_of_colors = ret -> color();
         BOOST_CHECK_EQUAL(num_of_colors,4);
+
+        sparsify = "Diagonal";
+        entries_pattern = sparsifier(G_b, sparsify, mm.nrows(),blockSize,custom_required_pattern);
+        BOOST_CHECK_EQUAL(entries_pattern,6);
+        num_of_colors = ret -> color();
+        BOOST_CHECK_EQUAL(num_of_colors,3);
     }
 
     BOOST_AUTO_TEST_CASE(ArrowShapedPlusOneMinusOneTest) {
@@ -130,5 +140,11 @@ BOOST_AUTO_TEST_SUITE(GeneratorsTestSuite)
         shared_ptr<ColAlg> ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
         int num_of_colors = ret -> color();
         BOOST_CHECK_EQUAL(num_of_colors,5);
+
+        sparsify = "Diagonal";
+        entries_pattern = sparsifier(G_b, sparsify, mm.nrows(),blockSize,"");
+        BOOST_CHECK_EQUAL(entries_pattern,6);
+        num_of_colors = ret -> color();
+        BOOST_CHECK_EQUAL(num_of_colors,3);
     }
 BOOST_AUTO_TEST_SUITE_END()
