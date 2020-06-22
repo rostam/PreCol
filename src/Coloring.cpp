@@ -77,11 +77,11 @@ int main(int argc, char* argv[]) {
 
     generate_order(alg, order, G_b, V_r, V_c);
     //Coloring of the vertices
-    pair<int,int> cols = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, order, alpha) -> color();
+    int cols = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, order, alpha) -> color();
 
-    cout << "Row Colors:_" << cols.first << endl;
-    cout << "Column Colors:_" << cols.second << endl;
-    cout << "All Colors:_" << cols.first+cols.second << endl;
+//    cout << "Row Colors:_" << cols.first << endl;
+//    cout << "Column Colors:_" << cols.second << endl;
+    cout << "All Colors:_" << cols << endl;
     end = clock();
     //all edges A - \Rinit
     vector<Edge> edge_ordering;

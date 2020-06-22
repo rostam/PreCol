@@ -44,11 +44,11 @@ public:
  * Output:
  * - G_b bipartite graph with colors given as weights vertex_color
  */
-    pair<int,int> color()
+    int color() override
     {
         if(restricted) {
             color_restricted();
-            return num_colors_bipartite(TwoSidedColoring);
+            return num_colors();
         }
         vector<int> IS;
         property_map<Graph, vertex_color_t>::type color = get(vertex_color, G_b);
@@ -280,7 +280,7 @@ public:
 
             put(color,*IS_it,0);
         }
-        return num_colors_bipartite(TwoSidedColoring);
+        return ColAlg::num_colors();
     }
 
     int color_restricted() {

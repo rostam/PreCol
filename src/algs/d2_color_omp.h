@@ -102,7 +102,7 @@ public:
  * - G_b bipartite graph with colors as weights vertex_color
  */
 
-    pair<int,int> color() {
+    int color() override {
         vector<unsigned int> V = V_c;
         for(int i=1;i<=1;i++) {
             omp_set_num_threads(i);
@@ -122,7 +122,7 @@ public:
                     }
                 });
             }
-            return num_colors_bipartite(ColumnColoring);
+            return num_colors();
         }
     }
 
