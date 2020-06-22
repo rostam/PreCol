@@ -23,7 +23,7 @@ class D2ColorNonReq : public ColAlg {
     //int alpha = 0;
 public:
     using ColAlg::ColAlg;
-    pair<int,int> color() {
+    int color() {
         vector<unsigned int> V = V_c;
         property_map<Graph, vertex_color_t>::type color = get(vertex_color, G_b);
         vector<unsigned int> N_2;
@@ -106,7 +106,7 @@ public:
                 }
             }
         });
-        return num_colors_bipartite(ColumnColoring);
+        return num_colors();
     }
 };
 

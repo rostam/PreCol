@@ -88,7 +88,7 @@ public:
         }
     };
 
-    virtual pair<int,int> color() = 0;
+    virtual int color() = 0;
     template <class T>
     T get_par(string name) {
         return  any_cast<T>(pars[name]);
