@@ -16,8 +16,7 @@ class SLO : public Ordering {
 
         //Compute N_2-degree for all vertices in v
         for (vector<unsigned int>::iterator v = V.begin(); v != V.end(); ++v) {
-
-            VertexDegree.push_back(make_pair(*v, neighbors::N_2(G_b, *v).size()));
+            VertexDegree.push_back(make_pair(*v, neighbors::N_2restricted(G_b, *v).size()));
         }
 
         cout << "mark1" << endl;
@@ -40,7 +39,7 @@ class SLO : public Ordering {
             //    VertexDegree.erase(minPair);
 
             //decrement degree of D_2-neighbors
-            vector<unsigned int> neighbors = neighbors::N_2(G_b, (*v).first);
+            vector<unsigned int> neighbors = neighbors::N_2restricted(G_b, (*v).first);
             for (vector<unsigned int>::iterator n_2 = neighbors.begin();
                  n_2 != neighbors.end();
                  ++n_2) {

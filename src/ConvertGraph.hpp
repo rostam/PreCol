@@ -17,7 +17,7 @@ bool G_bToG_rRestricted(const Graph& G_b, const vector<unsigned int>& V_r, Graph
 //Convert bipartite graph to column intersection graph
 bool G_bToG_c(const Graph& G_b, const vector<unsigned int>& V_c, Graph& G_c) {
     for_each(V_c.begin(),V_c.end(),[&](unsigned int vc){
-        vector<unsigned int> N_2 = neighbors::N_2(G_b,vc);
+        vector<unsigned int> N_2 = neighbors::N_2restricted(G_b,vc);
         for_each(N_2.begin(),N_2.end(),[&](unsigned int n2){
             add_edge(vc - V_c.size(), n2, G_c);
         });
@@ -73,7 +73,7 @@ bool G_bToG_r(const Graph& G_b, const vector<unsigned int>& V_r, Graph& G_r) {
          ++v_r) {
 
         vector<unsigned int> N_2;
-        N_2 = neighbors::N_2(G_b, *v_r);
+        N_2 = neighbors::N_2restricted(G_b, *v_r);
 
         for (vector<unsigned int>::iterator n_2 = N_2.begin();
              n_2 != N_2.end();

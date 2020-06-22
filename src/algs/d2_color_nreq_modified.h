@@ -37,10 +37,8 @@ public:
                 forbiddenColors[0] = v;
                 if (IncidentToReqEdge(G_b, v)) {
                     //Get the distance-2 neighbors
-                    if (restricted)
-                        N_2 = neighbors::N_2restricted(G_b, v);
-                    else
-                        N_2 = neighbors::N_2(G_b, v);
+                    N_2 = neighbors::N_2restricted(G_b, v);
+
                     //Iterate over distance-2 neighbors
                     for_each(N_2.begin(), N_2.end(), [&](unsigned int n_2) {
                         //Mark colors which are used by distance-2 neighbors in forbiddenColors

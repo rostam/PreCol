@@ -14,11 +14,7 @@ class LFO : public Ordering {
 
         //Compute N_2-degree for all vertices in V
         for (vector<unsigned int>::iterator v = V.begin(); v != V.end(); ++v) {
-            if (!restricted) {
-                VertexDegree.push_back(pair<int, int>(*v, neighbors::N_2(G_b, *v).size()));
-            } else {
                 VertexDegree.push_back(pair<int, int>(*v, neighbors::N_2restricted(G_b, *v).size()));
-            }
         }
 
         //Sort after degree

@@ -16,11 +16,7 @@ class IDO : public Ordering {
 
         //Compute N_2-degree for all vertices in v
         for (vector<unsigned int>::iterator v = V.begin(); v != V.end(); ++v) {
-            if (restricted) {
                 Degrees.push_back(make_pair(*v, make_pair(neighbors::N_2restricted(G_b, *v).size(), 0)));
-            } else {
-                Degrees.push_back(make_pair(*v, make_pair(neighbors::N_2(G_b, *v).size(), 0)));
-            }
         }
 
         for (unsigned int i = 0; i < V.size(); ++i) {
@@ -32,8 +28,7 @@ class IDO : public Ordering {
             Ordering.push_back((*v).first);
 
             vector<unsigned int> neighbors;
-            if (restricted) neighbors = neighbors::N_2restricted(G_b, (*v).first);
-            else neighbors = neighbors::N_2(G_b, (*v).first);
+            neighbors = neighbors::N_2restricted(G_b, (*v).first);
             for (vector<unsigned int>::iterator n_2 = neighbors.begin();
                  n_2 != neighbors.end();
                  ++n_2) {
