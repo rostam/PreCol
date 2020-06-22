@@ -70,7 +70,7 @@ int main(int argc, char* argv[]) {
     //Initialize required pattern
     //If edge e \in E_S then edge_property edge_weight=1 else
     //edge_weight=0
-    int entries_pattern = sparsifier(G_b, sparsify, mm.nrows(),blockSize);
+    int entries_pattern = sparsifier(G_b, sparsify, mm.nrows(),blockSize, "");
     cout << "Entries_pattern:_" << entries_pattern << endl;
 //    cout << "Density_pattern:_" << double(entries_pattern) / rows * 100 << endl;
 //    cout << "Mode:_" << Mode << endl;
