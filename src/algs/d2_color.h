@@ -22,11 +22,10 @@
 class D2Color : public ColAlg {
 public:
     using ColAlg::ColAlg;
-    
-    pair<int,int> color() {
+
+    pair<int, int> color() {
         vector<unsigned int> V = V_c;
         property_map<Graph, vertex_color_t>::type color = get(vertex_color, G_b);
-        vector<unsigned int> N_2;
         vector<unsigned int> forbiddenColors(num_vertices(G_b), -1);
         //All edges in E_S have edge_weight=1; otherwise edge_weight=0
         //Initialize colors
@@ -36,10 +35,8 @@ public:
             forbiddenColors[0] = v;
             if (IncidentToReqEdge(G_b, v)) {
                 //Get the distance-2 neighbors
-                if (restricted)
-                    N_2 = neighbors::N_2restricted(G_b, v);
-                else
-                    N_2 = neighbors::N_2(G_b, v);
+                vector<unsigned int> N_2 = neighbors::N_2restricted(G_b, v);
+
                 //Iterate over distance-2 neighbors
                 for_each(N_2.begin(), N_2.end(), [&](unsigned int n_2) {
                     //Mark colors which are used by distance-2 neighbors in forbiddenColors
@@ -49,7 +46,7 @@ public:
                 });
 
                 //Find first color which can be assigned to v
-                auto result = find_if(forbiddenColors.begin(), forbiddenColors.end(),bind1st(not_equal_to<int>(), v));
+                auto result = find_if(forbiddenColors.begin(), forbiddenColors.end(), bind1st(not_equal_to<int>(), v));
 
                 //Color v
                 put(color, v, distance(forbiddenColors.begin(), result));

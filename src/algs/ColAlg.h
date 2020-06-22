@@ -35,18 +35,8 @@ protected:
     bool restricted;
     map<string, boost::any> pars;
 
-    int num_colors() {
-        int max_color = 0;
-        for_each_v(G_b, [&](Ver v){
-            int color = get(vertex_color, G_b, v);
-           if(max_color < color)
-               max_color = color;
-        });
-        return max_color;
-    };
-
     /**
-     * Return the numbre of colors in bipartite graph coloring
+     * Return the number of colors in bipartite graph coloring
      * based on the type of coloring
      *
      * @param G_b The given bipartite graph
@@ -103,6 +93,20 @@ public:
     T get_par(string name) {
         return  any_cast<T>(pars[name]);
     }
+
+    /**
+     *
+     * @return
+     */
+    int num_colors() {
+        int max_color = 0;
+        for_each_v(G_b, [&](Ver v) {
+            int color = get(vertex_color, G_b, v);
+            if (max_color < color)
+                max_color = color;
+        });
+        return max_color;
+    };
 };
 
 #endif //PRECOL_COLALG_H
