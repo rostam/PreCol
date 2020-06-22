@@ -31,11 +31,7 @@ BOOST_AUTO_TEST_SUITE(GeneratorsTestSuite)
         std::string pre_ord = "Nat";
         std::string filename = "mats/arrow-shaped.mtx";
         std::string sparsify = "Full";
-        int blockSize = 30;
-        int el = 2;
-        int Mode = 0;
-        int Mode2 = 0;
-        int alpha = 10;
+        int blockSize = 30, el = 2, Mode = 0, Mode2 = 0,alpha = 10;
         auto input = make_tuple(alg,col_ord_c,pre_ord,Mode,Mode2,sparsify, blockSize, el,filename,alpha);
         matrix_market mm(filename.c_str());
         BOOST_CHECK_EQUAL(mm.nrows(),6);
@@ -60,7 +56,7 @@ BOOST_AUTO_TEST_SUITE(GeneratorsTestSuite)
         entries_pattern = sparsifier(G_b, sparsify, mm.nrows(),blockSize,"");
         BOOST_CHECK_EQUAL(entries_pattern,6);
         num_of_colors = ret -> color();
-        BOOST_CHECK_EQUAL(num_of_colors,3);
+        BOOST_CHECK_EQUAL(num_of_colors,2);
     }
 
     BOOST_AUTO_TEST_CASE(ArrowShapedPlusOneTest) {
@@ -71,11 +67,7 @@ BOOST_AUTO_TEST_SUITE(GeneratorsTestSuite)
         std::string filename = "mats/arrow-shaped_plus_one.mtx";
         std::string custom_required_pattern = "mats/custom_required_pattern1";
         std::string sparsify = "Full";
-        int blockSize = 30;
-        int el = 2;
-        int Mode = 0;
-        int Mode2 = 0;
-        int alpha = 10;
+        int blockSize = 30, el = 2, Mode = 0, Mode2 = 0,alpha = 10;
         auto input = make_tuple(alg,col_ord_c,pre_ord,Mode,Mode2,sparsify, blockSize, el,filename,alpha);
         matrix_market mm(filename.c_str());
         BOOST_CHECK_EQUAL(mm.nrows(),6);
@@ -116,11 +108,7 @@ BOOST_AUTO_TEST_SUITE(GeneratorsTestSuite)
         std::string pre_ord = "Nat";
         std::string filename = "mats/arrow-shaped_plus_one_minus_one.mtx";
         std::string sparsify = "Full";
-        int blockSize = 30;
-        int el = 2;
-        int Mode = 0;
-        int Mode2 = 0;
-        int alpha = 10;
+        int blockSize = 30, el = 2, Mode = 0, Mode2 = 0,alpha = 10;
         auto input = make_tuple(alg,col_ord_c,pre_ord,Mode,Mode2,sparsify, blockSize, el,filename,alpha);
         matrix_market mm(filename.c_str());
         BOOST_CHECK_EQUAL(mm.nrows(),6);
