@@ -46,6 +46,20 @@ BOOST_AUTO_TEST_SUITE(GeneratorsTestSuite)
         int num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 6);
 
+        sparsify = BlockDiagonal;
+        blockSize = 2;
+        entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, "");
+        BOOST_CHECK_EQUAL(entries_pattern, 8);
+        num_of_colors = ret->color();
+        BOOST_CHECK_EQUAL(num_of_colors, 3);
+
+        sparsify = BlockDiagonal;
+        blockSize = 3;
+        entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, "");
+        BOOST_CHECK_EQUAL(entries_pattern, 10);
+        num_of_colors = ret->color();
+        BOOST_CHECK_EQUAL(num_of_colors, 4);
+
         sparsify = Diagonal;
         entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, "");
         BOOST_CHECK_EQUAL(entries_pattern, 6);
@@ -62,6 +76,8 @@ BOOST_AUTO_TEST_SUITE(GeneratorsTestSuite)
         ret = getAlg(Mode2, alg, Mode, G_CIG, V_r, V_c, col_ord_c, alpha);
         num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 6);
+
+
     }
 
     BOOST_AUTO_TEST_CASE(ArrowShapedPlusOneTest) {
