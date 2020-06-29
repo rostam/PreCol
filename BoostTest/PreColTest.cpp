@@ -60,7 +60,19 @@ BOOST_AUTO_TEST_SUITE(GeneratorsTestSuite)
         num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 4);
 
+        alg = "D2RestrictedColumnsNonReq";
+        ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
+        num_of_colors = ret->color();
+        BOOST_CHECK_EQUAL(num_of_colors, 4);
+
+        alg = "D2RestrictedColumnsNonReqBalanced";
+        ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
+        num_of_colors = ret->color();
+        BOOST_CHECK_EQUAL(num_of_colors, 4);
+
+        alg = "D2Columns";
         sparsify = Diagonal;
+        ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
         entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, "");
         BOOST_CHECK_EQUAL(entries_pattern, 6);
         num_of_colors = ret->color();
@@ -72,10 +84,12 @@ BOOST_AUTO_TEST_SUITE(GeneratorsTestSuite)
         BipartiteToCIG(G_b, V_c, G_CIG);
         BOOST_CHECK_EQUAL(num_vertices(G_CIG), 6);
         BOOST_CHECK_EQUAL(num_edges(G_CIG), 15);
+
         alg = "GreedyColoring";
         ret = getAlg(Mode2, alg, Mode, G_CIG, V_r, V_c, col_ord_c, alpha);
         num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 6);
+
     }
 
     BOOST_AUTO_TEST_CASE(ArrowShapedPlusOneTest) {
