@@ -6,15 +6,15 @@
 #include "../Graph/ConvertGraph.hpp"
 #include "../Algs/kClique.hpp"
 #include "../Orderings/orderings.h"
-#include "algs/d2_color_omp.h"
+#include "../Algs/d2_color_omp.h"
 #include "../Graph/output_graph.hpp"
-#include "../AutoDiff/pot.hpp"
-#include "../AutoDiff/add.hpp"
-#include "../Orderings/SILU.h"
-#include "algs/algs.h"
+#include "../Application/Preconditioning/pot.hpp"
+#include "../Application/Preconditioning/add.hpp"
+#include "../Application/Preconditioning/SILU.h"
+#include "../Algs/algs.h"
 #include "../Graph/sparsify.h"
 #include "handle_input.h"
-#include "algs/exact_coloring.h"
+#include "../Algs/exact_coloring.h"
 
 /*! \mainpage PreCol - A Brief Description.
  * This software considers three computation ingredients needed in the field of

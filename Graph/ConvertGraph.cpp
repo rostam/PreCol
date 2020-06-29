@@ -1,8 +1,9 @@
 #include "ConvertGraph.hpp"
+#include "neighbors.hpp"
 
 
 //Convert bipartite graph to column intersection graph
-bool G_bToG_c(const Graph& G_b, const vector<unsigned int>& V_c, Graph& G_c) {
+static bool G_bToG_c(const Graph& G_b, const vector<unsigned int>& V_c, Graph& G_c) {
     for_each(V_c.begin(),V_c.end(),[&](unsigned int vc){
         vector<unsigned int> N_2 = neighbors::N_2restricted(G_b,vc);
         for_each(N_2.begin(),N_2.end(),[&](unsigned int n2){
@@ -29,7 +30,7 @@ bool G_bToG_c(const Graph& G_b, const vector<unsigned int>& V_c, Graph& G_c) {
 
 //Convert bipartite graph to column intersection graph with respect to
 //the required elements
-bool G_bToG_cRestricted(const Graph& G_b, const vector<unsigned int>& V_c,
+static bool G_bToG_cRestricted(const Graph& G_b, const vector<unsigned int>& V_c,
                         Graph& G_c)
 {
     for (vector<unsigned int>::const_iterator v_c = V_c.begin();
@@ -55,7 +56,7 @@ bool G_bToG_cRestricted(const Graph& G_b, const vector<unsigned int>& V_c,
 
 //Convert bipartite graph to row intersection graph (column
 //intersection graph for rows instead of colums)
-bool G_bToG_r(const Graph& G_b, const vector<unsigned int>& V_r, Graph& G_r) {
+static bool G_bToG_r(const Graph& G_b, const vector<unsigned int>& V_r, Graph& G_r) {
     for (vector<unsigned int>::const_iterator v_r = V_r.begin();
          v_r != V_r.end();
          ++v_r) {
@@ -79,7 +80,7 @@ bool G_bToG_r(const Graph& G_b, const vector<unsigned int>& V_r, Graph& G_r) {
 //Convert bipartite graph to row intersection graph with respect to
 //the required elements (column intersection graph for rows instead of
 //colums)
-bool G_bToG_rRestricted(const Graph& G_b, const vector<unsigned int>& V_r,
+static bool G_bToG_rRestricted(const Graph& G_b, const vector<unsigned int>& V_r,
                         Graph& G_r) {
     for (vector<unsigned int>::const_iterator v_r = V_r.begin();
          v_r != V_r.end();

@@ -5,7 +5,7 @@ namespace neighbors {
     using boost::out_edges;
     using boost::edge_weight;
 //Compute the restricted distance-2 neighbors of Vertex
-    std::vector<unsigned int> N_2restricted(const Graph& G_b, const unsigned int Vertex) {
+    static std::vector<unsigned int> N_2restricted(const Graph& G_b, const unsigned int Vertex) {
         std::vector<unsigned int> neighbors;
         for_each(boost::out_edges(Vertex, G_b).first,out_edges(Vertex, G_b).second,[&](Edge e) {
             for_each(out_edges(target(e,G_b), G_b).first,out_edges(target(e,G_b), G_b).second,[&](Edge e2) {
@@ -30,7 +30,7 @@ namespace neighbors {
         return neighbors;
     }
 
-    int IncidentToReqEdge(const Graph &G_b, const unsigned int v) {
+    static int IncidentToReqEdge(const Graph &G_b, const unsigned int v) {
         bool incident = false;
         std::for_each(out_edges(v, G_b).first, out_edges(v, G_b).second, [&](Edge e) {
             if (boost::get(boost::edge_weight, G_b, e) == 1) {

@@ -5,7 +5,7 @@
 #ifndef PRECOL_SILU_H
 #define PRECOL_SILU_H
 
-#include "../Graph/datatypes.hpp"
+#include "../../Graph/datatypes.hpp"
 
 /**
  * \class SILU

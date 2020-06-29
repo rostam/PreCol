@@ -1,7 +1,7 @@
 #ifndef ADDREQELEMENTS_HPP
 #define ADDREQELEMENTS_HPP
 
-#include "../Graph/datatypes.hpp"
+#include "../../Graph/datatypes.hpp"
 /**
  * \brief Computes the additionally required elements
  *
