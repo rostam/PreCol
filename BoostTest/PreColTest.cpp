@@ -46,6 +46,7 @@ BOOST_AUTO_TEST_SUITE(GeneratorsTestSuite)
         int num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 6);
 
+        alg = "D2RestrictedColumns";
         sparsify = BlockDiagonal;
         blockSize = 2;
         entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, "");
@@ -78,6 +79,25 @@ BOOST_AUTO_TEST_SUITE(GeneratorsTestSuite)
         num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 2);
 
+        alg = "SBSchemeCombinedVertexCoverColoring";
+        Mode = 1;
+        sparsify = Full;
+        entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, "");
+        BOOST_CHECK_EQUAL(entries_pattern, 16);
+        ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
+        num_of_colors = ret->color();
+        BOOST_CHECK_EQUAL(num_of_colors, 2);
+
+        alg = "SBSchemeCombinedVertexCoverColoringRestricted";
+        Mode = 1;
+        sparsify = BlockDiagonal;
+        blockSize = 3;
+        entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, "");
+        BOOST_CHECK_EQUAL(entries_pattern, 10);
+        ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
+        num_of_colors = ret->color();
+        BOOST_CHECK_EQUAL(num_of_colors, 2);
+
         mm.MtxToBipGraph(G_b, 1);
         property_map<Graph, edge_weight_t>::type weight = get(edge_weight, G_b);
         Graph G_CIG;
@@ -89,7 +109,6 @@ BOOST_AUTO_TEST_SUITE(GeneratorsTestSuite)
         ret = getAlg(Mode2, alg, Mode, G_CIG, V_r, V_c, col_ord_c, alpha);
         num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 6);
-
     }
 
     BOOST_AUTO_TEST_CASE(ArrowShapedPlusOneTest) {
@@ -174,5 +193,4 @@ BOOST_AUTO_TEST_SUITE(GeneratorsTestSuite)
         num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 3);
     }
-
 BOOST_AUTO_TEST_SUITE_END()

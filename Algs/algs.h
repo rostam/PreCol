@@ -57,8 +57,7 @@ static shared_ptr<ColAlg> getAlg(int Mode2, const string &alg,
     } else if (alg == "D2RestrictedRows") {
         return shared_ptr<ColAlg>(new OneSidedD2Coloring(G_b, V_r, true));
     } else if (alg == "SBSchemeCombinedVertexCoverColoring") {
-        return shared_ptr<ColAlg>(new StarBicoloringVertexCover(G_b, V_r, V_c,
-               false, {{"Mode", Mode},{"Mode2",Mode2}}));
+        return shared_ptr<ColAlg>(new StarBicoloringVertexCover(G_b, V_r, V_c,false, {{"Mode", Mode},{"Mode2",Mode2}}));
     } else if (alg == "SBSchemeCombinedVertexCoverColoringRestricted") {
         return shared_ptr<ColAlg>(new StarBicoloringVertexCover(G_b, V_r, V_c, true, {{"Mode", Mode},{"Mode2",Mode2}}));
     } else if (alg == "SBSchemeCombinedVertexCoverColoringRestrictedNonReq") {
