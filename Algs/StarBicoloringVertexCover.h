@@ -84,11 +84,8 @@ public:
 
         while (num_edges(G_b_aux) > 0) {
             unsigned int max_degree_V_r_aux = 0;
-            for (list<pair<unsigned int, unsigned int> >::iterator di =
-                    Degree_V_r_aux.begin();
-                 di != Degree_V_r_aux.end();
-                 ++di) {
 
+            for (auto di = Degree_V_r_aux.begin();di != Degree_V_r_aux.end();++di) {
                 (*di).second = degree((*di).first, G_b_aux);
                 unsigned int degree_v_r = (*di).second;
                 if (degree_v_r > max_degree_V_r_aux) {
@@ -97,11 +94,7 @@ public:
             }
 
             unsigned int max_degree_V_c_aux = 0;
-            for (list<pair<unsigned int, unsigned int> >::iterator di =
-                    Degree_V_c_aux.begin();
-                 di != Degree_V_c_aux.end();
-                 ++di) {
-
+            for (auto di = Degree_V_c_aux.begin();di != Degree_V_c_aux.end();++di) {
                 (*di).second = degree((*di).first, G_b_aux);
                 unsigned int degree_v_c = (*di).second;
                 if (degree_v_c > max_degree_V_c_aux) {
@@ -110,25 +103,16 @@ public:
             }
 
             if (max_degree_V_r_aux > ratio * max_degree_V_c_aux) {
-
-                for (list<pair<unsigned int, unsigned int> >::iterator di =
-                        Degree_V_r_aux.begin();
-                     di != Degree_V_r_aux.end();
-                     ++di) {
-
+                for (auto di = Degree_V_r_aux.begin();di != Degree_V_r_aux.end();++di) {
                     if (max_degree_V_r_aux == (*di).second) {
                         list<pair<unsigned int, unsigned int> >::iterator cr;
-                        for (cr =
-                                     copy_real_r.begin();
-                             cr != copy_real_r.end();
-                             ++cr) {
+                        for (cr = copy_real_r.begin();cr != copy_real_r.end();++cr) {
                             if ((*cr).second == (*di).first) break;
                         }
                         vector<unsigned int>::iterator v;
                         for (v = V_r.begin(); v != V_r.end(); v++) {
                             if ((*cr).first == (*v)) break;
                         }
-
 
                         clear_vertex((*di).first, G_b_aux);
                         di = Degree_V_r_aux.erase(di);
@@ -232,24 +216,15 @@ public:
                             }
                         }
                         //Find first color which can be assigned to v_c
-                        vector<int>::iterator color_v_it = find_if(forbiddenColors.begin(),
-                                                                   forbiddenColors.end(),
-                                                                   bind1st(not_equal_to<int>(), *v)
-                        );
+                        auto color_v_it = find_if(forbiddenColors.begin(), forbiddenColors.end(),
+                                                  bind1st(not_equal_to<int>(), *v));
                         put(color, *v, distance(forbiddenColors.begin(), color_v_it));
                     }
                 }
             }
         }
 
-        for (list<pair<unsigned int, unsigned int> >::iterator di =
-                Degree_V_r_aux.begin();
-             di != Degree_V_r_aux.end();
-             ++di) {
-
-            IS.push_back((*di).first);
-        }
-
+        for(auto di : Degree_V_r_aux) IS.push_back(di.first);
         for(auto di : Degree_V_c_aux) IS.push_back(di.first);
 
         //Color vertices in independent set with color 0
