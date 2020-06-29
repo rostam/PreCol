@@ -4,7 +4,7 @@
 
 #ifndef PRECOL_HANDLE_INPUT_H
 #define PRECOL_HANDLE_INPUT_H
-#include "datatypes.hpp"
+#include "../Graph/datatypes.hpp"
 #include <tuple>
 /**
  * \brief handle the input to the program

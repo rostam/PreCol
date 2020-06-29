@@ -5,8 +5,8 @@
 #include <boost/config.hpp>
 #include "boost/graph/adjacency_list.hpp"
 #include "boost/graph/graph_utility.hpp"
-#include "datatypes.hpp"
-#include "neighbors.hpp"
+#include "../Graph/datatypes.hpp"
+#include "../Graph/neighbors.hpp"
 
 #include "kClique.hpp"
 

@@ -33,7 +33,7 @@ public:
         //Iterate over all vertices which should be colored
         for_each(V.begin(), V.end(), [&](unsigned int v) {
             forbiddenColors[0] = v;
-            if (IncidentToReqEdge(G_b, v)) {
+            if (neighbors::IncidentToReqEdge(G_b, v)) {
                 //Get the distance-2 neighbors
                 vector<unsigned int> N_2 = neighbors::N_2restricted(G_b, v);
 

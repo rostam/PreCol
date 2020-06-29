@@ -5,7 +5,7 @@
 #ifndef PRECOL_SPARSIFY_H
 #define PRECOL_SPARSIFY_H
 
-#include <sstream>
+#include "../../../../../../usr/include/c++/7/sstream"
 
 static int sparsifier(Graph& G_b, string sparsify, int nrows, int blockSize, std::string custom) {
     property_map<Graph, edge_weight_t>::type weight = get(edge_weight, G_b);

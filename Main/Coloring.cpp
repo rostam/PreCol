@@ -1,20 +1,20 @@
 #include <iostream>
 #include <ctime>
 #include <iomanip>
-#include "datatypes.hpp"
-#include "Mtx2Graph.hpp"
-#include "ConvertGraph.hpp"
-#include "kClique.hpp"
-#include "orderings.h"
+#include "../Graph/datatypes.hpp"
+#include "../Graph/Mtx2Graph.hpp"
+#include "../Graph/ConvertGraph.hpp"
+#include "../Algs/kClique.hpp"
+#include "../Orderings/orderings.h"
 #include "algs/d2_color_omp.h"
-#include "output_graph.hpp"
-#include "pot.hpp"
-#include "add.hpp"
-#include "SILU.h"
+#include "../Graph/output_graph.hpp"
+#include "../AutoDiff/pot.hpp"
+#include "../AutoDiff/add.hpp"
+#include "../Orderings/SILU.h"
 #include "algs/algs.h"
-#include "sparsify.h"
+#include "../Graph/sparsify.h"
 #include "handle_input.h"
-#include "exact_coloring.h"
+#include "algs/exact_coloring.h"
 
 /*! \mainpage PreCol - A Brief Description.
  * This software considers three computation ingredients needed in the field of

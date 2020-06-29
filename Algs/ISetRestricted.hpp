@@ -6,7 +6,7 @@
 #include "boost/graph/adjacency_list.hpp"
 #include "boost/graph/graph_utility.hpp"
 #include "boost/graph/filtered_graph.hpp"
-#include "datatypes.hpp"
+#include "../Graph/datatypes.hpp"
 #include "IndSet.h"
 class ISetRestricted : public IndSet{
 public:

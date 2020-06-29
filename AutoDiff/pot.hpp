@@ -1,7 +1,7 @@
 #ifndef POTENTIALREQNONZEROS_HPP
 #define POTENTIALREQNONZEROS_HPP
 
-#include "datatypes.hpp"
+#include "../Graph/datatypes.hpp"
 
 int potentialRequiredNonzerosD2(Graph& G_b,
 				const vector<Edge>& edge_ordering);

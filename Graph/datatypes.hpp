@@ -50,6 +50,20 @@ namespace precol {
     }
 
     /**
+     * \brief iterate on the vertices of graph with constant iterators
+     *
+     * @tparam Lambda
+     * @param g
+     * @param func
+     */
+    template<typename Lambda>
+    static void for_each_v_const(const Graph& g, Lambda func) {
+        V_iter vi, vi_end;
+        tie(vi, vi_end) = vertices(g);
+        std::for_each(vi,vi_end,func);
+    }
+
+    /**
      * \brief iterate on the edges of graph
      *
      * @tparam Lambda
@@ -61,6 +75,20 @@ namespace precol {
         E_iter ei, ei_end;
         tie(ei, ei_end) = edges(g);
         std::for_each(ei, ei_end, func);
+    }
+
+    /**
+     * \brief iterate on the edges of graph with constant iterator
+     *
+     * @tparam Lambda
+     * @param g
+     * @param func
+     */
+    template<typename Lambda>
+    static void for_each_e_const(Graph& g, Lambda func) {
+        E_iter ei, ei_end;
+        tie(ei, ei_end) = edges(g);
+        std::for_each(ei,ei_end,func);
     }
 
     static auto ge_degree = [](pair<int, int> t1, pair<int, int> t2) { return t1.second >= t2.second; };

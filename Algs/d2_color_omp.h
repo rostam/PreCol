@@ -2,8 +2,8 @@
 #define PARTIALD2COLORINGRESTRICTEDOMP_HPP
 
 #include <iostream>
-#include "datatypes.hpp"
-#include "neighbors.hpp"
+#include "../Graph/datatypes.hpp"
+#include "../Graph/neighbors.hpp"
 #include "ColAlg.h"
 #include <omp.h>
 
@@ -46,7 +46,7 @@ public:
             unsigned int v = V[i];
             //for_each(V.begin(), V.end(), [&](unsigned int v) {
             forbiddenColors[0] = v;
-            if (IncidentToReqEdge(G_b, v)) {
+            if (neighbors::IncidentToReqEdge(G_b, v)) {
                 //Get the distance-2 neighbors
                 N_2 = neighbors::N_2restricted(G_b, v);
                 //Iterate over distance-2 neighbors

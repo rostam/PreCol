@@ -5,9 +5,9 @@
 #ifndef PRECOL_ORDERING_H
 #define PRECOL_ORDERING_H
 
-#include "datatypes.hpp"
+#include "../Graph/datatypes.hpp"
 #include <memory>
-#include "neighbors.hpp"
+#include "../Graph/neighbors.hpp"
 
 /** 
  * \class Ordering

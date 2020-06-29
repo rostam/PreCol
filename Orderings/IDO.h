@@ -5,7 +5,7 @@
 #ifndef PRECOL_IDO_H
 #define PRECOL_IDO_H
 
-#include "datatypes.hpp"
+#include "../Graph/datatypes.hpp"
 #include "Ordering.h"
 
 class IDO : public Ordering {

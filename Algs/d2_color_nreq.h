@@ -2,8 +2,8 @@
 // Created by rostam on 20.07.16.
 //
 
-#ifndef PRECOL_D2ColorNonReqBalanced
-#define PRECOL_D2ColorNonReqBalanced
+#ifndef PRECOL_NEWHEURISTIC
+#define PRECOL_NEWHEURISTIC
 
 #include "ColAlg.h"
 /**
@@ -19,7 +19,7 @@
  * Output:
  * - G_b bipartite graph with colors as weights vertex_color
  */
-class D2ColorNonReqBalanced : public ColAlg {
+class D2ColorNonReq : public ColAlg {
     //int alpha = 0;
 public:
     using ColAlg::ColAlg;
@@ -35,10 +35,9 @@ public:
         for_each(V.begin(), V.end(), [&](unsigned int v) {
             if (get(vertex_color, G_b, v) == 0) {
                 forbiddenColors[0] = v;
-                if (IncidentToReqEdge(G_b, v)) {
+                if (neighbors::IncidentToReqEdge(G_b, v)) {
                     //Get the distance-2 neighbors
                     N_2 = neighbors::N_2restricted(G_b, v);
-
                     //Iterate over distance-2 neighbors
                     for_each(N_2.begin(), N_2.end(), [&](unsigned int n_2) {
                         //Mark colors which are used by distance-2 neighbors in forbiddenColors
@@ -99,51 +98,8 @@ public:
                         pos_num[nn] = cnt_nreq_det;
 
                     });
-                    int cnt = 0;
-                    for_each(pos_num.begin(), pos_num.end(), [&](auto map_elem) {
-                        if (cnt <= boost::any_cast<int>(pars["alpha"])) {
-                            if (map_elem.second == min_nreq_det) {
-                                cnt++;
-                                put(color, map_elem.first, distance(forbiddenColors.begin(), result));
-                            }
-                        }
-                    });
-                    int cnt_max = 0;
-                    int mx = 0;
-                    int min_req = 10000;
-                    int min_pos = -1;
-                    int max_req = 0;
-                    int max_pos = -1;
-                    for_each(pos_num.begin(), pos_num.end(), [&](auto map_elem) {
-                        if (map_elem.second == max_nreq_det) {
-                            int cnt_req = 0;
-                            for_each(adjacent_vertices(map_elem.first, G_b).first,
-                                     adjacent_vertices(map_elem.first, G_b).second,
-                                     [&](Ver adj_) {
-                                         if (get(edge_weight, G_b, edge(map_elem.first, adj_, G_b).first) == 1) {
-                                             cnt_req++;
-                                         }
-                                     });
-                            if (cnt_req < min_req) {
-                                min_req = cnt_req;
-                                min_pos = map_elem.first;
-                            }
-                            if (cnt_req > max_req) {
-                                max_req = cnt_req;
-                                max_pos = map_elem.first;
-                            }
-                        }
-                    });
-                    if (min_pos != -1) {
-                        if (boost::any_cast<int>(pars["alpha"]) == -1) {
-                            //put(color, min_pos, distance(forbiddenColors.begin(), result));
-                        }
-                        //put(color, max_pos, distance(forbiddenColors.begin(), result));
-                    }
                     if (max_nreq_pos != -1) {
-                        if (boost::any_cast<int>(pars["alpha"]) != -1) {
-                            put(color, max_nreq_pos, distance(forbiddenColors.begin(), result));
-                        }
+                        put(color, max_nreq_pos, distance(forbiddenColors.begin(), result));
                     }
                 } else {
                     put(color, v, 0);

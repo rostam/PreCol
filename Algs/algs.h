@@ -12,8 +12,9 @@
 #include "d2_color_diag.h"
 #include "star_bicoloring_vertex_cover.h"
 #include "star_bicoloring_vertex_cover_nreq.h"
+#include "greedy_coloring.h"
 
-static vector<string> algs = {"D2Columns", "D2Rows",
+static vector<string> algs = {"D2Columns", "D2Rows", "GreedyColoring"
                        "D2RestrictedColumns", "D2RestrictedRows",
                        "D2RestrictedColumnsNonReq",
                        "PartialD2RestrictedColumnsNonReqDiag",
@@ -63,6 +64,8 @@ static shared_ptr<ColAlg> getAlg(int Mode2, const string &alg,
     } else if (alg == "SBSchemeCombinedVertexCoverColoringRestrictedNonReq") {
         return shared_ptr<ColAlg>(new StarBicoloringVertexCoverNonReq(G_b, V_r, V_c, true,
                                    {{"Mode", Mode},{"Mode2",Mode2},{"alpha",alpha}}));
+    } else if (alg == "GreedyColoring") {
+        return shared_ptr<ColAlg>(new greedy_coloring(G_b));
     } else {
         return shared_ptr<ColAlg>(new D2Color(G_b, V_c, false));
     }

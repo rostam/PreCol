@@ -5,8 +5,8 @@
 #ifndef PRECOL_COLALG_H
 #define PRECOL_COLALG_H
 
-#include "datatypes.hpp"
-#include "Ordering.h"
+#include "../Graph/datatypes.hpp"
+#include "../Orderings/Ordering.h"
 #include <boost/config.hpp>
 #include "boost/graph/adjacency_list.hpp"
 #include "boost/graph/graph_utility.hpp"
@@ -66,6 +66,7 @@ protected:
         return ret;
     };
 public:
+    ColAlg(Graph& G_b) : G_b(G_b) {};
     ColAlg(Graph& G_b, vector<unsigned int> &V, bool restricted, map<string, any> pars = {})
             : restricted(restricted), V_c(V), G_b(G_b), pars(pars) { };
 
