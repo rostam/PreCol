@@ -14,6 +14,7 @@
 #include "../Orderings/orderings.h"
 #include "../Algs/algs.h"
 #include "../Graph/sparsify.h"
+#include "../Graph/ConvertGraph.hpp"
 
 BOOST_AUTO_TEST_SUITE(GeneratorsTestSuite)
 
@@ -35,30 +36,30 @@ BOOST_AUTO_TEST_SUITE(GeneratorsTestSuite)
         mm.MtxToBipGraph(G_b);
         BOOST_CHECK_EQUAL(num_vertices(G_b), 12);
         BOOST_CHECK_EQUAL(num_edges(G_b), 16);
-//        vector<unsigned int> V_r, V_c;
-//        for_each_v(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
-//        BOOST_CHECK_EQUAL(V_r.size(), 6);
-//        BOOST_CHECK_EQUAL(V_c.size(), 6);
-//        int entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, "");
-//        BOOST_CHECK_EQUAL(entries_pattern, 16);
-//        shared_ptr<ColAlg> ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
-//        int num_of_colors = ret->color();
-//        BOOST_CHECK_EQUAL(num_of_colors, 6);
-//
-//        sparsify = "Diagonal";
-//        entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, "");
-//        BOOST_CHECK_EQUAL(entries_pattern, 6);
-//        num_of_colors = ret->color();
-//        BOOST_CHECK_EQUAL(num_of_colors, 2);
-//
-//        Graph G_CIG;
-//        G_bToG_c(G_b, V_c, G_CIG);
-//        BOOST_CHECK_EQUAL(num_vertices(G_CIG), 6);
-//        BOOST_CHECK_EQUAL(num_edges(G_b), 16);
-//        alg = "GreedyColoring";
-//        ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
-//        num_of_colors = ret->color();
-//        BOOST_CHECK_EQUAL(num_of_colors, 6);
+        vector<unsigned int> V_r, V_c;
+        for_each_v(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
+        BOOST_CHECK_EQUAL(V_r.size(), 6);
+        BOOST_CHECK_EQUAL(V_c.size(), 6);
+        int entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, "");
+        BOOST_CHECK_EQUAL(entries_pattern, 16);
+        shared_ptr<ColAlg> ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
+        int num_of_colors = ret->color();
+        BOOST_CHECK_EQUAL(num_of_colors, 6);
+
+        sparsify = "Diagonal";
+        entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, "");
+        BOOST_CHECK_EQUAL(entries_pattern, 6);
+        num_of_colors = ret->color();
+        BOOST_CHECK_EQUAL(num_of_colors, 2);
+
+        Graph G_CIG;
+        G_bToG_c(G_b, V_c, G_CIG);
+        BOOST_CHECK_EQUAL(num_vertices(G_CIG), 6);
+        BOOST_CHECK_EQUAL(num_edges(G_b), 16);
+        alg = "GreedyColoring";
+        ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
+        num_of_colors = ret->color();
+        BOOST_CHECK_EQUAL(num_of_colors, 6);
     }
 //
 //    BOOST_AUTO_TEST_CASE(ArrowShapedPlusOneTest) {
