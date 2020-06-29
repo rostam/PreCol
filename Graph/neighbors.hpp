@@ -7,6 +7,10 @@
 #include "boost/graph/graph_utility.hpp"
 #include "datatypes.hpp"
 
+/**
+ * \namespace neighbors
+ * \brief Contains functions to find the (restricted) distance-2 neigbors of a vertex
+ */
 namespace neighbors {
     using boost::out_edges;
     using boost::edge_weight;
