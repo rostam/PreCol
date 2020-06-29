@@ -139,7 +139,7 @@ public:
 // 	 ++v) {
 
 //       (*v).second.first = degree((*v).first,G_b);
-//       vector<unsigned int> N2 = neighbors::N_2(G_b,(*v).first);
+//       vector<unsigned int> N2 = neighbors::Distance2Neighbors(G_b,(*v).first);
 //       (*v).second.second = N2.size();
 
 //       if ((*v).second.second>max_degree_n2) {

@@ -37,7 +37,7 @@ public:
                 forbiddenColors[0] = v;
                 if (neighbors::IncidentToReqEdge(G_b, v)) {
                     //Get the distance-2 neighbors
-                    N_2 = neighbors::N_2restricted(G_b, v);
+                    N_2 = neighbors::Distance2NeighborsRestricted(G_b, v);
 
                     //Iterate over distance-2 neighbors
                     for_each(N_2.begin(), N_2.end(), [&](unsigned int n_2) {

@@ -57,7 +57,7 @@ int main(int argc, char* argv[]) {
     //Add edges to graph
     mm.MtxToBipGraph(G_b);
     Graph G_c;
-    G_bToG_c(G_b,V_c,G_c);
+    BipartiteToCIG(G_b,V_c,G_c);
 
     //  graph2dot(G_b);
 //    cerr << "Matrix:_" << argv[1] << endl;

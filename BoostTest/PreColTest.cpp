@@ -52,12 +52,15 @@ BOOST_AUTO_TEST_SUITE(GeneratorsTestSuite)
         num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 2);
 
+        mm.MtxToBipGraph(G_b, 1);
+        sparsify = "Full";
+        property_map<Graph, edge_weight_t>::type weight = get(edge_weight, G_b);
         Graph G_CIG;
-        G_bToG_c(G_b, V_c, G_CIG);
+        BipartiteToCIG(G_b, V_c, G_CIG);
         BOOST_CHECK_EQUAL(num_vertices(G_CIG), 6);
-        BOOST_CHECK_EQUAL(num_edges(G_b), 16);
+        BOOST_CHECK_EQUAL(num_edges(G_CIG), 15);
         alg = "GreedyColoring";
-        ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
+        ret = getAlg(Mode2, alg, Mode, G_CIG, V_r, V_c, col_ord_c, alpha);
         num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 6);
     }

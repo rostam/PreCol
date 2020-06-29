@@ -37,7 +37,7 @@ public:
         for_each_e(G_b, [&](Edge e){
             if(get(edge_weight, G_b, e) == 1) {
                 unsigned int v = source(e,G_b);
-                N_2 = neighbors::N_2restricted(G_b, v);
+                N_2 = neighbors::Distance2NeighborsRestricted(G_b, v);
                 forbiddenColors[0] = v;
                 //Iterate over distance-2 neighbors
                 for_each(N_2.begin(), N_2.end(), [&](unsigned int n_2) {
@@ -55,7 +55,7 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////////
 
                 v = target(e,G_b);
-                N_2 = neighbors::N_2restricted(G_b, v);
+                N_2 = neighbors::Distance2NeighborsRestricted(G_b, v);
                 forbiddenColors[0] = v;
                 //Iterate over distance-2 neighbors
                 for_each(N_2.begin(), N_2.end(), [&](unsigned int n_2) {

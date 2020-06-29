@@ -26,8 +26,6 @@ struct matrix_market
 //  bool MtxToILUGraph(Graph& G_ilu);
 //  bool writeToFile(char* filename);
 
-
-
 /**
  * \brief Constructor for making matrix from list of edges
  *
@@ -208,20 +206,55 @@ struct matrix_market
  * \brief return the bipartite graph generated from the matrix
  *
  * @param G_b the result matrix
- * @return
+ * @return the bipartite graph as an input parameter
  */
-    bool MtxToBipGraph(Graph& G_b) {
+    bool MtxToBipGraph(Graph& G_b, int initial_edge_weight = 0) {
         if (mm_is_symmetric(matcode)) {
             // add the edges to the graph object
             for (int i = 0; i < nz; ++i) {
-                add_edge(I[i], M + J[i], 0, G_b);
+                add_edge(I[i], M + J[i], initial_edge_weight, G_b);
                 if (I[i] != J[i])
-                    add_edge(J[i], M + I[i], 0, G_b);
+                    add_edge(J[i], M + I[i], initial_edge_weight, G_b);
             }
         } else {
             // add the edges to the graph object
             for (int i = 0; i < nz; ++i) {
-                add_edge(I[i], M + J[i], 0, G_b);
+                add_edge(I[i], M + J[i], initial_edge_weight, G_b);
+            }
+        }
+
+        return EXIT_SUCCESS;
+    }
+
+
+    /**
+     * \brief Generates the column intersection graph
+     *
+     * @param G_CIG the output CIG graph
+     * @param initial_edge_weight the initial weight of all edges
+     * @return The generated column intersection graph as an input parameter
+     */
+    bool MtxToColumnIntersectionGraph(Graph& G_CIG, int initial_edge_weight = 0) {
+        G_CIG = Graph(ncols());
+
+        for (int i = 0; i < ncols(); i++) {
+            for (int j = i + 1; j < ncols(); j++) {
+                for (int k = 0; k < nrows(); k++) {
+
+                }
+            }
+        }
+        if (mm_is_symmetric(matcode)) {
+            // add the edges to the graph object
+            for (int i = 0; i < nz; ++i) {
+                add_edge(I[i], M + J[i], initial_edge_weight, G_CIG);
+                if (I[i] != J[i])
+                    add_edge(J[i], M + I[i], initial_edge_weight, G_CIG);
+            }
+        } else {
+            // add the edges to the graph object
+            for (int i = 0; i < nz; ++i) {
+                add_edge(I[i], M + J[i], initial_edge_weight, G_CIG);
             }
         }
 
@@ -235,7 +268,6 @@ struct matrix_market
  * @return
  */
     bool MtxToILUGraph(Graph& G_ilu) {
-
         if (mm_is_symmetric(matcode)) {
             // add the edges to the graph object
             for (int i = 0; i < nz; ++i) {
@@ -261,6 +293,7 @@ struct matrix_market
     }
 
     inline unsigned int nrows() const { return M; }
+    inline unsigned int ncols() const { return N; }
     inline unsigned int issym() const { return mm_is_symmetric(matcode); }
     inline unsigned int nnz() const {return nz;}
 

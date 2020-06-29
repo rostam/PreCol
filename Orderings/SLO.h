@@ -14,9 +14,9 @@ class SLO : public Ordering {
         vector<pair<int, int> > VertexDegree;
         vector<unsigned int> Ordering;
 
-        //Compute N_2-degree for all vertices in v
+        //Compute Distance2Neighbors-degree for all vertices in v
         for (vector<unsigned int>::iterator v = V.begin(); v != V.end(); ++v) {
-            VertexDegree.push_back(make_pair(*v, neighbors::N_2restricted(G_b, *v).size()));
+            VertexDegree.push_back(make_pair(*v, neighbors::Distance2NeighborsRestricted(G_b, *v).size()));
         }
 
         cout << "mark1" << endl;
@@ -24,7 +24,7 @@ class SLO : public Ordering {
         //  while (!VertexDegree.empty()) {
         for (unsigned int i = 0; i < V.size(); ++i) {
 
-            //find vertex with lowest N_2-degree
+            //find vertex with lowest Distance2Neighbors-degree
             vector<pair<int, int> >::iterator v =
                     min_element(VertexDegree.begin(), VertexDegree.end(), lt_degree);
 
@@ -39,7 +39,7 @@ class SLO : public Ordering {
             //    VertexDegree.erase(minPair);
 
             //decrement degree of D_2-neighbors
-            vector<unsigned int> neighbors = neighbors::N_2restricted(G_b, (*v).first);
+            vector<unsigned int> neighbors = neighbors::Distance2NeighborsRestricted(G_b, (*v).first);
             for (vector<unsigned int>::iterator n_2 = neighbors.begin();
                  n_2 != neighbors.end();
                  ++n_2) {
@@ -60,7 +60,7 @@ class SLO : public Ordering {
                 cout << "i= " << i << endl;
             }
 
-//     vector<unsigned int> neighbors = neighbors::N_2(G_b, (*v).first);
+//     vector<unsigned int> neighbors = neighbors::Distance2Neighbors(G_b, (*v).first);
 //     for (list<pair<unsigned int,unsigned int> >::iterator i = VertexDegree.begin();
 // 	 i != VertexDegree.end(); ++i) {
 
@@ -81,15 +81,15 @@ class SLO : public Ordering {
         list<pair<unsigned int, unsigned int> > VertexDegree;
         vector<unsigned int> Ordering;
 
-        //Compute N_2-degree for all vertices in v
+        //Compute Distance2Neighbors-degree for all vertices in v
         for (vector<unsigned int>::iterator v = V.begin(); v != V.end(); ++v) {
 
-            VertexDegree.push_back(pair<int, int>(*v, neighbors::N_2restricted(G_b, *v).size()));
+            VertexDegree.push_back(pair<int, int>(*v, neighbors::Distance2NeighborsRestricted(G_b, *v).size()));
         }
 
         while (!VertexDegree.empty()) {
 
-            //find vertex with lowest N_2-degree
+            //find vertex with lowest Distance2Neighbors-degree
             list<pair<unsigned int, unsigned int> >::iterator minPair =
                     min_element(VertexDegree.begin(), VertexDegree.end(), lt_degree);
 
@@ -100,7 +100,7 @@ class SLO : public Ordering {
             VertexDegree.erase(minPair);
 
             //decrement degree of D_2-neighbors
-            vector<unsigned int> neighbors = neighbors::N_2restricted(G_b, minElement);
+            vector<unsigned int> neighbors = neighbors::Distance2NeighborsRestricted(G_b, minElement);
             for (list<pair<unsigned int, unsigned int> >::iterator i = VertexDegree.begin();
                  i != VertexDegree.end(); ++i) {
 

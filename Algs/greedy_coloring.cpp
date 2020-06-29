@@ -16,4 +16,5 @@ int greedy_coloring::color() {
     for_each_v_const(g, [&](Ver v){
         boost::put(vertex_color, g, v, color[v]);
     });
+    return num_colors;
 }

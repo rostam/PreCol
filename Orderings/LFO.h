@@ -12,9 +12,9 @@ class LFO : public Ordering {
         list<pair<int, int> > VertexDegree;
         vector<unsigned int> Ordering;
 
-        //Compute N_2-degree for all vertices in V
+        //Compute Distance2Neighbors-degree for all vertices in V
         for (vector<unsigned int>::iterator v = V.begin(); v != V.end(); ++v) {
-                VertexDegree.push_back(pair<int, int>(*v, neighbors::N_2restricted(G_b, *v).size()));
+                VertexDegree.push_back(pair<int, int>(*v, neighbors::Distance2NeighborsRestricted(G_b, *v).size()));
         }
 
         //Sort after degree
