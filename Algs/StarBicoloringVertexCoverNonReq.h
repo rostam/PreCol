@@ -2,8 +2,8 @@
 // Created by rostam on 20.07.16.
 //
 
-#ifndef PRECOL_STAR_BICOLORING_VERTEX_COVER_H
-#define PRECOL_STAR_BICOLORING_VERTEX_COVER_H
+#ifndef PRECOL_STAR_BICOLORING_VERTEX_COVER_NON_REQ_M_H
+#define PRECOL_STAR_BICOLORING_VERTEX_COVER_NON_REQ_M_H
 
 #include "ColAlg.h"
 #include "isets.h"
@@ -16,15 +16,15 @@
  *
  * Input:
  * - G_b   bipartite graph
- * - V_r   contained row vertices are colored in the given ordering v_1, ..., v_n
- * - V_c   contained column vertices are colored in the given ordering v_1, ..., v_n
- * - Mode  parameter \rho (\rho=Mode/2)
- * - Mode2 parameter \rho if using independent set algorithm of Coleman (Mode==1)
+ * - V_r   contained row vertices are colored in the given ordering $v_1, ..., v_n$
+ * - V_c   contained column vertices are colored in the given ordering $v_1, ..., v_n$
+ * - Mode  parameter $\rho$ ($\rho=Mode/2$)
+ * - Mode2 parameter $\rho$ if using independent set algorithm of Coleman ($Mode==1$)
  *
  * Output:
  * - G_b bipartite graph with colors given as weights vertex_color
  */
-class StarBicoloringVertexCover : public ColAlg{
+class StarBicoloringVertexCoverNonReq : public ColAlg{
 public:
     using ColAlg::ColAlg;
 
@@ -44,7 +44,7 @@ public:
  * Output:
  * - G_b bipartite graph with colors given as weights vertex_color
  */
-    int color() override
+    int color()
     {
         if(restricted) {
             color_restricted();
@@ -90,20 +90,14 @@ public:
             Degree_V_r_aux.push_back(make_pair(*v_r,degree(*v_r,G_b_aux)));
         }
 
-        for (vector<unsigned int>::iterator v_c = V_c_aux.begin();
-             v_c != V_c_aux.end();
-             ++v_c) {
+        for (vector<unsigned int>::iterator v_c = V_c_aux.begin(); v_c != V_c_aux.end(); ++v_c) {
             Degree_V_c_aux.push_back(make_pair(*v_c,degree(*v_c,G_b_aux)));
         }
 
         while(num_edges(G_b_aux)>0) {
-
             unsigned int max_degree_V_r_aux = 0;
             for (list<pair<unsigned int,unsigned int> >::iterator di =
-                    Degree_V_r_aux.begin();
-                 di != Degree_V_r_aux.end();
-                 ++di) {
-
+                    Degree_V_r_aux.begin(); di != Degree_V_r_aux.end(); ++di) {
                 (*di).second = degree((*di).first,G_b_aux);
                 unsigned int degree_v_r = (*di).second;
                 if (degree_v_r > max_degree_V_r_aux) {
@@ -113,9 +107,7 @@ public:
 
             unsigned int max_degree_V_c_aux = 0;
             for (list<pair<unsigned int,unsigned int> >::iterator di =
-                    Degree_V_c_aux.begin();
-                 di != Degree_V_c_aux.end();
-                 ++di) {
+                    Degree_V_c_aux.begin(); di != Degree_V_c_aux.end(); ++di) {
 
                 (*di).second = degree((*di).first,G_b_aux);
                 unsigned int degree_v_c = (*di).second;
@@ -127,16 +119,11 @@ public:
             if (max_degree_V_r_aux >ratio * max_degree_V_c_aux) {
 
                 for (list<pair<unsigned int,unsigned int> >::iterator di =
-                        Degree_V_r_aux.begin();
-                     di != Degree_V_r_aux.end();
-                     ++di) {
+                        Degree_V_r_aux.begin(); di != Degree_V_r_aux.end(); ++di) {
 
                     if (max_degree_V_r_aux==(*di).second) {
                         list<pair<unsigned int,unsigned int> >::iterator cr;
-                        for (cr =
-                                     copy_real_r.begin();
-                             cr != copy_real_r.end();
-                             ++cr) {
+                        for (cr = copy_real_r.begin(); cr != copy_real_r.end(); ++cr) {
                             if ((*cr).second==(*di).first) break;
                         }
                         vector<unsigned int>::iterator v;
@@ -144,48 +131,48 @@ public:
                             if ((*cr).first==(*v)) break;
                         }
 
-
                         clear_vertex((*di).first,G_b_aux);
                         di = Degree_V_r_aux.erase(di); --di;
 
-                        forbiddenColors[0]=*v;
+                        if (get(vertex_color, G_b, *v) == 0) {
+                            forbiddenColors[0] = *v;
 
-                        graph_traits<Graph>::adjacency_iterator w, w_end;
-                        for (tie(w,w_end) = adjacent_vertices(*v, G_b); w != w_end; w++) {
-                            if (get(vertex_color, G_b, *w)<=0) {
+                            graph_traits<Graph>::adjacency_iterator w, w_end;
+                            for (tie(w, w_end) = adjacent_vertices(*v, G_b); w != w_end; w++) {
+                                if (get(vertex_color, G_b, *w) <= 0) {
 
-                                graph_traits<Graph>::adjacency_iterator x, x_end;
-                                for (tie(x,x_end) = adjacent_vertices(*w, G_b); x != x_end; x++) {
-                                    if (get(vertex_color, G_b, *x)>0) {
-                                        forbiddenColors[get(vertex_color, G_b, *x)]=*v;
+                                    graph_traits<Graph>::adjacency_iterator x, x_end;
+                                    for (tie(x, x_end) = adjacent_vertices(*w, G_b); x != x_end; x++) {
+                                        if (get(vertex_color, G_b, *x) > 0) {
+                                            forbiddenColors[get(vertex_color, G_b, *x)] = *v;
+                                        }
                                     }
-                                }
-                            } else { //Color[w]>0
+                                } else { //Color[w]>0
 
-                                graph_traits<Graph>::adjacency_iterator x, x_end;
-                                for (tie(x,x_end) = adjacent_vertices(*w, G_b); x != x_end; x++) {
-                                    if (get(vertex_color, G_b, *x)>0) {
+                                    graph_traits<Graph>::adjacency_iterator x, x_end;
+                                    for (tie(x, x_end) = adjacent_vertices(*w, G_b); x != x_end; x++) {
+                                        if (get(vertex_color, G_b, *x) > 0) {
 
-                                        graph_traits<Graph>::adjacency_iterator y, y_end;
-                                        for (tie(y,y_end) = adjacent_vertices(*x, G_b); y != y_end; y++) {
-                                            if (get(vertex_color, G_b, *y)>0) {
-                                                if (get(vertex_color, G_b, *w)==get(vertex_color, G_b, *y) && *w!=*y) {
-                                                    forbiddenColors[get(vertex_color, G_b, *x)]=*v;
+                                            graph_traits<Graph>::adjacency_iterator y, y_end;
+                                            for (tie(y, y_end) = adjacent_vertices(*x, G_b); y != y_end; y++) {
+                                                if (get(vertex_color, G_b, *y) > 0) {
+                                                    if (get(vertex_color, G_b, *w) == get(vertex_color, G_b, *y) &&
+                                                        *w != *y) {
+                                                        forbiddenColors[get(vertex_color, G_b, *x)] = *v;
+                                                    }
                                                 }
                                             }
                                         }
                                     }
                                 }
                             }
+                            //Find first color which can be assigned to v_c
+                            vector<int>::iterator color_v_it = find_if(forbiddenColors.begin(),
+                                                                       forbiddenColors.end(),
+                                                                       bind1st(not_equal_to<int>(), *v)
+                            );
+                            put(color, *v, distance(forbiddenColors.begin(), color_v_it));
                         }
-                        //Find first color which can be assigned to v_c
-                        vector<int>::iterator color_v_it = find_if(forbiddenColors.begin(),
-                                                                   forbiddenColors.end(),
-                                                                   bind1st(not_equal_to<int>(), *v)
-                        );
-                        put(color,*v,distance(forbiddenColors.begin(),color_v_it));
-
-
                     }
                 }
             } else {
@@ -249,10 +236,6 @@ public:
                         );
                         put(color,*v,distance(forbiddenColors.begin(),color_v_it));
 
-
-
-
-
                     }
                 }
             }
@@ -280,6 +263,7 @@ public:
 
             put(color,*IS_it,0);
         }
+
         return ColAlg::num_colors();
     }
 
@@ -331,6 +315,87 @@ public:
              ++v_c) {
             Degree_V_c_aux.push_back(make_pair(*v_c, degree(*v_c, G_b_aux)));
         }
+        Degree_V_c_aux.sort([&](
+                pair<unsigned int, unsigned int> p1,pair<unsigned int, unsigned int> p2
+        ) {
+            list<pair<unsigned int, unsigned int> >::iterator cr1;
+            for (cr1 = copy_real_c.begin(); cr1 != copy_real_c.end(); ++cr1) {
+                if ((*cr1).second == (p1).first) break;
+            }
+
+            list<pair<unsigned int, unsigned int> >::iterator cr2;
+            for (cr2 = copy_real_c.begin(); cr2 != copy_real_c.end(); ++cr2) {
+                if ((*cr2).second == (p2).first) break;
+            }
+
+            vector<unsigned int>::iterator v1;
+            for (v1 = V_c.begin(); v1 != V_c.end(); v1++) {
+                if ((*cr1).first == (*v1)) break;
+            }
+
+            vector<unsigned int>::iterator v2;
+            for (v2 = V_c.begin(); v2 != V_c.end(); v2++) {
+                if ((*cr2).first == (*v2)) break;
+            }
+
+            int cnt_nreq1 = 0, cnt_nreq2 = 0;
+            for_each(adjacent_vertices(*v1, G_b).first,
+                     adjacent_vertices(*v1, G_b).second,
+                     [&](Ver adj_nn) {
+                         if (get(edge_weight, G_b, edge(*v1, adj_nn, G_b).first) != 1) {
+                             cnt_nreq1++;
+                         }
+                     });
+            for_each(adjacent_vertices(*v2, G_b).first,
+                     adjacent_vertices(*v2, G_b).second,
+                     [&](Ver adj_nn) {
+                         if (get(edge_weight, G_b, edge(*v2, adj_nn, G_b).first) != 1) {
+                             cnt_nreq2++;
+                         }
+                     });
+            return cnt_nreq1 > cnt_nreq2;
+        });
+
+        Degree_V_r_aux.sort([&](
+                pair<unsigned int, unsigned int> p1,pair<unsigned int, unsigned int> p2
+        ) {
+            list<pair<unsigned int, unsigned int> >::iterator cr1;
+            for (cr1 = copy_real_r.begin(); cr1 != copy_real_r.end(); ++cr1) {
+                if ((*cr1).second == (p1).first) break;
+            }
+
+            list<pair<unsigned int, unsigned int> >::iterator cr2;
+            for (cr2 = copy_real_r.begin(); cr2 != copy_real_r.end(); ++cr2) {
+                if ((*cr2).second == (p2).first) break;
+            }
+
+            vector<unsigned int>::iterator v1;
+            for (v1 = V_r.begin(); v1 != V_r.end(); v1++) {
+                if ((*cr1).first == (*v1)) break;
+            }
+
+            vector<unsigned int>::iterator v2;
+            for (v2 = V_r.begin(); v2 != V_r.end(); v2++) {
+                if ((*cr2).first == (*v2)) break;
+            }
+
+            int cnt_nreq1 = 0, cnt_nreq2 = 0;
+            for_each(adjacent_vertices(*v1, G_b).first,
+                     adjacent_vertices(*v1, G_b).second,
+                     [&](Ver adj_nn) {
+                         if (get(edge_weight, G_b, edge(*v1, adj_nn, G_b).first) != 1) {
+                             cnt_nreq1++;
+                         }
+                     });
+            for_each(adjacent_vertices(*v2, G_b).first,
+                     adjacent_vertices(*v2, G_b).second,
+                     [&](Ver adj_nn) {
+                         if (get(edge_weight, G_b, edge(*v2, adj_nn, G_b).first) != 1) {
+                             cnt_nreq2++;
+                         }
+                     });
+            return cnt_nreq1 > cnt_nreq2;
+        });
 
         while (num_edges(G_b_aux) > 0) {
 
@@ -361,16 +426,13 @@ public:
             }
 
             if (max_degree_V_r_aux > ratio * max_degree_V_c_aux) {
-
+                int cnt = 0;
+                int first_v=0;
                 for (list<pair<unsigned int, unsigned int> >::iterator di =
-                        Degree_V_r_aux.begin();
-                     di != Degree_V_r_aux.end();
-                     ++di) {
-
+                        Degree_V_r_aux.begin(); di != Degree_V_r_aux.end(); ++di) {
                     if (max_degree_V_r_aux == (*di).second) {
                         list<pair<unsigned int, unsigned int> >::iterator cr;
-                        for (cr =
-                                     copy_real_r.begin();
+                        for (cr = copy_real_r.begin();
                              cr != copy_real_r.end();
                              ++cr) {
                             if ((*cr).second == (*di).first) break;
@@ -380,12 +442,27 @@ public:
                             if ((*cr).first == (*v)) break;
                         }
 
-
                         clear_vertex((*di).first, G_b_aux);
                         di = Degree_V_r_aux.erase(di);
                         --di;
 
                         forbiddenColors[0] = *v;
+                        cnt++;
+                        if(cnt == 1) first_v = *v;
+                        if(cnt > 1) {
+                            int cnt_nreq =0;
+                            for_each(adjacent_vertices(first_v, G_b).first,
+                                     adjacent_vertices(first_v, G_b).second,
+                                     [&](Ver adj_nn) {
+                                         if (get(edge_weight, G_b, edge(first_v, adj_nn, G_b).first) != 1) {
+                                             if (!edge(adj_nn, *v, G_b).second) {
+                                                 cnt_nreq++;
+                                             }
+                                         }
+                                     });
+                            //cerr << "salam " << cnt_nreq << endl;
+                            //if(cnt_nreq != 9) continue;
+                        }
 
                         graph_traits<Graph>::adjacency_iterator w, w_end;
                         for (tie(w, w_end) = adjacent_vertices(*v, G_b); w != w_end; w++) {
@@ -431,6 +508,8 @@ public:
                     }
                 }
             } else {
+                int cnt = 0;
+                int first_v=0;
 
                 for (list<pair<unsigned int, unsigned int> >::iterator di =
                         Degree_V_c_aux.begin();
@@ -439,8 +518,7 @@ public:
 
                     if (max_degree_V_c_aux == (*di).second) {
                         list<pair<unsigned int, unsigned int> >::iterator cr;
-                        for (cr =
-                                     copy_real_c.begin();
+                        for (cr = copy_real_c.begin();
                              cr != copy_real_c.end();
                              ++cr) {
                             if ((*cr).second == (*di).first) break;
@@ -454,6 +532,22 @@ public:
                         di = Degree_V_c_aux.erase(di);
                         --di;
 
+//                    cnt++;
+//                    if(cnt == 1) first_v = *v;
+//                    if(cnt > 1) {
+//                        int cnt_nreq =0;
+//                        for_each(adjacent_vertices(first_v, G_b).first,
+//                                 adjacent_vertices(first_v, G_b).second,
+//                                 [&](Ver adj_nn) {
+//                                     if (get(edge_weight, G_b, edge(first_v, adj_nn, G_b).first) != 1) {
+//                                         if (!edge(adj_nn, *v, G_b).second) {
+//                                             cnt_nreq++;
+//                                         }
+//                                     }
+//                                 });
+//                        //cerr << "salam " << cnt_nreq << endl;
+//                        //if(cnt_nreq == 8) continue;
+//                    }
 
                         forbiddenColors[0] = *v;
 
@@ -525,8 +619,10 @@ public:
         }
 
         return EXIT_SUCCESS;
+
     }
+
 };
 
 
-#endif //PRECOL_STAR_BICOLORING_VERTEX_COVER_H
+#endif //PRECOL_STARBICOLORINGVERTEXCOVER_H

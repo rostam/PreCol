@@ -10,8 +10,8 @@
 #include "OneSidedD2ColoringNonReq.h"
 #include "OneSidedD2ColoringNonReqBalanced.h"
 #include "OneSidedD2ColorNonReqDiag.h"
-#include "star_bicoloring_vertex_cover.h"
-#include "star_bicoloring_vertex_cover_nreq.h"
+#include "StarBicoloringVertexCover.h"
+#include "StarBicoloringVertexCoverNonReq.h"
 #include "GreedyColoringSimpleGraph.h"
 
 static vector<string> algs = {"D2Columns", "D2Rows", "GreedyColoring"
