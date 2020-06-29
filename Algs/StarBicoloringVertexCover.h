@@ -120,35 +120,28 @@ public:
 
                         forbiddenColors[0] = *v;
 
-                        graph_traits<Graph>::adjacency_iterator w, w_end;
-                        for (tie(w, w_end) = adjacent_vertices(*v, G_b); w != w_end; w++) {
-                            if (get(vertex_color, G_b, *w) <= 0) {
-
-                                graph_traits<Graph>::adjacency_iterator x, x_end;
-                                for (tie(x, x_end) = adjacent_vertices(*w, G_b); x != x_end; x++) {
-                                    if (get(vertex_color, G_b, *x) > 0) {
-                                        forbiddenColors[get(vertex_color, G_b, *x)] = *v;
+                        for_each_n (G_b, *v, [&](Ver w){
+                            if (get(vertex_color, G_b, w) <= 0) {
+                                for_each_n(G_b, w, [&](Ver x) {
+                                    if (get(vertex_color, G_b, x) > 0) {
+                                        forbiddenColors[get(vertex_color, G_b, x)] = *v;
                                     }
-                                }
+                                });
                             } else { //Color[w]>0
-
-                                graph_traits<Graph>::adjacency_iterator x, x_end;
-                                for (tie(x, x_end) = adjacent_vertices(*w, G_b); x != x_end; x++) {
-                                    if (get(vertex_color, G_b, *x) > 0) {
-
-                                        graph_traits<Graph>::adjacency_iterator y, y_end;
-                                        for (tie(y, y_end) = adjacent_vertices(*x, G_b); y != y_end; y++) {
-                                            if (get(vertex_color, G_b, *y) > 0) {
-                                                if (get(vertex_color, G_b, *w) == get(vertex_color, G_b, *y) &&
-                                                    *w != *y) {
-                                                    forbiddenColors[get(vertex_color, G_b, *x)] = *v;
+                                for_each_n(G_b, w, [&](Ver x) {
+                                    if (get(vertex_color, G_b, x) > 0) {
+                                        for_each_n(G_b, x, [&](Ver y) {
+                                            if (get(vertex_color, G_b, y) > 0) {
+                                                if (get(vertex_color, G_b, w) == get(vertex_color, G_b, y) &&
+                                                    w != y) {
+                                                    forbiddenColors[get(vertex_color, G_b, x)] = *v;
                                                 }
                                             }
-                                        }
+                                        });
                                     }
-                                }
+                                });
                             }
-                        }
+                        });
                         //Find first color which can be assigned to v_c
                         vector<int>::iterator color_v_it = find_if(forbiddenColors.begin(),
                                                                    forbiddenColors.end(),
@@ -161,17 +154,10 @@ public:
                 }
             } else {
 
-                for (list<pair<unsigned int, unsigned int> >::iterator di =
-                        Degree_V_c_aux.begin();
-                     di != Degree_V_c_aux.end();
-                     ++di) {
-
+                for (auto di = Degree_V_c_aux.begin();di != Degree_V_c_aux.end();++di) {
                     if (max_degree_V_c_aux == (*di).second) {
                         list<pair<unsigned int, unsigned int> >::iterator cr;
-                        for (cr =
-                                     copy_real_c.begin();
-                             cr != copy_real_c.end();
-                             ++cr) {
+                        for (cr = copy_real_c.begin();cr != copy_real_c.end();++cr) {
                             if ((*cr).second == (*di).first) break;
                         }
                         vector<unsigned int>::iterator v;
@@ -182,7 +168,6 @@ public:
                         clear_vertex((*di).first, G_b_aux);
                         di = Degree_V_c_aux.erase(di);
                         --di;
-
 
                         forbiddenColors[0] = *v;
 
