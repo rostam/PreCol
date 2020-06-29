@@ -5,9 +5,22 @@
 #ifndef PRECOL_SPARSIFY_H
 #define PRECOL_SPARSIFY_H
 
-#include "../../../../../../usr/include/c++/7/sstream"
+#include <sstream>
 
-static int sparsifier(Graph& G_b, string sparsify, int nrows, int blockSize, std::string custom) {
+enum KindOfSparsify { Custom, Diagonal, BlockDiagonal, Full };
+
+
+/**
+ * \brief Sparsify a given bipartite graph
+ *
+ * @param G_b Given bipartie graph
+ * @param sparsify The kind of sparsification
+ * @param nrows Number of rows
+ * @param blockSize Block size
+ * @param custom File name for reading the custom sparsification
+ * @return
+ */
+static int sparsifier(Graph& G_b, KindOfSparsify sparsify, int nrows, int blockSize, std::string custom) {
     property_map<Graph, edge_weight_t>::type weight = get(edge_weight, G_b);
     property_map<Graph, edge_name_t>::type name = get(edge_name, G_b);
 
@@ -18,7 +31,7 @@ static int sparsifier(Graph& G_b, string sparsify, int nrows, int blockSize, std
     });
 
     int entries_pattern = 0;
-    if (sparsify == "Custom") {
+    if (sparsify == Custom) {
         std::ifstream in(custom);
         std::string line;
         while (std::getline(in, line)) {
@@ -43,7 +56,7 @@ static int sparsifier(Graph& G_b, string sparsify, int nrows, int blockSize, std
     }
 
     for_each_e(G_b, [&](Edge e) {
-        if (sparsify == "Diagonal") {
+        if (sparsify == Diagonal) {
             if (source(e, G_b) + nrows == target(e, G_b)) {
                 put(weight, e, 1);
                 put(name, e, "r");
@@ -53,7 +66,7 @@ static int sparsifier(Graph& G_b, string sparsify, int nrows, int blockSize, std
                 put(name, e, "r");
                 entries_pattern++;
             }
-        } else if (sparsify == "BlockDiagonal") {
+        } else if (sparsify == BlockDiagonal) {
             int RowCoordinate = source(e, G_b) + nrows;
             int ColumnCoordinate = target(e, G_b);
             int RelativeDistance = RowCoordinate - ColumnCoordinate;
@@ -66,7 +79,7 @@ static int sparsifier(Graph& G_b, string sparsify, int nrows, int blockSize, std
                 put(name, e, "r");
                 entries_pattern++;
             }
-        } else if (sparsify == "Full") {
+        } else if (sparsify == Full) {
             put(weight, e, 1);
             put(name, e, "r");
             entries_pattern++;
@@ -74,6 +87,7 @@ static int sparsifier(Graph& G_b, string sparsify, int nrows, int blockSize, std
             cout << "No required pattern" << endl;
             return 0;
         }
+        return 0;
     });
     return entries_pattern;
 }

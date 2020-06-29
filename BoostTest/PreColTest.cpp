@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_SUITE(GeneratorsTestSuite)
         shared_ptr<Ordering> col_ord_c = get_color_ordering(col_ord);
         std::string pre_ord = "Nat";
         std::string filename = "mats/arrow-shaped.mtx";
-        std::string sparsify = "Full";
+        KindOfSparsify sparsify = Full;
         int blockSize = 30, el = 2, Mode = 0, Mode2 = 0, alpha = 10;
         auto input = make_tuple(alg, col_ord_c, pre_ord, Mode, Mode2, sparsify, blockSize, el, filename, alpha);
         matrix_market mm(filename.c_str());
@@ -46,14 +46,13 @@ BOOST_AUTO_TEST_SUITE(GeneratorsTestSuite)
         int num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 6);
 
-        sparsify = "Diagonal";
+        sparsify = Diagonal;
         entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, "");
         BOOST_CHECK_EQUAL(entries_pattern, 6);
         num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 2);
 
         mm.MtxToBipGraph(G_b, 1);
-        sparsify = "Full";
         property_map<Graph, edge_weight_t>::type weight = get(edge_weight, G_b);
         Graph G_CIG;
         BipartiteToCIG(G_b, V_c, G_CIG);
