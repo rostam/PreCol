@@ -28,8 +28,7 @@ public:
         property_map<Graph, vertex_color_t>::type color = get(vertex_color, G_b);
         vector<unsigned int> forbiddenColors(num_vertices(G_b), -1);
         //All edges in E_S have edge_weight=1; otherwise edge_weight=0
-        //Initialize colors
-        for_each(V.begin(), V.end(), [&](Ver v) { put(color, v, 0); });
+
         //Iterate over all vertices which should be colored
         for_each(V.begin(), V.end(), [&](unsigned int v) {
             forbiddenColors[0] = v;

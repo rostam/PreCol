@@ -32,8 +32,6 @@ public:
         vector<unsigned int> N_2;
         vector<unsigned int> forbiddenColors(num_vertices(G_b), -1);
         //All edges in E_S have edge_weight=1; otherwise edge_weight=0
-        //Initialize colors
-        for_each(V.begin(), V.end(), [&](Ver v) { put(color, v, 0); });
         for_each_e(G_b, [&](Edge e){
             if(get(edge_weight, G_b, e) == 1) {
                 unsigned int v = source(e,G_b);
