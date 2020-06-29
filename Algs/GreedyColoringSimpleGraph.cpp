@@ -2,11 +2,11 @@
 // Created by rostam on 28.06.20.
 //
 
-#include "greedy_coloring.h"
+#include "GreedyColoringSimpleGraph.h"
 #include "boost/graph/sequential_vertex_coloring.hpp"
 
 
-int greedy_coloring::color() {
+int GreedyColoringSimpleGraph::color() {
     Graph &g = G_b;
     typedef graph_traits<Graph>::vertices_size_type vertices_size_type;
     typedef property_map<Graph, boost::vertex_index_t>::const_type vertex_index_map;

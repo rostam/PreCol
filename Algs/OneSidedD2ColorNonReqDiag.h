@@ -19,12 +19,12 @@
  * Output:
  * - G_b bipartite graph with colors as weights vertex_color
  */
-class D2ColorNonReqDiag : public ColAlg {
+class OneSidedD2ColorNonReqDiag : public ColAlg {
     //int alpha = 0;
 public:
     using ColAlg::ColAlg;
 
-//    D2ColorNonReq(Graph &G_b, vector<unsigned int> &V, bool restricted, int alpha)
+//    OneSidedD2ColoringNonReq(Graph &G_b, vector<unsigned int> &V, bool restricted, int alpha)
 //            : ColAlg(G_b, V, restricted),alpha(alpha) {}
     int color() {
         vector<unsigned int> V = V_c;
@@ -84,4 +84,4 @@ public:
 };
 
 
-#endif //PRECOL_D2_COLOR_H
+#endif //PRECOL_ONESIDEDD2COLORING_H

@@ -2,12 +2,12 @@
 // Created by rostam on 20.07.16.
 //
 
-#ifndef PRECOL_D2_COLOR_H
-#define PRECOL_D2_COLOR_H
+#ifndef PRECOL_ONESIDEDD2COLORING_H
+#define PRECOL_ONESIDEDD2COLORING_H
 
 #include "ColAlg.h"
 /**
- * \brief Compute a distance-2 coloring of a bipartite graph G_b
+ * \brief Compute one-sided distance-2 coloring of a bipartite graph G_b
  *
  * It can be also restricted to some required edges if the
  * restricted value is equal to true
@@ -19,7 +19,7 @@
  * Output:
  * - G_b bipartite graph with colors as weights vertex_color
  */
-class D2Color : public ColAlg {
+class OneSidedD2Coloring : public ColAlg {
 public:
     using ColAlg::ColAlg;
 
@@ -59,4 +59,4 @@ public:
 };
 
 
-#endif //PRECOL_D2_COLOR_H
+#endif //PRECOL_ONESIDEDD2COLORING_H

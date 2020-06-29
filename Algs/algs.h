@@ -6,13 +6,13 @@
 #define PRECOL_ALGS_H
 
 #include "ColAlg.h"
-#include "d2_color.h"
-#include "d2_color_nreq.h"
-#include "d2_color_nreq_modified.h"
-#include "d2_color_diag.h"
+#include "OneSidedD2Coloring.h"
+#include "OneSidedD2ColoringNonReq.h"
+#include "OneSidedD2ColoringNonReqBalanced.h"
+#include "OneSidedD2ColorNonReqDiag.h"
 #include "star_bicoloring_vertex_cover.h"
 #include "star_bicoloring_vertex_cover_nreq.h"
-#include "greedy_coloring.h"
+#include "GreedyColoringSimpleGraph.h"
 
 static vector<string> algs = {"D2Columns", "D2Rows", "GreedyColoring"
                        "D2RestrictedColumns", "D2RestrictedRows",
@@ -41,21 +41,21 @@ static shared_ptr<ColAlg> getAlg(int Mode2, const string &alg,
                                  vector<unsigned int> &V_c,
                                  shared_ptr<Ordering> order, int alpha) {
     if (alg == "D2Columns") {
-        return shared_ptr<ColAlg>(new D2Color(G_b, V_c, false));
+        return shared_ptr<ColAlg>(new OneSidedD2Coloring(G_b, V_c, false));
     } else if (alg == "D2Rows") {
-        return shared_ptr<ColAlg>(new D2Color(G_b, V_r, false));
+        return shared_ptr<ColAlg>(new OneSidedD2Coloring(G_b, V_r, false));
     } else if (alg == "D2RestrictedColumns") {
-        return shared_ptr<ColAlg>(new D2Color(G_b, V_c, true));
+        return shared_ptr<ColAlg>(new OneSidedD2Coloring(G_b, V_c, true));
     } else if (alg == "D2RestrictedRows") {
-        return shared_ptr<ColAlg>(new D2Color(G_b, V_r, true));
+        return shared_ptr<ColAlg>(new OneSidedD2Coloring(G_b, V_r, true));
     } else if (alg == "D2RestrictedColumnsNonReq") {
-        return shared_ptr<ColAlg>(new D2ColorNonReq(G_b, V_c, true, {{"alpha",alpha}}));
+        return shared_ptr<ColAlg>(new OneSidedD2ColoringNonReq(G_b, V_c, true, {{"alpha", alpha}}));
     } else if (alg == "D2RestrictedColumnsNonReqBalanced") {
-        return shared_ptr<ColAlg>(new D2ColorNonReqBalanced(G_b, V_c, true, {{"alpha",alpha}}));
+        return shared_ptr<ColAlg>(new OneSidedD2ColoringNonReqBalanced(G_b, V_c, true, {{"alpha", alpha}}));
     } else if (alg == "D2RestrictedColumnsNonReqDiag") {
-        return shared_ptr<ColAlg>(new D2ColorNonReqDiag(G_b, V_c, true, {{"alpha",alpha}}));
+        return shared_ptr<ColAlg>(new OneSidedD2ColorNonReqDiag(G_b, V_c, true, {{"alpha", alpha}}));
     } else if (alg == "D2RestrictedRows") {
-        return shared_ptr<ColAlg>(new D2Color(G_b, V_r, true));
+        return shared_ptr<ColAlg>(new OneSidedD2Coloring(G_b, V_r, true));
     } else if (alg == "SBSchemeCombinedVertexCoverColoring") {
         return shared_ptr<ColAlg>(new StarBicoloringVertexCover(G_b, V_r, V_c,
                false, {{"Mode", Mode},{"Mode2",Mode2}}));
@@ -65,9 +65,9 @@ static shared_ptr<ColAlg> getAlg(int Mode2, const string &alg,
         return shared_ptr<ColAlg>(new StarBicoloringVertexCoverNonReq(G_b, V_r, V_c, true,
                                    {{"Mode", Mode},{"Mode2",Mode2},{"alpha",alpha}}));
     } else if (alg == "GreedyColoring") {
-        return shared_ptr<ColAlg>(new greedy_coloring(G_b));
+        return shared_ptr<ColAlg>(new GreedyColoringSimpleGraph(G_b));
     } else {
-        return shared_ptr<ColAlg>(new D2Color(G_b, V_c, false));
+        return shared_ptr<ColAlg>(new OneSidedD2Coloring(G_b, V_c, false));
     }
 }
 
