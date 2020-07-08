@@ -13,7 +13,7 @@
 
 ## Partial Coloring and Preconditioning
 
-PreCol is developed to implement the proposed coloring heuristics in 
+PreCol is developed to implement the proposed coloring heuristics in [[1]](#1).
 [Lülfesmann's dissertation](https://cuvillier.de/de/shop/publications/15-full-and-partial-jacobian-computation-via-graph-coloring-algorithms-and-applications)
 and
 [Rostami's dissertation](https://cuvillier.de/en/shop/publications/7637-combining-partial-jacobian-computation-and-preconditioning-new-heuristics-educational-modules-and-applications).
@@ -151,3 +151,15 @@ in which the input parameters are passed directly to \textit{PreCol}.
 - src: The preorderings for colorings, the symbolic ILU factorization, some helper functions
 - mats: The sample matrices
 - CMakeLists.txt: The cmake file for the project
+
+
+## References
+<a id="1">[1]</a> 
+Dijkstra, E. W. (1968). 
+Go to statement considered harmful. 
+Communications of the ACM, 11(3), 147-148.
+
+<a id="2">[2]</a> 
+Dijkstra, E. W. (1968). 
+Go to statement considered harmful. 
+Communications of the ACM, 11(3), 147-148.
