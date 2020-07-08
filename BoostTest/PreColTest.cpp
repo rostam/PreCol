@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         std::string col_ord = "LFO";
         shared_ptr<Ordering> col_ord_c = get_color_ordering(col_ord);
         std::string pre_ord = "Nat";
-        std::string filename = "mats/arrow-shaped.mtx";
+        std::string filename = "ExampleMatrices/arrow-shaped.mtx";
         KindOfSparsify sparsify = Full;
         int blockSize = 30, el = 2, Mode = 0, Mode2 = 0, alpha = 10;
         auto input = make_tuple(alg, col_ord_c, pre_ord, Mode, Mode2, sparsify, blockSize, el, filename, alpha);
@@ -118,8 +118,8 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         std::string col_ord = "LFO";
         shared_ptr<Ordering> col_ord_c = get_color_ordering(col_ord);
         std::string pre_ord = "Nat";
-        std::string filename = "mats/arrow-shaped_plus_one.mtx";
-        std::string custom_required_pattern = "mats/custom_required_pattern1";
+        std::string filename = "ExampleMatrices/arrow-shaped_plus_one.mtx";
+        std::string custom_required_pattern = "ExampleMatrices/custom_required_pattern1";
         KindOfSparsify sparsify = Full;
         int blockSize = 30, el = 2, Mode = 0, Mode2 = 0, alpha = 10;
         auto input = make_tuple(alg, col_ord_c, pre_ord, Mode, Mode2, sparsify, blockSize, el, filename, alpha);
@@ -160,7 +160,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         std::string col_ord = "LFO";
         shared_ptr<Ordering> col_ord_c = get_color_ordering(col_ord);
         std::string pre_ord = "Nat";
-        std::string filename = "mats/arrow-shaped_plus_one_minus_one.mtx";
+        std::string filename = "ExampleMatrices/arrow-shaped_plus_one_minus_one.mtx";
         KindOfSparsify sparsify = Full;
         int blockSize = 30, el = 2, Mode = 0, Mode2 = 0, alpha = 10;
         auto input = make_tuple(alg, col_ord_c, pre_ord, Mode, Mode2, sparsify, blockSize, el, filename, alpha);

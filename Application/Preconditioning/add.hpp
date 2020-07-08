@@ -146,15 +146,15 @@ int addReqElementsWeak(Graph& G_b, vector<Edge>& edge_ordering) {
         bool violation = false;
         int rel_src = src + m;
         int rel_tgt = tgt - m;
-        // src is smaller as tgt
+        // OtherSources is smaller as tgt
         if(src <= tgt - m) {
             for_each(adjacent_vertices(rel_src,G_b).first,adjacent_vertices(rel_src,G_b).second,[&](Ver n_rel_src) {
-                //n_rel_src -> rel_src -> src -> tgt
+                //n_rel_src -> rel_src -> OtherSources -> tgt
                 if(n_rel_src > rel_src) violation = true;
             });
         } else {
             for_each(adjacent_vertices(rel_tgt,G_b).first,adjacent_vertices(rel_tgt,G_b).second,[&](Ver n_rel_tgt) {
-                //src -> tgt -> rel_tgt -> n_rel_tgt
+                //OtherSources -> tgt -> rel_tgt -> n_rel_tgt
                 if(n_rel_tgt > rel_tgt) violation = true;
             });
         }

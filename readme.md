@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/rostam/PreCol.svg?branch=master)](https://travis-ci.org/rostam/PreCol)
 # PreCol
 
-![PreCol](doc/images/image.png)
+![PreCol](Documentation/images/image.png)
  
  1. [Partial Coloring](#precol)
  2. [Coloring Algorithms](#colalg)
