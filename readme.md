@@ -46,11 +46,12 @@ Other required parameters can be listed as follows,
 - Extra parameters can be given which are algorithm-specific.
 
 
-A categorization of these algorithms is given in Table~\ref{t:category}
-            | Full        | Partial 
-  ----------|------------ | -------------
-  One-sided | 1, 2, 3, 13, 14 | 4, 5, 6, 7, 8 
-  Two-sided | 9 & 10, 11, 12 | 
+A categorization of these algorithms is given in the following Table:
+
+  --      | Full         | Partial 
+----------| ------------ | -------------
+One-sided | 1, 2, 3, 13, 14 | 4, 5, 6, 7, 8 
+Two-sided | 9, 10, 11, 12 | 
 
 
 ## Implementation
@@ -59,7 +60,7 @@ such that it can be extended further with new coloring heuristics as well as pre
 The developers can implement new extensions without going into the details of the core implementation.
 Two main ingredients, coloring and orderings, can be implemented only by deriving an interface.
 For example, a new coloring and ordering can be added as easy as the following code.
-\begin{lstlisting}
+```
 class New_Ordering : public Ordering {
   void order(const Graph &G, vector<unsigned int> &ord, bool restricted) {...}
 };
@@ -67,10 +68,10 @@ class New_Ordering : public Ordering {
 class New_Coloring : public ColAlg {
    vector<int> color() {...}
 };
-\end{lstlisting}
+```
 
 Here, the computed ordering is saved in the array \textit{ord} and the coloring is the output
-of the function \textit{color}.
+of the color function.
 
 The developer needs to implement these new classes in an only-header fashion~\cite{headeronly}
 since the goal is to write an extension with little effort. So, the developer should
@@ -90,13 +91,13 @@ in the new C++ release (C++11 and C++14)~\cite{Sutherland2015},
 we provide different functions which can be used
 by a developer to work on graphs. For example, the iteration on vertices
 or edges can be as easy as follows.
-\begin{lstlisting}
+```
 for_each_v(G, f);
 for_each_v(G, [&](Ver v) {...});
 for_each_e(G, f);
 for_each_e(G, [&](Edge e) {...});
 for_each_n(G, [&](Ver n) {...});
-\end{lstlisting}
+```
 in which the variable $f$ is a function which gets an input parameter of a vertex or an edge.
 Also, the other syntax is the lambda function
 from the new C++ functional programming to implement an unnamed function.
