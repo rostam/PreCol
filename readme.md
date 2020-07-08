@@ -158,7 +158,7 @@ in which the input parameters are passed directly to PreCol.
 - doc: The doxygen config file can be found in this directory. The generated html files are available under [Documentation] (https://rostam.github.io/precol/index.html)
 - stats: Python and Matlab scripts to compute the diagrams in Rostami's dissertation
 - src: The preorderings for colorings, the symbolic ILU factorization, some helper functions
-- mats: The sample matrices
+- ExampleMatrices: The sample matrices and its colorings [More...](ExampleMatrices)
 - CMakeLists.txt: The cmake file for the project
 
 
