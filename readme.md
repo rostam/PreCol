@@ -11,15 +11,16 @@
  6. [Reposity Structure](#repo)
  &nbsp;
 
-## Partial Coloring and Preconditioning
+## Partial Coloring
 
 PreCol is developed to implement the proposed coloring heuristics in [[1]](#1) and [[2]](#2).
 
 
 ## Coloring Algorithms
-
-The list of our implemented algorithms are as follows. The only non-bipartite graph model is Algorithm~\ref{CIG} one so far. Except Algorithms~\ref{MaxGain} and ~\ref{MaxDiscovered} all of algorithms are explained in L{\"u}lfesmann's thesis~\cite{phd:luelfesmann} and Rostami's thesis~\cite{phd_rostami}.
-\begin{enumerate}
+Here, we list our implemented coloring algorithms based on four different graph models 
+the simple graph model, the bipartite model graph, 
+the column-intersection graph, and the rho-column intersection graph.
+These graph models are explained in [[1]](#1) and [[2]](#2).
 
 1. CIG: column-intersection graph coloring.
 2. D2Columns: distance-2 coloring for columns (Algorithm 3.1 from [[1]](#1))
@@ -50,6 +51,20 @@ A categorization of these algorithms is given in the following Table:
 One-sided | 1, 2, 3, 13, 14 | 4, 5, 6, 7, 8 
 Two-sided | 9, 10, 11, 12 | 
 
+Coloring(Graph, GraphModel, OneSided/TwoSided, Full/Partial, Algorithm, ordering, RequiredElements, ExtraParameters, Coloring)
+
+
+ Parameter | Possible values | Default value | Mandatory
+----------| ------------ | ------------- | -------
+ Graph | A MTX file format\\Adjacency list format |  MTX format | Yes 
+  GraphModel | Bipartite\\Column-intersection Graph\\Column Gain Graph |  Bipartite | No 
+  OneSided/TwoSided | OneSided\\TwoSided | OneSided | No 
+  Full/Partial | Full\\Partial | Full | No 
+  Algorithm | As in previous table | D2Columns | No 
+  Ordering | NAT\\LFO\\SAT\\AGO | NAT | No 
+  RequiredElements | A list of edges\\Matrix nonzeros | No default value | No 
+  ExtraParameters | Algorithm-specific parameters\\in a JSON format file | No default value | No 
+  Coloring | Coloring results\\Array format | ... | ... 
 
 ## Implementation
 Specifically, the software is designed employing concepts from object-oriented programming
