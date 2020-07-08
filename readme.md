@@ -13,10 +13,7 @@
 
 ## Partial Coloring and Preconditioning
 
-PreCol is developed to implement the proposed coloring heuristics in [[1]](#1).
-[Lülfesmann's dissertation](https://cuvillier.de/de/shop/publications/15-full-and-partial-jacobian-computation-via-graph-coloring-algorithms-and-applications)
-and
-[Rostami's dissertation](https://cuvillier.de/en/shop/publications/7637-combining-partial-jacobian-computation-and-preconditioning-new-heuristics-educational-modules-and-applications).
+PreCol is developed to implement the proposed coloring heuristics in [[1]](#1) and [[2]](#2).
 
 
 ## Coloring Algorithms
@@ -25,24 +22,24 @@ The list of our implemented algorithms are as follows. The only non-bipartite gr
 \begin{enumerate}
 
 1. CIG: column-intersection graph coloring.
-2. D2Columns: distance-2 coloring for columns [Algorithm 3.1]{phd_rostami}
-3. D2Rows: distance-2 coloring for rows \cite[Algorithm 3.1]{phd_rostami}
-4. D2RestrictedColumns: restricted (partial) distance-2 coloring for columns \cite[Algorithm 3.1]{phd_rostami}
-5. D2RestrictedRows: restricted (partial) distance-2 coloring for rows \cite[Algorithm 3.1]{phd_rostami}
-6. D2RestrictedColumnsNonReq: restricted (partial) distance-2 coloring for columns considering non-requirement elements ~\cite[Algorithm 3.2]{phd_rostami}
-    \todo{Difference to \ref{D2RestrictedColumns}?}
-7. PartialD2RestrictedColumnsNonReqDiag: restricted (partial) distance-2 coloring for columns considering diagonal elements~\cite[Algorithm 3.2]{phd_rostami}
-8. D2RestrictedColumnsNonReqBalanced: a balanced version of D2RestrictedColumnsNonReq \cite[Algorithm 3.5 ]{phd_rostami}
-9. SBSchemeCombinedVertexCoverColoring: star bicoloring for two-sided coloring \cite[Algorithm 3.6]{phd_rostami}
-10. SBSchemeCombinedVertexCoverColoringRestricted: restricted (partial) star bicoloring for two-sided coloring~\cite[Algorithm 3.6]{phd_rostami}
-11. SBSchemeCombinedVertexCoverColoringRestrictedNonReq: restricted (partial) star bicoloring for two-sided coloring considering non-requirement elements~\cite[Algorithm 3.7]{phd_rostami}
-12. SBSchemeCombinedVertexCoverColoringRestrictedDiag: restricted (partial) star bicoloring for two-sided coloring considering diagonal elements~\cite[Algorithm 3.8]{phd_rostami}
-13. MaxGain: Graph coloring for maximum gain \cite{2019:03}
-14. MaxDiscovered: Graph coloring for maximum discovered elements \cite{2019:03}
+2. D2Columns: distance-2 coloring for columns (Algorithm 3.1 from [[1]](#1))
+3. D2Rows: distance-2 coloring for rows (Algorithm 3.1 from [[1]](#1))
+4. D2RestrictedColumns: restricted (partial) distance-2 coloring for columns (Algorithm 3.1 from [[1]](#1))
+5. D2RestrictedRows: restricted (partial) distance-2 coloring for rows (Algorithm 3.1 from [[1]](#1))
+6. D2RestrictedColumnsNonReq: restricted (partial) distance-2 coloring for columns considering non-requirement elements (Algorithm 3.2 from [[1]](#1))
+7. PartialD2RestrictedColumnsNonReqDiag: restricted (partial) distance-2 coloring for columns considering diagonal elements (Algorithm 3.2 from [[1]](#1))
+8. D2RestrictedColumnsNonReqBalanced: a balanced version of D2RestrictedColumnsNonReq (Algorithm 3.5 from [[1]](#1))
+9. SBSchemeCombinedVertexCoverColoring: star bicoloring for two-sided coloring (Algorithm 3.6 from [[1]](#1))
+10. SBSchemeCombinedVertexCoverColoringRestricted: restricted (partial) star bicoloring for two-sided coloring (Algorithm 3.6 from [[1]](#1))
+11. SBSchemeCombinedVertexCoverColoringRestrictedNonReq: restricted (partial) star bicoloring for two-sided coloring considering non-requirement elements (Algorithm 3.7 from [[1]](#1))
+12. SBSchemeCombinedVertexCoverColoringRestrictedDiag: restricted (partial) star bicoloring for two-sided coloring considering diagonal elements (Algorithm 3.8 from [[1]](#1))
+13. MaxGain: Graph coloring for maximum gain ([[3]](#3)))
+14. MaxDiscovered: Graph coloring for maximum discovered elements ([[3]](#3))
 
 Other required parameters can be listed as follows,
 - The input matrix can be given in the format of Mtx.
-- All of the mentioned algorithms can be executed with three given pre-orderings NAT (natural ordering), LFO, SAT. Moreover, another pre-ordering called AGO is additionally available only for \ref{MaxGain} and \ref{MaxDiscovered}.
+- All of the mentioned algorithms can be executed with three given pre-orderings NAT (natural ordering), 
+LFO, SAT. Moreover, another pre-ordering called AGO is additionally available only for \ref{MaxGain} and \ref{MaxDiscovered}.
 - Extra parameters can be given which are algorithm-specific.
 
 
@@ -84,7 +81,7 @@ After reading this matrix, we convert it to the different graph models
 like a column intersection graph or a bipartite graph.
 Any resulting matrix like the sparsified matrix will also be saved in this file format.
 
-\textit{PreCol} is developed in \textit{C++} using STL (the standard library) and
+PreCol is developed in C++ using STL (the standard library) and
 the boost library~\cite{boost}.
 Using concepts of functional programming
 in the new C++ release (C++11 and C++14)~\cite{Sutherland2015},
@@ -103,10 +100,9 @@ Also, the other syntax is the lambda function
 from the new C++ functional programming to implement an unnamed function.
 
 Following a unique solution, we implement all parts of our heuristics
-with the use of the standard library of \textit{C++} which also improves the readability.
+with the use of the standard library of C++ which also improves the readability.
 This strategy reduces the code length dramatically.
-Also, the algorithms of the \textit{C++} standard library will automatically be parallel in \textit{C++17}~\cite{parallelcpp}.
-
+Also, the algorithms of the C++ standard library will automatically be parallel in C++20.
 
 To use PreCol, the user needs to specify different
 options for coloring algorithms, orderings, the block size, and so on.
@@ -133,18 +129,18 @@ which is followed by the size of the block. Here, the block size is $30$.
 The next number $2$ specifies the level parameter of ILU.
 The matrix name is the last parameter.
 
-We develop two user interfaces for \textit{PreCol}.
+We develop two user interfaces for PreCol.
 So that it can be called from within MATLAB and GraphTea~\cite{2014:07,2014:15}.
 These user interfaces help to evaluate our proposed heuristics.
-Both interfaces execute the binaries of \textit{PreCol}
-and process the output files generated by \textit{PreCol}.
+Both interfaces execute the binaries of PreCol
+and process the output files generated by PreCol.
 The corresponding commands in both interfaces can be executed by the following parameters,
 ```
 function (Ri,R_p,R_a,Phi) = precol(coloring,
   coloring_ordering,ilu_ordering,block_size,
   ILU_level_parameter,matrix_name,alpha)
 ```
-in which the input parameters are passed directly to \textit{PreCol}.
+in which the input parameters are passed directly to PreCol.
 
 - doc: The doxygen config file, the generated html files are available under https://rostam.github.io/precol/index.html
 - stats: Python and Matlab scripts to compute the diagrams in Rostami's dissertation
@@ -155,11 +151,21 @@ in which the input parameters are passed directly to \textit{PreCol}.
 
 ## References
 <a id="1">[1]</a> 
-Dijkstra, E. W. (1968). 
-Go to statement considered harmful. 
-Communications of the ACM, 11(3), 147-148.
+M. Ali Rostami. Combining partial Jacobian computation and preconditioning: New heuristics, educational modules, 
+and applications.Dissertation, Department of Mathematics and Computer Science, 
+Friedrich Schiller University Jena, Jena, 2017. Also published by Cuvillier Verlag, Göttingen.
+[Online](https://cuvillier.de/en/shop/publications/7637-combining-partial-jacobian-computation-and-preconditioning-new-heuristics-educational-modules-and-applications)
 
 <a id="2">[2]</a> 
-Dijkstra, E. W. (1968). 
-Go to statement considered harmful. 
-Communications of the ACM, 11(3), 147-148.
+M. Lülfesmann, “Full and partial Jacobian computation via graph coloring:
+Algorithms and applications,” Dissertation, Department of Computer Science,
+RWTH Aachen University, 2012. 
+[Online](https://cuvillier.de/de/shop/publications/15-full-and-partial-jacobian-computation-via-graph-coloring-algorithms-and-applications)
+
+<a id="3">[3]</a>
+M. A. Rostami and H. M. Bücker. An inexact combinatorial model for max-
+imizing the number of discovered nonzero entries. In H. M. Bücker, X. S. Li,
+and S. Rajamanickam, editors, 2020 Proceedings of the Ninth SIAM Work-
+shop on Combinatorial Scientific Computing, Seattle, Washington, USA,
+February 11–13, 2020, pages 32–44, Philadelphia, PA, USA, 2020. SIAM.
+[Online](https://doi.org/10.1137/1.9781611976229.4)
