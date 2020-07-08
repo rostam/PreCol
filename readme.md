@@ -56,15 +56,15 @@ Coloring(Graph, GraphModel, OneSided/TwoSided, Full/Partial, Algorithm, ordering
 
  Parameter | Possible values | Default value | Mandatory
 ----------| ------------ | ------------- | -------
- Graph | A MTX file format\\Adjacency list format |  MTX format | Yes 
-  GraphModel | Bipartite\\Column-intersection Graph\\Column Gain Graph |  Bipartite | No 
-  OneSided/TwoSided | OneSided\\TwoSided | OneSided | No 
-  Full/Partial | Full\\Partial | Full | No 
+ Graph | A MTX file format, Adjacency list format |  MTX format | Yes 
+  GraphModel | Bipartite, Column-intersection Graph, Column Gain Graph |  Bipartite | No 
+  OneSided/TwoSided | OneSided, TwoSided | OneSided | No 
+  Full/Partial | Full, Partial | Full | No 
   Algorithm | As in previous table | D2Columns | No 
-  Ordering | NAT\\LFO\\SAT\\AGO | NAT | No 
-  RequiredElements | A list of edges\\Matrix nonzeros | No default value | No 
-  ExtraParameters | Algorithm-specific parameters\\in a JSON format file | No default value | No 
-  Coloring | Coloring results\\Array format | ... | ... 
+  Ordering | NAT, LFO, SAT, AGO | NAT | No 
+  RequiredElements | A list of edges, Matrix nonzeros | No default value | No 
+  ExtraParameters | Algorithm-specific parameters, in a JSON format file | No default value | No 
+  Coloring | Coloring results, Array format | ... | ... 
 
 ## Implementation
 Specifically, the software is designed employing concepts from object-oriented programming
