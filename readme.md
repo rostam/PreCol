@@ -155,11 +155,16 @@ function (Ri,R_p,R_a,Phi) = precol(coloring,
 ```
 in which the input parameters are passed directly to PreCol.
 
-- doc: The doxygen config file can be found in this directory. The generated html files are available under [Documentation] (https://rostam.github.io/precol/index.html)
-- stats: Python and Matlab scripts to compute the diagrams in Rostami's dissertation
-- src: The preorderings for colorings, the symbolic ILU factorization, some helper functions
-- ExampleMatrices: The sample matrices and its colorings [More...](ExampleMatrices)
+- Algorithms: The implementation of different coloring algorithms
+- Graph: The implementation of Graph basic data structures
+- Documentation: The doxygen config file can be found in this directory. The generated html files are available under [Documentation] (https://rostam.github.io/precol/index.html)
+- Statistics: Python and Matlab scripts to compute the diagrams in Rostami's dissertation
+- Orderings: The preorderings for colorings
+- Main: The directory which contians the main function
+- Examples: The sample matrices and its colorings [More...](ExampleMatrices/readme.md)
 - CMakeLists.txt: The cmake file for the project
+- Application: An application in the automatic differentation
+- OtherSources: Other experiments in this direction
 
 
 ## References

@@ -1,4 +1,4 @@
-# Test matrices
+# Examples
 
 ### Column-intersection Graph vs Bipartite Graph
 To understand the bipartite vs column-intersection graph models, 
