@@ -95,6 +95,7 @@ namespace precol {
     static auto lt_degree = [](pair<int, int> t1, pair<int, int> t2) { return t1.second < t2.second; };
 
 /**
+ * \brief Compare degrees
  *
  * @param t1
  * @param t2

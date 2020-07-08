@@ -33,6 +33,11 @@ public:
     virtual bool order(const Graph &G_b, vector<unsigned int> &V, bool restricted)=0;
 };
 
+/**
+ * \brief The natural ordering of the given matrix
+ *
+ * A specific preordering for the coloring algorithm
+ */
 class Nat : public Ordering {
     bool order(const Graph &G_b, vector<unsigned int> &V, bool restricted) { return EXIT_SUCCESS; }
 };
