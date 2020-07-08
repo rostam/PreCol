@@ -14,6 +14,12 @@
 
 static vector<string> ords = {"LFO","SLO","IDO"};
 
+/**
+ * \brief Get coloring and ordering from an input string
+ *
+ * @param col_ord the string value contains both coloring and ordering
+ * @return the ordering
+ */
 static shared_ptr<Ordering> get_color_ordering(const string& col_ord) {
     if(col_ord=="LFO") return shared_ptr<Ordering>(new LFO());
     else if(col_ord=="SLO") return shared_ptr<Ordering>(new SLO());

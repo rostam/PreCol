@@ -8,6 +8,9 @@
 #include "../Graph/datatypes.hpp"
 #include "Ordering.h"
 
+/**
+ * \brief A specific preordering for the coloring
+ */
 class IDO : public Ordering {
     bool order(const Graph &G_b, vector<unsigned int> &V, bool restricted) {
         //Degree (second.first) and incident degree (second.second)

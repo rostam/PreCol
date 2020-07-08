@@ -7,6 +7,11 @@
 
 #include "Ordering.h"
 
+/**
+ * \brief Least First Ordering
+ *
+ * A specific preordering for the coloring
+ */
 class LFO : public Ordering {
     bool order(const Graph &G_b, vector<unsigned int> &V, bool restricted) {
         list<pair<int, int> > VertexDegree;

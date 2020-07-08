@@ -8,6 +8,11 @@
 
 #include "Ordering.h"
 
+/**
+ * \brief A specific preordering for the coloring
+ *
+ * A specific preordering for the coloring
+ */
 class SLO : public Ordering {
     bool order(const Graph &G_b, vector<unsigned int> &V, bool restricted) {
         if (restricted) return order_restricted(G_b, V);
