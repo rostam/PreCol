@@ -140,7 +140,7 @@ function (Ri,R_p,R_a,Phi) = precol(coloring,
 ```
 in which the input parameters are passed directly to PreCol.
 
-- doc: The doxygen config file, the generated html files are available under https://rostam.github.io/precol/index.html
+- doc: The doxygen config file can be found in this directory. The generated html files are available under [Documentation] (https://rostam.github.io/precol/index.html)
 - stats: Python and Matlab scripts to compute the diagrams in Rostami's dissertation
 - src: The preorderings for colorings, the symbolic ILU factorization, some helper functions
 - mats: The sample matrices
