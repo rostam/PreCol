@@ -9,10 +9,10 @@
 #include "../Graph/datatypes.hpp"
 #include "../Graph/neighbors.hpp"
 
-#include "IndSet.h"
-class ISetVariant : public IndSet{
+#include "IndependentSet.h"
+class ISetVariant : public IndependentSet{
 public:
-	using IndSet::IndSet;
+	using IndependentSet::IndependentSet;
     vector<int> compute()
     {
         vector<int> IS;

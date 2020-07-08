@@ -33,7 +33,7 @@ protected:
     vector<unsigned int> V_c; //!< The set of column vertices
     vector<unsigned int> V_r; //!< The set of row vertices
     Graph &G_b;
-    shared_ptr<IndSet> ind_set;
+    shared_ptr<IndependentSet> ind_set;
     bool restricted;
     map<string, boost::any> pars;
 
@@ -80,17 +80,17 @@ public:
         //Compute independent set
         if (restricted) {
             if (any_cast<int>(pars["Mode"]) == 1) {
-                ind_set = shared_ptr<IndSet>(new ISetRestricted(G_b, V_r, V_c, any_cast<int>(pars["Mode2"])));
+                ind_set = shared_ptr<IndependentSet>(new ISetRestricted(G_b, V_r, V_c, any_cast<int>(pars["Mode2"])));
             } else if (any_cast<int>(pars["Mode"]) == 2) {
-                ind_set = shared_ptr<IndSet>(
+                ind_set = shared_ptr<IndependentSet>(
                         new ISetVariantRestricted(G_b, V_r, V_c, any_cast<int>(pars["Mode"]) / 2.0));
             }
         } else {
             if (boost::any_cast<int>(pars["Mode"]) == 1) {
-                ind_set = shared_ptr<IndSet>(
+                ind_set = shared_ptr<IndependentSet>(
                         new ISet(G_b, V_r, V_c, any_cast<int>(pars["Mode2"]))); //ISet = IS_Coleman(G_b,V_r,V_c);
             } else {
-                ind_set = shared_ptr<IndSet>(new ISetVariant(G_b, V_r, V_c, any_cast<int>(pars["Mode"]) / 2.0));
+                ind_set = shared_ptr<IndependentSet>(new ISetVariant(G_b, V_r, V_c, any_cast<int>(pars["Mode"]) / 2.0));
             }
         }
     };

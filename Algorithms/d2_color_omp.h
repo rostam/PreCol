@@ -9,6 +9,7 @@
 
 /**
  * \brief Compute a distance-2 coloring of a bipartite graph G_b
+ * (parallel OpenMP version)
  *
  * It can be also restricted to some required edges if the
  * restricted value is equal to true

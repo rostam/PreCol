@@ -5,7 +5,10 @@
 #include "GreedyColoringSimpleGraph.h"
 #include "boost/graph/sequential_vertex_coloring.hpp"
 
-
+/**
+ * Coloring algorithm
+ * @return the number of colors
+ */
 int GreedyColoringSimpleGraph::color() {
     Graph &g = G_b;
     typedef graph_traits<Graph>::vertices_size_type vertices_size_type;

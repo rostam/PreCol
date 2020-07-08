@@ -8,7 +8,7 @@
 #include "../Graph/datatypes.hpp"
 #include "../Graph/neighbors.hpp"
 
-#include "IndSet.h"
+#include "IndependentSet.h"
 
 struct has_weight_equal_to {
     has_weight_equal_to(int w_, Graph& g_) : w(w_), g(g_) { }
@@ -19,9 +19,9 @@ struct has_weight_equal_to {
     Graph& g;
 };
 
-class ISetVariantRestricted : public IndSet{
+class ISetVariantRestricted : public IndependentSet{
 public:
-	using IndSet::IndSet;
+	using IndependentSet::IndependentSet;
 
     vector<int> compute()
     {

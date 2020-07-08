@@ -7,10 +7,10 @@
 #include "boost/graph/graph_utility.hpp"
 #include "boost/graph/filtered_graph.hpp"
 #include "../Graph/datatypes.hpp"
-#include "IndSet.h"
-class ISetRestricted : public IndSet{
+#include "IndependentSet.h"
+class ISetRestricted : public IndependentSet{
 public:
-	using IndSet::IndSet;
+	using IndependentSet::IndependentSet;
 
     vector<int> compute() {
         vector<int> IS;

@@ -12,11 +12,11 @@
 #include "../Graph/datatypes.hpp"
 #include "../Graph/Mtx2Graph.hpp"
 #include "../Orderings/orderings.h"
-#include "../Algs/algs.h"
+#include "../Algorithms/algorithms.h"
 #include "../Graph/sparsify.h"
 #include "../Graph/ConvertGraph.hpp"
 
-#include "../Algs/IndSet.h"
+#include "../Algorithms/IndependentSet.h"
 
 BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
 
