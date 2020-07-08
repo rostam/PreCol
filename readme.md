@@ -3,7 +3,7 @@
 
 ![PreCol](doc/images/image.png)
  
- 1. [Partial Coloring and Preconditioning](#precol)
+ 1. [Partial Coloring](#precol)
  2. [Coloring Algorithms](#colalg)
  3. [Implementation](#implementation)  
  4. [Usages](#usage) 
@@ -82,10 +82,8 @@ like a column intersection graph or a bipartite graph.
 Any resulting matrix like the sparsified matrix will also be saved in this file format.
 
 PreCol is developed in C++ using STL (the standard library) and
-the boost library~\cite{boost}.
-Using concepts of functional programming
-in the new C++ release (C++11 and C++14)~\cite{Sutherland2015},
-we provide different functions which can be used
+the Boost library. Using concepts of functional programming in the new C++ release (C++11 and C++14),
+we provide different functions which can be used 
 by a developer to work on graphs. For example, the iteration on vertices
 or edges can be as easy as follows.
 ```

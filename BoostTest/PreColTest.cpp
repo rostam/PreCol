@@ -16,7 +16,9 @@
 #include "../Graph/sparsify.h"
 #include "../Graph/ConvertGraph.hpp"
 
-BOOST_AUTO_TEST_SUITE(GeneratorsTestSuite)
+#include "../Algs/IndSet.h"
+
+BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
 
     BOOST_AUTO_TEST_CASE(ArrowShapedTest) {
         std::string alg = "D2Columns";
@@ -192,5 +194,8 @@ BOOST_AUTO_TEST_SUITE(GeneratorsTestSuite)
         BOOST_CHECK_EQUAL(entries_pattern, 6);
         num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 3);
+    }
+    BOOST_AUTO_TEST_CASE(IndependentSet) {
+
     }
 BOOST_AUTO_TEST_SUITE_END()

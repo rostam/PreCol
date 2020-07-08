@@ -6,7 +6,6 @@ let's consider the arrow shaped matrix, in which the first row,
 the first column and the main diagonal are filled with nonzero
 elements and the other elements are zeros.
 
-
 ![ArrowShapedCIG](arrow_shaped_cig.png)
 ![ArrowShapedBipartite](arrow_shaped_bipartite.png)
 
