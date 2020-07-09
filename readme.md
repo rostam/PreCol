@@ -49,7 +49,7 @@ A categorization of these algorithms is given in the following Table:
   --      | Full         | Partial 
 ----------| ------------ | -------------
 One-sided | 1, 2, 3, 13, 14 | 4, 5, 6, 7, 8 
-Two-sided | 9, 10, 11, 12 | 
+Two-sided | 9 | 10, 11, 12 
 
 Coloring(Graph, GraphModel, OneSided/TwoSided, Full/Partial, Algorithm, ordering, RequiredElements, ExtraParameters, Coloring)
 
