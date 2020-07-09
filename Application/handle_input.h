@@ -39,7 +39,8 @@ tuple<string,shared_ptr<Ordering>,string,int,int,string,int, int,string, int>
 
     string alg = argv[1];
     if (find(algs.begin(), algs.end(), alg) == algs.end()) {
-        cout << "\nThe first argument must be the Coloring algorithm:";
+        cout << "\nThe first argument '" << alg <<
+                "' must be a coloring algorithm from the following list:\n";
         copy(algs.begin(), algs.end(), ostream_iterator<string>(cout, "|"));
         cout << endl;
         return make_tuple("", nullptr,"",0,0,"",0, 0,"",0);

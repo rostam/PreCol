@@ -14,7 +14,7 @@
 #include "StarBicoloringVertexCoverNonReq.h"
 #include "GreedyColoringSimpleGraph.h"
 
-static vector<string> algs = {"D2Columns", "D2Rows", "GreedyColoring"
+static vector<string> algs = {"D2Columns", "D2Rows", "GreedyColoring",
                        "D2RestrictedColumns", "D2RestrictedRows",
                        "D2RestrictedColumnsNonReq",
                        "PartialD2RestrictedColumnsNonReqDiag",
