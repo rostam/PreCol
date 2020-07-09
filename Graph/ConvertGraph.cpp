@@ -1,4 +1,23 @@
-//#include "ConvertGraph.hpp"
+#include "ConvertGraph.hpp"
+#include "neighbors.hpp"
+
+/**
+ * Convert Bipartite Graph to Column Intersection Graph
+ *
+ * @param G_b
+ * @param V_c
+ * @param ColumnIntersectionGraph
+ * @return
+ */
+bool BipartiteToColumnIntersectionGraph(const Graph& G_b, const vector<unsigned int>& V_c, Graph& ColumnIntersectionGraph) {
+    for_each(V_c.begin(),V_c.end(),[&](unsigned int vc){
+        vector<unsigned int> N_2 = neighbors::Distance2Neighbors(G_b, vc);
+        for_each(N_2.begin(),N_2.end(),[&](unsigned int n2){
+            add_edge(vc - V_c.size(), n2 - V_c.size(), 1, ColumnIntersectionGraph);
+        });
+    });
+    return EXIT_SUCCESS;
+}
 //#include "neighbors.hpp"
 //
 //

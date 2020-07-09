@@ -103,7 +103,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         mm.MtxToBipGraph(G_b, 1);
         property_map<Graph, edge_weight_t>::type weight = get(edge_weight, G_b);
         Graph G_CIG;
-        BipartiteToCIG(G_b, V_c, G_CIG);
+        BipartiteToColumnIntersectionGraph(G_b, V_c, G_CIG);
         BOOST_CHECK_EQUAL(num_vertices(G_CIG), 6);
         BOOST_CHECK_EQUAL(num_edges(G_CIG), 15);
 
