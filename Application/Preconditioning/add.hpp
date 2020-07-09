@@ -2,6 +2,8 @@
 #define ADDREQELEMENTS_HPP
 
 #include "../../Graph/datatypes.hpp"
+#include "../../Graph/Mtx2Graph.hpp"
+
 /**
  * \brief Computes the additionally required elements
  *

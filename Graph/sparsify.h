@@ -8,7 +8,18 @@
 #include <sstream>
 
 enum KindOfSparsify { Custom, Diagonal, BlockDiagonal, Full };
-
+std::map<KindOfSparsify, std::string> KindOfSparsifyToString = {
+        {Full, "Full"},
+        {BlockDiagonal, "BlockDiagonal"},
+        {Diagonal, "Diagonal"},
+        {Custom, "Custom"}
+};
+std::map<std::string, KindOfSparsify> StringToKindOfSparsify = {
+        {"Full", Full},
+        {"BlockDiagonal", BlockDiagonal},
+        {"Diagonal", Diagonal},
+        {"Custom", Custom}
+};
 
 /**
  * \brief Sparsify a given bipartite graph
@@ -30,7 +41,7 @@ static int sparsifier(Graph& G_b, KindOfSparsify sparsify, int nrows, int blockS
         put(name, e, "n");
     });
 
-    int entries_pattern = 0;
+     int entries_pattern = 0;
     if (sparsify == Custom) {
         std::ifstream in(custom);
         std::string line;

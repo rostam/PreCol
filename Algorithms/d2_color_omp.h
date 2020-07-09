@@ -49,7 +49,7 @@ public:
             forbiddenColors[0] = v;
             if (neighbors::IncidentToReqEdge(G_b, v)) {
                 //Get the distance-2 neighbors
-                N_2 = neighbors::N_2restricted(G_b, v);
+                N_2 = neighbors::Distance2NeighborsRestricted(G_b, v);
                 //Iterate over distance-2 neighbors
                 for_each(N_2.begin(), N_2.end(), [&](unsigned int n_2) {
                     //Mark colors which are used by distance-2 neighbors in forbiddenColors
@@ -116,7 +116,7 @@ public:
             for(unsigned int k = 0;k<V.size();k++) {
                 vector<unsigned int> N_2;
                 //Get the distance-2 neighbors
-                N_2 = neighbors::N_2restricted(G_b, V[k]);
+                N_2 = neighbors::Distance2NeighborsRestricted(G_b, V[k]);
                 for_each(N_2.begin(), N_2.end(), [&](unsigned int n_2) {
                     if(get(vertex_color, G_b, n_2) == get(vertex_color, G_b, V[k])) {
                         cout << "what";
