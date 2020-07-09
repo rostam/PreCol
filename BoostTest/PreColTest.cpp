@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         BOOST_CHECK_EQUAL(mm.nnz(), 16);
         Graph G_b(2 * mm.nrows());
         //Add edges to graph
-        mm.MtxToBipGraph(G_b);
+        mm.MtxToBipGraph(G_b, 0);
         BOOST_CHECK_EQUAL(num_vertices(G_b), 12);
         BOOST_CHECK_EQUAL(num_edges(G_b), 16);
         vector<unsigned int> V_r, V_c;
@@ -129,7 +129,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         BOOST_CHECK_EQUAL(mm.nnz(), 17);
         Graph G_b(2 * mm.nrows());
         //Add edges to graph
-        mm.MtxToBipGraph(G_b);
+        mm.MtxToBipGraph(G_b,0);
         BOOST_CHECK_EQUAL(num_vertices(G_b), 12);
         BOOST_CHECK_EQUAL(num_edges(G_b), 17);
         vector<unsigned int> V_r, V_c;
@@ -170,7 +170,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         BOOST_CHECK_EQUAL(mm.nnz(), 16);
         Graph G_b(2 * mm.nrows());
         //Add edges to graph
-        mm.MtxToBipGraph(G_b);
+        mm.MtxToBipGraph(G_b, 0);
         BOOST_CHECK_EQUAL(num_vertices(G_b), 12);
         BOOST_CHECK_EQUAL(num_edges(G_b), 16);
         vector<unsigned int> V_r, V_c;
