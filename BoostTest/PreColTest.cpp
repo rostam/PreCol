@@ -29,7 +29,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         KindOfSparsify sparsify = Full;
         int blockSize = 30, el = 2, Mode = 0, Mode2 = 0, alpha = 10;
         auto input = make_tuple(alg, col_ord_c, pre_ord, Mode, Mode2, sparsify, blockSize, el, filename, alpha);
-        matrix_market mm(filename.c_str());
+        MatrixMarket mm(filename.c_str());
         BOOST_CHECK_EQUAL(mm.nrows(), 6);
         BOOST_CHECK_EQUAL(mm.issym(), 1);
         BOOST_CHECK_EQUAL(mm.nnz(), 16);
@@ -123,7 +123,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         KindOfSparsify sparsify = Full;
         int blockSize = 30, el = 2, Mode = 0, Mode2 = 0, alpha = 10;
         auto input = make_tuple(alg, col_ord_c, pre_ord, Mode, Mode2, sparsify, blockSize, el, filename, alpha);
-        matrix_market mm(filename.c_str());
+        MatrixMarket mm(filename.c_str());
         BOOST_CHECK_EQUAL(mm.nrows(), 6);
         BOOST_CHECK_EQUAL(mm.issym(), 0);
         BOOST_CHECK_EQUAL(mm.nnz(), 17);
@@ -164,7 +164,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         KindOfSparsify sparsify = Full;
         int blockSize = 30, el = 2, Mode = 0, Mode2 = 0, alpha = 10;
         auto input = make_tuple(alg, col_ord_c, pre_ord, Mode, Mode2, sparsify, blockSize, el, filename, alpha);
-        matrix_market mm(filename.c_str());
+        MatrixMarket mm(filename.c_str());
         BOOST_CHECK_EQUAL(mm.nrows(), 6);
         BOOST_CHECK_EQUAL(mm.issym(), 0);
         BOOST_CHECK_EQUAL(mm.nnz(), 16);

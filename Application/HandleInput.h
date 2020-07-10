@@ -2,8 +2,8 @@
 // Created by rostam on 05.08.16.
 //
 
-#ifndef PRECOL_HANDLE_INPUT_H
-#define PRECOL_HANDLE_INPUT_H
+#ifndef PRECOL_HANDLEINPUT_H
+#define PRECOL_HANDLEINPUT_H
 #include "../Graph/datatypes.hpp"
 #include <tuple>
 /**
@@ -13,8 +13,7 @@
  * @param argv the actual arguments
  * @return tuple<algorithm, col_ord,ilu_ord, mode, sparsify, block_size, level_ilu, matrix>
  */
-tuple<string,shared_ptr<Ordering>,string,int,int,string,int, int,string, int>
-    get_input_pars(int argc, char* argv[]) {
+tuple<string,shared_ptr<Ordering>,string,int,int,string,int, int,string, int> GetInputParametersForApplication(int argc, char **argv) {
     vector<string> iset = {"Best", "Variant"};
     vector<string> pats = {"Full", "Diagonal", "BlockDiagonal"};
     cout << fixed << setprecision(4);
@@ -78,9 +77,9 @@ tuple<string,shared_ptr<Ordering>,string,int,int,string,int, int,string, int>
     int el = atoi(argv[7]);
     int alpha = atoi(argv[8]);
     string filename;
-    filename.insert(0, argv[argc - 1]);
+    filename.insert(0, argv[6]);
 
     return make_tuple(alg,col_ord_c,pre_ord,Mode,Mode2,sparsify, blockSize, el,filename,alpha);
 }
 
-#endif //PRECOL_HANDLE_INPUT_H
+#endif //PRECOL_HANDLEINPUT_H

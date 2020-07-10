@@ -13,7 +13,7 @@
  * @param F the fillin matrix
  * @return the list of positions of additionally required elements
  */
-vector<pair<int,int>> addReqElementsMat(matrix_market& P, matrix_market& F) {
+vector<pair<int,int>> addReqElementsMat(MatrixMarket& P, MatrixMarket& F) {
     vector<pair<int,int>> ret;
     for (int k = 0; k < P.nz; k++) {
         bool violation = false;

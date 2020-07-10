@@ -12,7 +12,7 @@
  * @param n the number of columns
  * @param directed is directed or not
  */
-matrix_market::matrix_market(vector<pair<int, int>> mat, int m, int n, bool directed) {
+MatrixMarket::MatrixMarket(vector<pair<int, int>> mat, int m, int n, bool directed) {
     nz = mat.size();
     mm_set_matrix(&matcode);
     mm_set_sparse(&matcode);
@@ -41,7 +41,7 @@ matrix_market::matrix_market(vector<pair<int, int>> mat, int m, int n, bool dire
  * @param n the number of cols
  * @return
  */
-matrix_market::matrix_market(Graph &G, int m, int n) {
+MatrixMarket::MatrixMarket(Graph &G, int m, int n) {
     nz = num_edges(G) + num_vertices(G);
     mm_set_matrix(&matcode);
     mm_set_sparse(&matcode);
@@ -79,7 +79,7 @@ matrix_market::matrix_market(Graph &G, int m, int n) {
  * @param n the number of cols
  * @return
  */
-matrix_market::matrix_market(Graph &G_b, string tag, int m, int n, bool bipartite) {
+MatrixMarket::MatrixMarket(Graph &G_b, string tag, int m, int n, bool bipartite) {
     nz = (int) count_if(edges(G_b).first, edges(G_b).second, [&](Edge e) {
         return get(edge_name, G_b, e) == tag;
     });
@@ -124,7 +124,7 @@ matrix_market::matrix_market(Graph &G_b, string tag, int m, int n, bool bipartit
  * @param filename the name of file
  * @return true if it works correctly
  */
-bool matrix_market::writeToFile(char *filename) {
+bool MatrixMarket::writeToFile(char *filename) {
     const int size = nz;
     double val[size];
     fill(val, val + size, 1);
@@ -138,7 +138,7 @@ bool matrix_market::writeToFile(char *filename) {
  * @param filename the name of the matrix file with format mtx
  * @return
  */
-matrix_market::matrix_market(const char *filename) {
+MatrixMarket::MatrixMarket(const char *filename) {
     int ret_code;
     FILE *file;
     int i;
@@ -196,7 +196,7 @@ matrix_market::matrix_market(const char *filename) {
  * @param G_b the result matrix
  * @return the bipartite graph as an input parameter
  */
-bool matrix_market::MtxToBipGraph(Graph &G_b, int initial_edge_weight) {
+bool MatrixMarket::MtxToBipGraph(Graph &G_b, int initial_edge_weight) {
     if (mm_is_symmetric(matcode)) {
 // add the edges to the graph object
         for (int i = 0; i < nz; ++i) {
@@ -222,7 +222,7 @@ bool matrix_market::MtxToBipGraph(Graph &G_b, int initial_edge_weight) {
  * @param initial_edge_weight the initial weight of all edges
  * @return The generated column intersection graph as an input parameter
  */
-bool matrix_market::MtxToColumnIntersectionGraph(Graph &G_CIG, int initial_edge_weight) {
+bool MatrixMarket::MtxToColumnIntersectionGraph(Graph &G_CIG, int initial_edge_weight) {
     G_CIG = Graph(ncols());
 
     for (int i = 0; i < ncols(); i++) {
@@ -255,7 +255,7 @@ bool matrix_market::MtxToColumnIntersectionGraph(Graph &G_CIG, int initial_edge_
  * @param G_ilu the output graph
  * @return
  */
-bool matrix_market::MtxToILUGraph(Graph &G_ilu) {
+bool MatrixMarket::MtxToILUGraph(Graph &G_ilu) {
     if (mm_is_symmetric(matcode)) {
         // add the edges to the graph object
         for (int i = 0; i < nz; ++i) {

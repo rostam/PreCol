@@ -6,21 +6,21 @@
 #endif
 
 /** 
- * \struct matrix_market
+ * \struct MatrixMarket
  * \brief Convert graph of input file (MM format) to internal 
  * data representation
  *
  * This procedure opens a input file. This file contains a matrix in
  * MM-format. This matrix is converted into the interal data structure.
  */
-struct matrix_market {
-    matrix_market(const char *filename);
+struct MatrixMarket {
+    MatrixMarket(const char *filename);
 
-    matrix_market(Graph &G, int m, int n);
+    MatrixMarket(Graph &G, int m, int n);
 
-    matrix_market(Graph &G_b, string tag, int m, int n, bool ispartite);
+    MatrixMarket(Graph &G_b, string tag, int m, int n, bool ispartite);
 
-    matrix_market(vector<pair<int, int>> mat, int m, int n, bool directed);
+    MatrixMarket(vector<pair<int, int>> mat, int m, int n, bool directed);
 
     bool MtxToBipGraph(Graph& G_b, int initial_edge_weight);
 
@@ -30,7 +30,7 @@ struct matrix_market {
 
     bool writeToFile(char *filename);
 
-    ~matrix_market() {
+    ~MatrixMarket() {
         free(I);
         free(J);
     }

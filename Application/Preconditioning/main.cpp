@@ -15,29 +15,18 @@
 #include "SILU.h"
 #include "../../Algorithms/algorithms.h"
 #include "../../Graph/sparsify.h"
-#include "../handle_input.h"
+#include "../HandleInput.h"
 //#include "../../Algorithms/exact_coloring.h"
 int main(int argc, char* argv[]) {
+    auto [alg, ColoringOrdering, PreconditioningOrdering, Mode, Mode2, sparsify, BlockSize, EliminationParameter, MatrixFileName, Alpha]
+         = GetInputParametersForApplication(argc, argv);
+
     clock_t start, end;
     start = clock();
     int rows = 0;
     int entries = 0;
-    auto input = get_input_pars(argc, argv);
-    if(get<0>(input).empty() ) return -1;
-    //tuple<string,shared_ptr<Ordering>,string,int,string,int, int,string>
-    string alg = get<0>(input);
-    shared_ptr<Ordering> order = get<1>(input);
-    string pre_ord = get<2>(input);
-    int Mode = get<3>(input);
-    int Mode2 = get<4>(input);
-    string sparsify = get<5>(input);
-    int blockSize = get<6>(input);
-    int el = get<7>(input);
-    string filename = get<8>(input);
-    int alpha = get<9>(input);
-
     //Initialize mm-object (matrixmarket)
-    matrix_market mm(filename.c_str());
+    MatrixMarket mm(MatrixFileName.c_str());
     mysymmetric = mm.issym();
 
     //Initialize graph-object (boost)
@@ -51,8 +40,8 @@ int main(int argc, char* argv[]) {
     Graph G_c;
     BipartiteToColumnIntersectionGraph(G_b,V_c,G_c);
 
-    //  graph2dot(G_b);
-//    cerr << "Matrix:_" << argv[1] << endl;
+      graph2dot(G_b);
+////    cerr << "Matrix:_" << argv[1] << endl;
     rows = num_vertices(G_b) / 2;
     entries = num_edges(G_b);
     cout << "Rows:_" << rows << endl;
@@ -62,14 +51,14 @@ int main(int argc, char* argv[]) {
     //Initialize required pattern
     //If edge e \in E_S then edge_property edge_weight=1 else
     //edge_weight=0
-    int entries_pattern = sparsifier(G_b, StringToKindOfSparsify[sparsify], mm.nrows(),blockSize, "");
+    int entries_pattern = sparsifier(G_b, StringToKindOfSparsify[sparsify], mm.nrows(), BlockSize, "");
     cout << "Entries_pattern:_" << entries_pattern << endl;
 //    cout << "Density_pattern:_" << double(entries_pattern) / rows * 100 << endl;
 //    cout << "Mode:_" << Mode << endl;
 
-    generate_order(alg, order, G_b, V_r, V_c);
+    generate_order(alg, ColoringOrdering, G_b, V_r, V_c);
     //Coloring of the vertices
-    int cols = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, order, alpha) -> color();
+    int cols = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, ColoringOrdering, Alpha) -> color();
 
 //    cout << "Row Colors:_" << cols.first << endl;
 //    cout << "Column Colors:_" << cols.second << endl;
@@ -84,13 +73,13 @@ int main(int argc, char* argv[]) {
 
     //int pot = potentialRequiredNonzerosD2(G_b, edge_ordering);
     int pot = potentialRequiredNonzerosSB(G_b, edge_ordering);
-    matrix_market mm_p(G_b,"p",V_c.size(),V_r.size(),true);
+    MatrixMarket mm_p(G_b, "p", V_c.size(), V_r.size(), true);
     mm_p.writeToFile((char *) "pot.mtx");
 
-    SILU silu(G_b, pre_ord);
-    int fillin = silu.getFillinMinDeg(el);
+    SILU silu(G_b, PreconditioningOrdering);
+    int fillin = silu.getFillinMinDeg(EliminationParameter);
 
-    matrix_market mm_f(silu.G_ilu,"f",V_c.size(),V_r.size(),false);
+    MatrixMarket mm_f(silu.G_ilu, "f", V_c.size(), V_r.size(), false);
     mm_f.writeToFile((char *) "F.mtx");
 
     Graph G_b2(mm.nrows()*2);
@@ -145,7 +134,7 @@ int main(int argc, char* argv[]) {
         ++cnt_loop_addReqElements;
     } while(num_addReqElements_cur>0);
 
-    matrix_market mm_NP(G_b3,"np",V_c.size(),V_r.size(),true);
+    MatrixMarket mm_NP(G_b3, "np", V_c.size(), V_r.size(), true);
     mm_NP.writeToFile((char *) "req_f.mtx");
 
 //    cout << "additionally weak:  " << num_edges(G_b3) << " "
@@ -154,18 +143,18 @@ int main(int argc, char* argv[]) {
 //
 //    vector<pair<int,int>> ret = addReqElementsMat(mm_p, mm_NP);
 //    cout << "Additionally Matrix Version:" << ret.size() << endl;
-//    matrix_market mm_amat(ret,V_c.size(),V_c.size(),false);
+//    MatrixMarket mm_amat(ret,V_c.size(),V_c.size(),false);
 //    mm_amat.writeToFile((char *) "add_mat.mtx");
     int add = num_addReqElements;
 //    int add = addReqElements(G_b, edge_ordering2);
 
-    matrix_market mm_a(G_b2,"a",V_c.size(),V_r.size(),true);
+    MatrixMarket mm_a(G_b2, "a", V_c.size(), V_r.size(), true);
     mm_a.writeToFile((char *) "add.mtx");
 
-    matrix_market mm_a2(G_b3,"a",V_c.size(),V_r.size(),true);
+    MatrixMarket mm_a2(G_b3, "a", V_c.size(), V_r.size(), true);
     mm_a2.writeToFile((char *) "add2.mtx");
 
-    matrix_market mm_r(G_b,"r",V_c.size(),V_r.size(),true );
+    MatrixMarket mm_r(G_b, "r", V_c.size(), V_r.size(), true );
     mm_r.writeToFile((char *) "req.mtx");
     //graph2dot(G_ilu);
     cout << "Potentially Required:_" << pot << endl;
