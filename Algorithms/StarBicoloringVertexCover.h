@@ -120,17 +120,17 @@ public:
 
                         forbiddenColors[0] = *v;
 
-                        for_each_n (G_b, *v, [&](Ver w){
+                        ForEachNeighbor(G_b, *v, [&](Ver w) {
                             if (get(vertex_color, G_b, w) <= 0) {
-                                for_each_n(G_b, w, [&](Ver x) {
+                                ForEachNeighbor(G_b, w, [&](Ver x) {
                                     if (get(vertex_color, G_b, x) > 0) {
                                         forbiddenColors[get(vertex_color, G_b, x)] = *v;
                                     }
                                 });
                             } else { //Color[w]>0
-                                for_each_n(G_b, w, [&](Ver x) {
+                                ForEachNeighbor(G_b, w, [&](Ver x) {
                                     if (get(vertex_color, G_b, x) > 0) {
-                                        for_each_n(G_b, x, [&](Ver y) {
+                                        ForEachNeighbor(G_b, x, [&](Ver y) {
                                             if (get(vertex_color, G_b, y) > 0) {
                                                 if (get(vertex_color, G_b, w) == get(vertex_color, G_b, y) &&
                                                     w != y) {

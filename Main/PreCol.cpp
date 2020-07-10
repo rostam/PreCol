@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
     vector<unsigned int> V_r, V_c;
     Graph G_ilu(mm.nrows());
     //Add vertices to graph
-    for_each_v(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
+    ForEachVertex(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
     //Add edges to graph
     mm.MtxToBipGraph(G_b, 1);
     Graph G_c;

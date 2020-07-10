@@ -43,7 +43,7 @@ namespace precol {
      * @param func
      */
     template<typename Lambda>
-    void for_each_v(Graph &g, Lambda func) {
+    void ForEachVertex(Graph &g, Lambda func) {
         V_iter vi, vi_end;
         tie(vi, vi_end) = vertices(g);
         std::for_each(vi, vi_end, func);
@@ -57,7 +57,7 @@ namespace precol {
      * @param func
      */
     template<typename Lambda>
-    static void for_each_v_const(const Graph& g, Lambda func) {
+    static void ForEachVertexConst(const Graph& g, Lambda func) {
         V_iter vi, vi_end;
         tie(vi, vi_end) = vertices(g);
         std::for_each(vi,vi_end,func);
@@ -71,7 +71,7 @@ namespace precol {
      * @param func
      */
     template<typename Lambda>
-    void for_each_e(Graph &g, Lambda func) {
+    void ForEachEdge(Graph &g, Lambda func) {
         E_iter ei, ei_end;
         tie(ei, ei_end) = edges(g);
         std::for_each(ei, ei_end, func);
@@ -85,7 +85,7 @@ namespace precol {
      * @param func
      */
     template<typename Lambda>
-    static void for_each_e_const(Graph& g, Lambda func) {
+    static void ForEachEdgeConst(Graph& g, Lambda func) {
         E_iter ei, ei_end;
         tie(ei, ei_end) = edges(g);
         std::for_each(ei,ei_end,func);
@@ -154,7 +154,7 @@ namespace precol {
     * @param func
     */
     template<typename Lambda>
-    void for_each_n(Graph &g, const Ver &v, Lambda func) {
+    void ForEachNeighbor(Graph &g, const Ver &v, Lambda func) {
         auto av = adjacent_vertices(v, g);
         std::for_each(av.first, av.second, func);
     }
@@ -170,10 +170,10 @@ namespace precol {
      * \todo
      */
     template<typename Lambda>
-    void for_each_2n(int v, Lambda func) {
+    void ForEachDistance2Neighbor(int v, Lambda func) {
         std::set<int> tmp;
-        for_each_n(v, [&](Ver a) {
-            for_each_n(v, [&](Ver a2) {
+        ForEachNeighbor(v, [&](Ver a) {
+            ForEachNeighbor(v, [&](Ver a2) {
                 if (v != a2)
                     tmp.insert(a2);
             });

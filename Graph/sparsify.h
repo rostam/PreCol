@@ -36,7 +36,7 @@ static int sparsifier(Graph& G_b, KindOfSparsify sparsify, int nrows, int blockS
     property_map<Graph, edge_name_t>::type name = get(edge_name, G_b);
 
     //init
-    for_each_e(G_b, [&](Edge e) {
+    ForEachEdge(G_b, [&](Edge e) {
         put(weight, e, 0);
         put(name, e, "n");
     });
@@ -66,7 +66,7 @@ static int sparsifier(Graph& G_b, KindOfSparsify sparsify, int nrows, int blockS
         return entries_pattern;
     }
 
-    for_each_e(G_b, [&](Edge e) {
+    ForEachEdge(G_b, [&](Edge e) {
         if (sparsify == Diagonal) {
             if (source(e, G_b) + nrows == target(e, G_b)) {
                 put(weight, e, 1);

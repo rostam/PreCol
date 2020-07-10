@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
     vector<unsigned int> V_r, V_c;
     Graph G_ilu(mm.nrows());
     //Add vertices to graph
-    for_each_v(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
+    ForEachVertex(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
     //Add edges to graph
     mm.MtxToBipGraph(G_b, 1);
     Graph G_c;
@@ -76,7 +76,7 @@ int main(int argc, char *argv[]) {
 
     Graph G_b2(mm.nrows() * 2);
     Graph G_b3(mm.nrows() * 2);
-    for_each_e(G_b, [&](Edge e) {
+    ForEachEdge(G_b, [&](Edge e) {
         if (get(edge_name, G_b, e) == "p") {
             Ver src = source(e, G_b);
             Ver tgt = target(e, G_b);
@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
             put(edge_name, G_b2, edge(src, tgt, G_b2).first, "p");
         }
     });
-    for_each_e(silu.G_ilu, [&](Edge e) {
+    ForEachEdge(silu.G_ilu, [&](Edge e) {
         Ver src = source(e, silu.G_ilu);
         Ver tgt = target(e, silu.G_ilu);
         add_edge(src, tgt + V_c.size(), G_b2);
@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
         put(edge_weight, G_b2, edge(tgt, src + V_c.size(), G_b2).first, 3);
 
     });
-    for_each_e(silu.G_ilu, [&](Edge e) {
+    ForEachEdge(silu.G_ilu, [&](Edge e) {
         Ver src = source(e, silu.G_ilu);
         Ver tgt = target(e, silu.G_ilu);
         add_edge(src, tgt + V_c.size(), G_b3);

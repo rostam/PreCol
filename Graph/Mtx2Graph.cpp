@@ -94,7 +94,7 @@ MatrixMarket::MatrixMarket(Graph &G_b, string tag, int m, int n, bool bipartite)
     I = (unsigned int *) malloc(nz * sizeof(unsigned int));
     J = (unsigned int *) malloc(nz * sizeof(unsigned int));
     int cnt = 0;
-    for_each_e(G_b, [&](Edge e) {
+    ForEachEdge(G_b, [&](Edge e) {
         if (get(edge_name, G_b, e) == tag) {
             int src = source(e, G_b);
             int tgt = target(e, G_b);

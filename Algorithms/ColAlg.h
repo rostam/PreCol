@@ -108,7 +108,7 @@ public:
      */
     int num_colors() {
         int max_color = 0;
-        for_each_v(G_b, [&](Ver v) {
+        ForEachVertex(G_b, [&](Ver v) {
             int color = get(vertex_color, G_b, v);
             if (max_color < color)
                 max_color = color;
@@ -122,7 +122,7 @@ public:
      * @param value the given value
      */
     void set_all_colors_to(int value) {
-        for_each_v_const(G_b, [&](Ver v) {
+        ForEachVertexConst(G_b, [&](Ver v) {
             boost::put(vertex_color, G_b, v, value);
         });
     }

@@ -32,9 +32,9 @@ public:
         vector<unsigned int> N_2;
         vector<unsigned int> forbiddenColors(num_vertices(G_b), -1);
         //All edges in E_S have edge_weight=1; otherwise edge_weight=0
-        for_each_e(G_b, [&](Edge e){
-            if(get(edge_weight, G_b, e) == 1) {
-                unsigned int v = source(e,G_b);
+        ForEachEdge(G_b, [&](Edge e) {
+            if (get(edge_weight, G_b, e) == 1) {
+                unsigned int v = source(e, G_b);
                 N_2 = neighbors::Distance2NeighborsRestricted(G_b, v);
                 forbiddenColors[0] = v;
                 //Iterate over distance-2 neighbors
@@ -49,10 +49,10 @@ public:
                 vector<unsigned int>::iterator result = find_if(forbiddenColors.begin(), forbiddenColors.end(),
                                                                 bind1st(not_equal_to<int>(), v));
 
-                int col1= distance(forbiddenColors.begin(), result);
+                int col1 = distance(forbiddenColors.begin(), result);
 ///////////////////////////////////////////////////////////////////////////////////////
 
-                v = target(e,G_b);
+                v = target(e, G_b);
                 N_2 = neighbors::Distance2NeighborsRestricted(G_b, v);
                 forbiddenColors[0] = v;
                 //Iterate over distance-2 neighbors
@@ -65,16 +65,16 @@ public:
 
                 //Find first color which can be assigned to v
                 result = find_if(forbiddenColors.begin(), forbiddenColors.end(),
-                                                                bind1st(not_equal_to<int>(), v));
+                                 bind1st(not_equal_to<int>(), v));
 
 
-                int col2= distance(forbiddenColors.begin(), result);
+                int col2 = distance(forbiddenColors.begin(), result);
 //                cerr << source(e,G_b) << " " << target(e,G_b) <<  " ";
 //                cerr << col1 << " " << col2 << endl;
-             //   Color v
+                //   Color v
 //                int random_ = rand()%100;
-                if(col1 < col2) put(color, source(e,G_b), col1);
-                else put(color, target(e,G_b), col2);
+                if (col1 < col2) put(color, source(e, G_b), col1);
+                else put(color, target(e, G_b), col2);
             }
         });
         return num_colors();

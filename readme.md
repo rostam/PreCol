@@ -102,11 +102,12 @@ we provide different functions which can be used
 by a developer to work on graphs. For example, the iteration on vertices
 or edges can be as easy as follows.
 ```
-for_each_v(G, f);
-for_each_v(G, [&](Ver v) {...});
-for_each_e(G, f);
-for_each_e(G, [&](Edge e) {...});
-for_each_n(G, [&](Ver n) {...});
+ForEachVertex(G, f);
+ForEachVertex(G, [&](Ver v) {...});
+ForEachEdge(G, f);
+ForEachEdge(G, [&](Edge e) {...});
+ForEachNeighbor(G, f);
+ForEachNeighbor(G, [&](Ver n) {...});
 ```
 in which the variable $f$ is a function which gets an input parameter of a vertex or an edge.
 Also, the other syntax is the lambda function

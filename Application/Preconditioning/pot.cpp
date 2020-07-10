@@ -41,7 +41,7 @@ int potentialRequiredNonzerosD2(Graph& G_b, const vector<graph_traits<Graph>::ed
     }
 
     int counter = 0;
-    for_each_e(G_b, [&](Edge e) { if (get(edge_name, G_b, e) == "p") counter++; });
+    ForEachEdge(G_b, [&](Edge e) { if (get(edge_name, G_b, e) == "p") counter++; });
     return counter;
 }
 

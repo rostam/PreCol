@@ -39,7 +39,7 @@
  */
 SILU::SILU(Graph& G_b, const string& pre_ord) : G_ilu(num_vertices(G_b)/2) {
     int m = num_vertices(G_b) / 2;
-    for_each_e(G_b, [&](Edge e) {
+    ForEachEdge(G_b, [&](Edge e) {
         if (get(edge_name, G_b, e) == "r") {
             int src = source(e, G_b);
             int tgt = target(e, G_b);
@@ -61,12 +61,12 @@ SILU::SILU(Graph& G_b, const string& pre_ord) : G_ilu(num_vertices(G_b)/2) {
 //        getMetisOrdering2(G_ilu,"graph", order);
     } else if(pre_ord == "Min") {
         list<pair<int, int> > VertexDegree;
-        for_each_v(G_ilu,[&](Ver v) {
+        ForEachVertex(G_ilu, [&](Ver v) {
             vector<int> ns;
-            for_each(adjacent_vertices(v,G_ilu).first,adjacent_vertices(v,G_ilu).second,[&](Ver nv){
+            for_each(adjacent_vertices(v, G_ilu).first, adjacent_vertices(v, G_ilu).second, [&](Ver nv) {
                 ns.push_back(nv);
             });
-            VertexDegree.push_back(make_pair(v,ns.size()));
+            VertexDegree.push_back(make_pair(v, ns.size()));
         });
         VertexDegree.sort(ge_degree);
         for (list<pair<int, int>>::iterator i = VertexDegree.begin();
@@ -117,9 +117,9 @@ int SILU::getFillinMinDeg(int el) {
         ILUOneStep(g, i, el);
     });
     int counter = 0;
-    for_each_e(g,[&](Edge e) {
-        if(get(edge_name,g,e) == "f") {
-            int diff = source(e,g) - target(e,g);
+    ForEachEdge(g, [&](Edge e) {
+        if (get(edge_name, g, e) == "f") {
+            int diff = source(e, g) - target(e, g);
             counter++;
         }
     });

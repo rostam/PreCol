@@ -40,7 +40,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         BOOST_CHECK_EQUAL(num_vertices(G_b), 12);
         BOOST_CHECK_EQUAL(num_edges(G_b), 16);
         vector<unsigned int> V_r, V_c;
-        for_each_v(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
+        ForEachVertex(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
         BOOST_CHECK_EQUAL(V_r.size(), 6);
         BOOST_CHECK_EQUAL(V_c.size(), 6);
         int entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, "");
@@ -133,7 +133,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         BOOST_CHECK_EQUAL(num_vertices(G_b), 12);
         BOOST_CHECK_EQUAL(num_edges(G_b), 17);
         vector<unsigned int> V_r, V_c;
-        for_each_v(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
+        ForEachVertex(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
         BOOST_CHECK_EQUAL(V_r.size(), 6);
         BOOST_CHECK_EQUAL(V_c.size(), 6);
         int entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, "");
@@ -173,7 +173,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         BOOST_CHECK_EQUAL(num_vertices(G_b), 12);
         BOOST_CHECK_EQUAL(num_edges(G_b), 16);
         vector<unsigned int> V_r, V_c;
-        for_each_v(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
+        ForEachVertex(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
         BOOST_CHECK_EQUAL(V_r.size(), 6);
         BOOST_CHECK_EQUAL(V_c.size(), 6);
         int entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, "");
