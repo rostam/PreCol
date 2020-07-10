@@ -1,4 +1,4 @@
-#include "output_graph.hpp"
+#include "GraphOutput.hpp"
 
 /**
  * \brief create the vcg format file from the given graph

@@ -9,7 +9,7 @@
 //#include "../../Algs/kClique.hpp"
 #include "../../Orderings/orderings.h"
 //#include "../../Algorithms/d2_color_omp.h"
-#include "../../Graph/output_graph.hpp"
+#include "../../Graph/GraphOutput.hpp"
 #include "pot.hpp"
 #include "add.hpp"
 #include "SILU.h"

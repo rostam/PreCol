@@ -7,7 +7,7 @@
 #include "../Graph/datatypes.hpp"
 #include "../Graph/ConvertGraph.hpp"
 #include "../Orderings/orderings.h"
-#include "../Graph/output_graph.hpp"
+#include "../Graph/GraphOutput.hpp"
 #include "../Algorithms/algorithms.h"
 #include "../Graph/sparsify.h"
 #include "../InputOutput/HandleInputOutput.h"
