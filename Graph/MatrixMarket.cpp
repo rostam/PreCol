@@ -20,9 +20,10 @@ MatrixMarket::MatrixMarket(vector<pair<int, int>> mat, int m, int n, bool direct
     else
         mm_set_symmetric(&matcode);
     mm_set_pattern(&matcode);
-/* reseve memory for matrices */
-    I = (unsigned int *) malloc(nz * sizeof(unsigned int));
-    J = (unsigned int *) malloc(nz * sizeof(unsigned int));
+
+    I = vector<int>(nz);
+    J = vector<int>(nz);
+
     M = m;
     N = n;
     int cnt = 0;
@@ -50,9 +51,9 @@ MatrixMarket::MatrixMarket(Graph &G, int m, int n) {
     } else
         mm_set_symmetric(&matcode);
     mm_set_pattern(&matcode);
-/* reseve memory for matrices */
-    I = (unsigned int *) malloc(nz * sizeof(unsigned int));
-    J = (unsigned int *) malloc(nz * sizeof(unsigned int));
+
+    I = vector<int>(nz);
+    J = vector<int>(nz);
 
     int cnt = 0;
     for (E_iter e = edges(G).first; e != edges(G).second; e++) {
@@ -60,11 +61,13 @@ MatrixMarket::MatrixMarket(Graph &G, int m, int n) {
         J[cnt] = target(*e, G) + 1;
         cnt++;
     }
+
     int edge_cnt = num_edges(G);
     for (int i = 0; i < num_vertices(G); i++) {
         I[edge_cnt + i] = i + 1;
         J[edge_cnt + i] = i + 1;
     }
+
     M = m;
     N = n;
 }
@@ -90,9 +93,8 @@ MatrixMarket::MatrixMarket(Graph &G_b, string tag, int m, int n, bool bipartite)
     } else
         mm_set_symmetric(&matcode);
     mm_set_pattern(&matcode);
-/* reseve memory for matrices */
-    I = (unsigned int *) malloc(nz * sizeof(unsigned int));
-    J = (unsigned int *) malloc(nz * sizeof(unsigned int));
+    I = vector<int>(nz);
+    J = vector<int>(nz);
     int cnt = 0;
     ForEachEdge(G_b, [&](Edge e) {
         if (get(edge_name, G_b, e) == tag) {
@@ -128,7 +130,7 @@ bool MatrixMarket::writeToFile(char *filename) {
     const int size = nz;
     double val[size];
     fill(val, val + size, 1);
-    mm_write_mtx_crd(filename, M, N, nz, (int *) I, (int *) J, val, matcode);
+    mm_write_mtx_crd(filename, M, N, nz, &I[0], &J[0], val, matcode);
     return true;
 }
 
@@ -167,8 +169,8 @@ MatrixMarket::MatrixMarket(const char *filename) {
         exit(1);
 
     /* reseve memory for matrices */
-    I = (unsigned int *) malloc(nz * sizeof(unsigned int));
-    J = (unsigned int *) malloc(nz * sizeof(unsigned int));
+    I = vector<int>(nz);
+    J = vector<int>(nz);
 
     if (mm_is_pattern(matcode)) {
         for (i = 0; i < nz; i++) {
@@ -177,14 +179,12 @@ MatrixMarket::MatrixMarket(const char *filename) {
             J[i]--;
         }
     } else {
-        double *val;
-        val = (double *) malloc(nz * sizeof(double));
+        val = vector<double>(nz);
         for (i = 0; i < nz; i++) {
             fscanf(file, "%u %u %lg\n", &I[i], &J[i], &val[i]);
             I[i]--;  /* adjust from 1-based to 0-based */
             J[i]--;
         }
-        free(val);
     }
 
     if (file != stdin) fclose(file);
@@ -273,5 +273,27 @@ bool MatrixMarket::MtxToILUGraph(Graph &G_ilu) {
         }
     }
     return EXIT_SUCCESS;
+}
+
+/**
+ * \brief return the bipartite graph generated from the matrix
+ *
+ * @param G_b the result matrix
+ * @return
+ */
+boost::numeric::ublas::matrix<double> MatrixMarket::ToUblasMatrix() {
+    boost::numeric::ublas::matrix<double> m = boost::numeric::ublas::zero_matrix<double>(M, N);
+    if (mm_is_symmetric(matcode)) {
+        for (int i = 0; i < nz; ++i) {
+            m(I[i], J[i]) = val[i];
+            m(J[i], I[i]) = val[i];
+        }
+    } else {
+        for (int i = 0; i < nz; ++i) {
+            m(I[i], J[i]) = val[i];
+        }
+    }
+
+    return m;
 }
 

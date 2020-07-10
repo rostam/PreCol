@@ -3,6 +3,8 @@
 
 #include "datatypes.hpp"
 #include "mmio.h"
+#include <boost/numeric/ublas/matrix.hpp>
+#include <boost/numeric/ublas/io.hpp>
 #endif
 
 /** 
@@ -28,12 +30,11 @@ struct MatrixMarket {
 
     bool MtxToILUGraph(Graph &G_ilu);
 
+    boost::numeric::ublas::matrix<double> ToUblasMatrix();
+
     bool writeToFile(char *filename);
 
-    ~MatrixMarket() {
-        free(I);
-        free(J);
-    }
+//    ~MatrixMarket() {}
 
     inline unsigned int nrows() const { return M; }
 
@@ -46,7 +47,9 @@ struct MatrixMarket {
     int M;
     int N;
     int nz;
-    unsigned int *I;
-    unsigned int *J;
+
+    vector<int> I,J;
+    vector<double> val;
+
     MM_typecode matcode;
 };
