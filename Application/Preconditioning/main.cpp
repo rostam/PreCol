@@ -28,7 +28,6 @@ int main(int argc, char *argv[]) {
 
     clock_t start, end;
     start = clock();
-    int rows = 0;
 
     //Initialize mm-object (matrixmarket)
     MatrixMarket mm(MatrixFileName.c_str());
