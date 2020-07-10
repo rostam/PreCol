@@ -8,13 +8,13 @@
 #include <sstream>
 
 enum KindOfSparsify { Custom, Diagonal, BlockDiagonal, Full };
-std::map<KindOfSparsify, std::string> KindOfSparsifyToString = {
+static std::map<KindOfSparsify, std::string> KindOfSparsifyToString = {
         {Full, "Full"},
         {BlockDiagonal, "BlockDiagonal"},
         {Diagonal, "Diagonal"},
         {Custom, "Custom"}
 };
-std::map<std::string, KindOfSparsify> StringToKindOfSparsify = {
+static std::map<std::string, KindOfSparsify> StringToKindOfSparsify = {
         {"Full", Full},
         {"BlockDiagonal", BlockDiagonal},
         {"Diagonal", Diagonal},
@@ -29,7 +29,7 @@ std::map<std::string, KindOfSparsify> StringToKindOfSparsify = {
  * @param nrows Number of rows
  * @param blockSize Block size
  * @param custom File name for reading the custom sparsification
- * @return
+ * @return Number of remaining nonzero elements
  */
 static int sparsifier(Graph& G_b, KindOfSparsify sparsify, int nrows, int blockSize, std::string custom) {
     property_map<Graph, edge_weight_t>::type weight = get(edge_weight, G_b);

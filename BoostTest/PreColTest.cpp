@@ -9,12 +9,14 @@
 #include <iostream>
 #include <ctime>
 #include <iomanip>
+#include <memory>
 #include "../Graph/datatypes.hpp"
 #include "../Graph/Mtx2Graph.hpp"
 #include "../Orderings/orderings.h"
 #include "../Algorithms/algorithms.h"
 #include "../Graph/sparsify.h"
 #include "../Graph/ConvertGraph.hpp"
+#include <memory>
 
 #include "../Algorithms/IndependentSet.h"
 
@@ -23,12 +25,11 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
     BOOST_AUTO_TEST_CASE(ArrowShapedTest) {
         std::string alg = "D2Columns";
         std::string col_ord = "LFO";
-        shared_ptr<Ordering> col_ord_c = get_color_ordering(col_ord);
+        unique_ptr<Ordering> col_ord_c = GetColoringOrder(col_ord);
         std::string pre_ord = "Nat";
         std::string filename = "ExampleMatrices/arrow-shaped.mtx";
         KindOfSparsify sparsify = Full;
         int blockSize = 30, el = 2, Mode = 0, Mode2 = 0, alpha = 10;
-        auto input = make_tuple(alg, col_ord_c, pre_ord, Mode, Mode2, sparsify, blockSize, el, filename, alpha);
         MatrixMarket mm(filename.c_str());
         BOOST_CHECK_EQUAL(mm.nrows(), 6);
         BOOST_CHECK_EQUAL(mm.issym(), 1);
@@ -116,13 +117,12 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
     BOOST_AUTO_TEST_CASE(ArrowShapedPlusOneTest) {
         std::string alg = "D2Columns";
         std::string col_ord = "LFO";
-        shared_ptr<Ordering> col_ord_c = get_color_ordering(col_ord);
+        unique_ptr<Ordering> col_ord_c = GetColoringOrder(col_ord);
         std::string pre_ord = "Nat";
         std::string filename = "ExampleMatrices/arrow-shaped_plus_one.mtx";
         std::string custom_required_pattern = "ExampleMatrices/custom_required_pattern1";
         KindOfSparsify sparsify = Full;
         int blockSize = 30, el = 2, Mode = 0, Mode2 = 0, alpha = 10;
-        auto input = make_tuple(alg, col_ord_c, pre_ord, Mode, Mode2, sparsify, blockSize, el, filename, alpha);
         MatrixMarket mm(filename.c_str());
         BOOST_CHECK_EQUAL(mm.nrows(), 6);
         BOOST_CHECK_EQUAL(mm.issym(), 0);
@@ -158,12 +158,11 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
     BOOST_AUTO_TEST_CASE(ArrowShapedPlusOneMinusOneTest) {
         std::string alg = "D2Columns";
         std::string col_ord = "LFO";
-        shared_ptr<Ordering> col_ord_c = get_color_ordering(col_ord);
+        unique_ptr<Ordering> col_ord_c = GetColoringOrder(col_ord);
         std::string pre_ord = "Nat";
         std::string filename = "ExampleMatrices/arrow-shaped_plus_one_minus_one.mtx";
         KindOfSparsify sparsify = Full;
         int blockSize = 30, el = 2, Mode = 0, Mode2 = 0, alpha = 10;
-        auto input = make_tuple(alg, col_ord_c, pre_ord, Mode, Mode2, sparsify, blockSize, el, filename, alpha);
         MatrixMarket mm(filename.c_str());
         BOOST_CHECK_EQUAL(mm.nrows(), 6);
         BOOST_CHECK_EQUAL(mm.issym(), 0);

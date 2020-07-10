@@ -20,11 +20,11 @@ static vector<string> ords = {"LFO","SLO","IDO"};
  * @param col_ord the string value contains both coloring and ordering
  * @return the ordering
  */
-static shared_ptr<Ordering> get_color_ordering(const string& col_ord) {
-    if(col_ord=="LFO") return shared_ptr<Ordering>(new LFO());
-    else if(col_ord=="SLO") return shared_ptr<Ordering>(new SLO());
-    else if(col_ord=="IDO") return shared_ptr<Ordering>(new IDO());
-    else if(col_ord=="Nat") return shared_ptr<Ordering>(new Nat());
+static unique_ptr<Ordering> GetColoringOrder(const string& col_ord) {
+    if(col_ord=="LFO") return make_unique<LFO>();
+    else if(col_ord=="SLO") return make_unique<SLO>();
+    else if(col_ord=="IDO") return make_unique<IDO>();
+    else if(col_ord=="Nat") return make_unique<Nat>();
 }
 
 
@@ -39,8 +39,8 @@ static shared_ptr<Ordering> get_color_ordering(const string& col_ord) {
  *
  * \return void
  */
-static void generate_order(const string &alg, shared_ptr<Ordering> ord, const Graph &G_b,
-                    vector<unsigned int> &V_r, vector<unsigned int> &V_c) {
+static void ApplyColoringOrder(const string &alg, unique_ptr<Ordering>& ord, const Graph &G_b,
+                               vector<unsigned int> &V_r, vector<unsigned int> &V_c) {
     ord->order(G_b, V_r, alg.find("Restricted") != string::npos);
     ord->order(G_b, V_c, alg.find("Restricted") != string::npos);
 }

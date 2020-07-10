@@ -39,7 +39,7 @@ static vector<string> algs = {"D2Columns", "D2Rows", "GreedyColoring",
 static shared_ptr<ColAlg> getAlg(int Mode2, const string &alg,
                                  int Mode, Graph &G_b, vector<unsigned int> &V_r,
                                  vector<unsigned int> &V_c,
-                                 shared_ptr<Ordering> order, int alpha) {
+                                 unique_ptr<Ordering>& order, int alpha) {
     if (alg == "D2Columns") {
         return shared_ptr<ColAlg>(new OneSidedD2Coloring(G_b, V_c, false));
     } else if (alg == "D2Rows") {

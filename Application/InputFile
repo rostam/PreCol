@@ -1,0 +1,33 @@
+# PreCol_Application 1.0
+# This file is the input file to PreCol for the application in automatic differentiation/preconditioning.
+# Coloring Algorithm [Ordering][Independent Set][Rho][Pattern][Blocksize] Matrix
+# Algorithm: |D2Columns|D2Rows|GreedyColoring|D2RestrictedColumns|D2RestrictedRows|D2RestrictedColumnsNonReq|
+#   PartialD2RestrictedColumnsNonReqDiag|D2RestrictedColumnsNonReqBalanced|D2RestrictedRows|
+#   SBSchemeCombinedVertexCoverColoring|SBSchemeCombinedVertexCoverColoringRestricted|
+#   SBSchemeCombinedVertexCoverColoringRestrictedNonReq|
+# Ordering: |LFO|SLO|IDO|
+# Independent Set: |Best|Variant|
+# Rho [1|1.5..]
+# Pattern: |Full|Diagonal|BlockDiagonal|CUSTOM
+# Blocksize integer
+# Preconditioning Level parameter
+
+# D2RestrictedColumns LFO_Nat Best BlockDiagonal 30 2 ExampleMatrices/FloridaSparseMatrixCollection/ex33.mtx 1 1
+
+MATRIX = ExampleMatrices/FloridaSparseMatrixCollection/ex33.mtx
+COLORING_ALGORITHM = D2RestrictedColumns
+COLORING_ORDERING = LFO
+
+### SPARSIFIFCATION
+KIND_OF_SPARSIFICATION = BlockDiagonal
+BLOCK_SIZE = 30
+
+### INDEPENDENT_SET
+INDEPENDENT_SET_ALGORITHM = BEST
+ALPHA_FOR_BALANCED_COLORING = 1
+RHO_FOR_INDEPENDENT_SET_ALGORITHM = 1
+
+### PRECONDITIONING
+PRECONDITIONING_ORDERING = NAT
+PRECONDITIONING_ELIMINATION_LEVEL_PARAMETER = 2
+
