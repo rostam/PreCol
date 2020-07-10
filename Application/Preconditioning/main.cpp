@@ -15,7 +15,7 @@
 #include "SILU.h"
 #include "../../Algorithms/algorithms.h"
 #include "../../Graph/sparsify.h"
-#include "../HandleInputOutput.h"
+#include "../../InputOutput/HandleInputOutput.h"
 
 //#include "../../Algorithms/exact_coloring.h"
 int main(int argc, char *argv[]) {
