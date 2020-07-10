@@ -11,7 +11,7 @@
 #include "../Algorithms/algorithms.h"
 #include "../Graph/sparsify.h"
 #include "../InputOutput/HandleInputOutput.h"
-#include "../Graph/Mtx2Graph.hpp"
+#include "../Graph/MatrixMarket.hpp"
 
 //#include "../../Algorithms/exact_coloring.h"
 int main(int argc, char *argv[]) {

@@ -2,7 +2,7 @@
 // Created by rostam on 09.07.20.
 //
 
-#include "Mtx2Graph.hpp"
+#include "MatrixMarket.hpp"
 
 /**
  * \brief Constructor for making matrix from list of edges

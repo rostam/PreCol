@@ -11,7 +11,7 @@
 #include <iomanip>
 #include <memory>
 #include "../Graph/datatypes.hpp"
-#include "../Graph/Mtx2Graph.hpp"
+#include "../Graph/MatrixMarket.hpp"
 #include "../Orderings/orderings.h"
 #include "../Algorithms/algorithms.h"
 #include "../Graph/sparsify.h"
