@@ -2,12 +2,13 @@
 // Created by rostam on 05.08.16.
 //
 
-#ifndef PRECOL_HANDLEINPUT_H
-#define PRECOL_HANDLEINPUT_H
+#ifndef PRECOL_HANDLEINPUTOUTPUT_H
+#define PRECOL_HANDLEINPUTOUTPUT_H
 #include "../Graph/datatypes.hpp"
 #include "../Orderings/Ordering.h"
 #include "../Graph/sparsify.h"
 #include <tuple>
+#include <fstream>
 
 
 /**
@@ -17,7 +18,7 @@
  * @param argv the actual arguments
  * @return tuple<algorithm, col_ord,ilu_ord, mode, sparsify, block_size, level_ilu, matrix>
  */
-tuple<string, string, unique_ptr<Ordering>&&, KindOfSparsify, int, string, int, string, int, int, int>
+tuple<string, string, unique_ptr<Ordering>, KindOfSparsify, int, string, int, string, int, int, int>
 GetInputParametersForApplication(std::string FileName);
 
 /**
@@ -30,4 +31,6 @@ GetInputParametersForApplication(std::string FileName);
 tuple<string,shared_ptr<Ordering>,string,int,int,string,int, int,string, int>
 GetInputParametersForApplication(int argc, char **argv);
 
-#endif //PRECOL_HANDLEINPUT_H
+void write_csv_line(std::ofstream& outfile, vector<string>&& v);
+
+#endif //PRECOL_HANDLEINPUTOUTPUT_H

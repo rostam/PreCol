@@ -3,7 +3,7 @@
 //
 
 
-#include "HandleInput.h"
+#include "HandleInputOutput.h"
 #include <fstream>
 #include <sstream>
 #include <algorithm>
@@ -35,7 +35,7 @@ bool ExtractValueOfParameter(string NameOfParameter, string& line) {
                       EliminationParameter, IndependentSetAlgorithm, AlphaForBalancedColoring, Mode, Mode2>
  *
  */
-tuple<string, string, unique_ptr<Ordering>&&, KindOfSparsify, int, string, int, string, int, int, int>
+tuple<string, string, unique_ptr<Ordering>, KindOfSparsify, int, string, int, string, int, int, int>
 GetInputParametersForApplication(std::string FileName) {
 //    vector<string> iset = {"Best", "Variant"};
     ifstream InFile(FileName);
@@ -168,4 +168,12 @@ tuple<string,shared_ptr<Ordering>,string,int,int,string,int, int,string, int> Ge
     filename.insert(0, argv[6]);
 
     return make_tuple(alg,col_ord_c,pre_ord,Mode,Mode2,sparsify, blockSize, el,filename,alpha);
+}
+
+void write_csv_line(std::ofstream& outfile, vector<string>&& v) {
+    for(int i=0;i < v.size();i++) {
+        outfile << v[i];
+        if(i != v.size() - 1) outfile << ",";
+        else outfile << "\n";
+    }
 }

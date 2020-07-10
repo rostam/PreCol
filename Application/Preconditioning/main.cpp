@@ -15,7 +15,7 @@
 #include "SILU.h"
 #include "../../Algorithms/algorithms.h"
 #include "../../Graph/sparsify.h"
-#include "../HandleInput.h"
+#include "../HandleInputOutput.h"
 
 //#include "../../Algorithms/exact_coloring.h"
 int main(int argc, char *argv[]) {
@@ -29,7 +29,6 @@ int main(int argc, char *argv[]) {
     clock_t start, end;
     start = clock();
     int rows = 0;
-    int NumberOfEdgesOfBipartiteGraph = 0;
 
     //Initialize mm-object (matrixmarket)
     MatrixMarket mm(MatrixFileName.c_str());
@@ -47,29 +46,16 @@ int main(int argc, char *argv[]) {
     BipartiteToColumnIntersectionGraph(G_b, V_c, G_c);
 
     graph2dot(G_b);
-    cout << "Matrix: " << argv[1] << endl;
-    rows = num_vertices(G_b) / 2;
-    NumberOfEdgesOfBipartiteGraph = num_edges(G_b);
-    cout << "Number of rows: " << mm.nrows() << endl;
-    cout << "Number of columns: " << mm.ncols() << endl;
-    cout << "Number of edges of bipartite graph (nonzero elements of matrix): " << NumberOfEdgesOfBipartiteGraph << endl;
-    //cout << "Density:_" << (NumberOfEdgesOfBipartiteGraph * 100) / pow(double(rows), 2) << endl;
 
     //Initialize required pattern
     //If edge e \in E_S then edge_property edge_weight=1 else
     //edge_weight=0
     int NumOfRemainedNonzeros = sparsifier(G_b, SparsificationKind, mm.nrows(), BlockSize, "");
-    cout << "Number of remained nonzeros: " << NumOfRemainedNonzeros << endl;
-//    cout << "Density_pattern:_" << double(NumOfRemainedNonzeros) / rows * 100 << endl;
-//    cout << "Mode:_" << Mode << endl;
 
-    ApplyColoringOrder(ColoringAlgorithm, ColoringOrder, G_b, V_r, V_c);
+    ColoringOrder->order(G_b, V_r, ColoringAlgorithm.find("Restricted") != string::npos);
+//    ApplyColoringOrder(ColoringAlgorithm, ColoringOrder, G_b, V_r, V_c);
     //Coloring of the vertices
     int cols = getAlg(Mode2, ColoringAlgorithm, Mode, G_b, V_r, V_c, ColoringOrder, AlphaForBalancedColoring)->color();
-
-//    cout << "Row Colors:_" << cols.first << endl;
-//    cout << "Column Colors:_" << cols.second << endl;
-    cout << "All Colors:_" << cols << endl;
     end = clock();
     //all edges A - \Rinit
     vector<Edge> edge_ordering;
@@ -144,12 +130,12 @@ int main(int argc, char *argv[]) {
     MatrixMarket mm_NP(G_b3, "np", V_c.size(), V_r.size(), true);
     mm_NP.writeToFile((char *) "req_f.mtx");
 
-//    cout << "additionally weak:  " << num_edges(G_b3) << " "
+//    OutputFile << "additionally weak:  " << num_edges(G_b3) << " "
 //         << addReqElementsWeak(G_b3,edge_ordering3) << " "
 //         << edge_ordering3.size()<< endl;
 //
 //    vector<pair<int,int>> ret = addReqElementsMat(mm_p, mm_NP);
-//    cout << "Additionally Matrix Version:" << ret.size() << endl;
+//    OutputFile << "Additionally Matrix Version:" << ret.size() << endl;
 //    MatrixMarket mm_amat(ret,V_c.size(),V_c.size(),false);
 //    mm_amat.writeToFile((char *) "add_mat.mtx");
     int add = num_addReqElements;
@@ -164,10 +150,16 @@ int main(int argc, char *argv[]) {
     MatrixMarket mm_r(G_b, "r", V_c.size(), V_r.size(), true);
     mm_r.writeToFile((char *) "req.mtx");
     //graph2dot(G_ilu);
-    cout << "Potentially Required:_" << pot << endl;
-    cout << "Additionally Required:_" << add << " " << endl;
-    cout << "Fillin (symm):_" << fillin * 2 << endl;
-    cout << "Time:_" << (end - start) / double(CLOCKS_PER_SEC) << endl;
+    ofstream OutputFile("OutputFile");
+    write_csv_line(OutputFile, {"Matrix","NumOfRows","NumOfColumns","KindOfSparsification","BlockSize",
+                                "NumOfRemainedNonzeros", "NumOfColors", "NumOfPotentiallyRequiredElements",
+                                "NumOfAdditionallyRequiredElements", "Fillins","Time"});
+    write_csv_line(OutputFile, {MatrixFileName, std::to_string(mm.nrows()), std::to_string(mm.ncols()),
+                                KindOfSparsifyToString[SparsificationKind],
+                                std::to_string(BlockSize), std::to_string(NumOfRemainedNonzeros),
+                                std::to_string(cols), std::to_string(pot),
+                                std::to_string(add), std::to_string(fillin*2),
+                                std::to_string((end - start) / double(CLOCKS_PER_SEC))});
     return EXIT_SUCCESS;
 }
 

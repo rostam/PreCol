@@ -25,6 +25,7 @@ static unique_ptr<Ordering> GetColoringOrder(const string& col_ord) {
     else if(col_ord=="SLO") return make_unique<SLO>();
     else if(col_ord=="IDO") return make_unique<IDO>();
     else if(col_ord=="Nat") return make_unique<Nat>();
+    return make_unique<LFO>();
 }
 
 
