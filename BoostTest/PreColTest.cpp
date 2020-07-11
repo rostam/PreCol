@@ -24,9 +24,9 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
 
     BOOST_AUTO_TEST_CASE(ArrowShapedTest) {
         std::string alg = "D2Columns";
-        std::string col_ord = "LFO";
+        std::string col_ord = "LargestFirstOrderingDegrees";
         unique_ptr<Ordering> col_ord_c = GetColoringOrder(col_ord);
-        std::string pre_ord = "NAT";
+        std::string pre_ord = "NaturalOrdering";
         std::string filename = "ExampleMatrices/arrow-shaped.mtx";
         KindOfSparsify sparsify = Full;
         int blockSize = 30, el = 2, Mode = 0, Mode2 = 0, alpha = 10;
@@ -116,9 +116,9 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
 
     BOOST_AUTO_TEST_CASE(ArrowShapedPlusOneTest) {
         std::string alg = "D2Columns";
-        std::string col_ord = "LFO";
+        std::string col_ord = "LargestFirstOrderingDegrees";
         unique_ptr<Ordering> col_ord_c = GetColoringOrder(col_ord);
-        std::string pre_ord = "NAT";
+        std::string pre_ord = "NaturalOrdering";
         std::string filename = "ExampleMatrices/arrow-shaped_plus_one.mtx";
         std::string custom_required_pattern = "ExampleMatrices/custom_required_pattern1";
         KindOfSparsify sparsify = Full;
@@ -157,9 +157,9 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
 
     BOOST_AUTO_TEST_CASE(ArrowShapedPlusOneMinusOneTest) {
         std::string alg = "D2Columns";
-        std::string col_ord = "LFO";
+        std::string col_ord = "LargestFirstOrderingDegrees";
         unique_ptr<Ordering> col_ord_c = GetColoringOrder(col_ord);
-        std::string pre_ord = "NAT";
+        std::string pre_ord = "NaturalOrdering";
         std::string filename = "ExampleMatrices/arrow-shaped_plus_one_minus_one.mtx";
         KindOfSparsify sparsify = Full;
         int blockSize = 30, el = 2, Mode = 0, Mode2 = 0, alpha = 10;

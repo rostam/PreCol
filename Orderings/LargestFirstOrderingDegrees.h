@@ -2,17 +2,19 @@
 // Created by rostam on 19.07.16.
 //
 
-#ifndef PRECOL_LFO_H
-#define PRECOL_LFO_H
+#ifndef PRECOL_LARGESTFIRSTORDERINGDEGREES_H
+#define PRECOL_LARGESTFIRSTORDERINGDEGREES_H
 
 #include "Ordering.h"
 
 /**
- * \brief Least First Ordering
+ * \brief Order vertices based on the degrees
+ *
+ * In this ordering, the vertex with the largest degree comes first
  *
  * A specific preordering for the coloring
  */
-class LFO : public Ordering {
+class LargestFirstOrderingDegrees : public Ordering {
     bool order(const Graph &G_b, vector<unsigned int> &V, bool restricted) {
         list<pair<int, int>> VertexDegree;
         //Compute Distance2Neighbors-degree for all vertices in V
@@ -28,4 +30,4 @@ class LFO : public Ordering {
     }
 
 };
-#endif //PRECOL_LFO_H
+#endif //PRECOL_LARGESTFIRSTORDERINGDEGREES_H

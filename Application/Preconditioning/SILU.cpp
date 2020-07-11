@@ -51,7 +51,7 @@ SILU::SILU(Graph& G_b, const string& pre_ord) : G_ilu(num_vertices(G_b)/2) {
         }
     });
 
-    if(pre_ord == "NAT") {
+    if(pre_ord == "NaturalOrdering") {
         for(int i=0;i<num_vertices(G_ilu);i++) {
             order.push_back(i);
         }

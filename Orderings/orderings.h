@@ -6,30 +6,30 @@
 #define PRECOL_ORDERINGS_H
 
 #include "Ordering.h"
-#include "LFO.h"
+#include "LargestFirstOrderingDegrees.h"
 #include "SLO.h"
 #include "IDO.h"
-#include "NAT.h"
+#include "NaturalOrdering.h"
 #include "WeightOptimumOrdering.h"
 #include <fstream>
 #include "metis.h"
 
-static vector<string> ords = {"LFO","SLO","IDO"};
-//enum KindOfOrdering { LFO, SLO, IDO, NAT, WEIGHT_OPTIMUM };
+static vector<string> ords = {"LargestFirstOrderingDegrees","SLO","IDO"};
+//enum KindOfOrdering { LargestFirstOrderingDegrees, SLO, IDO, NaturalOrdering, WEIGHT_OPTIMUM };
 //static std::map<KindOfOrdering, std::string> KindOfOrderingToString = {
-//        {LFO, "LFO"},
+//        {LargestFirstOrderingDegrees, "LargestFirstOrderingDegrees"},
 //        {SLO, "SLO"},
 //        {IDO, "IDO"},
-//        {NAT, "NAT"},
+//        {NaturalOrdering, "NaturalOrdering"},
 //        {WEIGHT_OPTIMUM,"WEIGHT_OPTIMUM"},
 //};
 //static std::map<std::string, KindOfOrdering> StringToKindOfOrdering = {
-//        {"LFO", LFO},
+//        {"LargestFirstOrderingDegrees", LargestFirstOrderingDegrees},
 //        {"SLO", SLO},
 //        {"IDO", IDO},
-//        {"NAT", NAT},
+//        {"NaturalOrdering", NaturalOrdering},
 //        {"WEIGHT_OPTIMUM", WEIGHT_OPTIMUM},
-//        {"", NAT}
+//        {"", NaturalOrdering}
 //};
 
 /**
@@ -40,12 +40,12 @@ static vector<string> ords = {"LFO","SLO","IDO"};
  */
 static unique_ptr<Ordering> GetColoringOrder(const string& ColoringOrdering) {
 //    switch(StringToKindOfOrdering[ColoringOrdering]) {
-        if (ColoringOrdering == "LFO") return make_unique<LFO>();
+        if (ColoringOrdering == "LargestFirstOrderingDegrees") return make_unique<LargestFirstOrderingDegrees>();
         else if (ColoringOrdering == "SLO") return make_unique<SLO>();
         else if (ColoringOrdering == "IDO") return make_unique<IDO>();
-        else if (ColoringOrdering == "NAT") return make_unique<NAT>();
+        else if (ColoringOrdering == "NaturalOrdering") return make_unique<NaturalOrdering>();
         else if (ColoringOrdering == "WeightOptimumOrdering") return make_unique<WeighOptimumOrdering>();
-        return make_unique<NAT>();
+        return make_unique<NaturalOrdering>();
 //    }
 }
 
@@ -54,7 +54,7 @@ static unique_ptr<Ordering> GetColoringOrder(const string& ColoringOrdering) {
  * order is generated in the corresponding collection V_r and V_c.
  *
  * \param alg the coloring algorithm
- * \param ord the type of ordering (LFO, IDO, ...)
+ * \param ord the type of ordering (LargestFirstOrderingDegrees, IDO, ...)
  * \param G_b weighted bipartite graph (in,out)
  * \param V_r vertex ordering for rows (out)
  * \param V_c vertex ordering for columns (out)

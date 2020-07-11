@@ -22,11 +22,11 @@ public:
      * \brief A virtual order function which is defined by subclasses
      *
      * @param G_b the input graph
-     * @param V the set of vertices which should be ordered
-     * @param restricted is the ordering IsRestrictedColoring or not?
+     * @param V the set of vertices which should be ordered and the return value
+     * @param IsRestricted is the ordering IsRestrictedColoring or not?
      * @return
      */
-    virtual bool order(const Graph &G_b, vector<unsigned int> &V, bool restricted)=0;
+    virtual bool order(const Graph &G_b, vector<unsigned int> &Ordering, bool IsRestricted)=0;
 };
 
 #endif //PRECOL_ORDERING_H

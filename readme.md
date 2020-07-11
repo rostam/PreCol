@@ -39,8 +39,8 @@ These graph models are explained in [[1]](#1) and [[2]](#2).
 
 Other required parameters can be listed as follows,
 - The input matrix can be given in the format of Mtx.
-- All of the mentioned algorithms can be executed with three given pre-orderings NAT (natural ordering), 
-LFO, SAT. Moreover, another pre-ordering called AGO is additionally available only for MaxGain and MaxDiscovered.
+- All of the mentioned algorithms can be executed with three given pre-orderings NaturalOrdering (natural ordering), 
+LargestFirstOrderingDegrees, SAT. Moreover, another pre-ordering called AGO is additionally available only for MaxGain and MaxDiscovered.
 - Extra parameters can be given which are algorithm-specific.
 
 
@@ -61,7 +61,7 @@ Coloring(Graph, GraphModel, OneSided/TwoSided, Full/Partial, Algorithm, ordering
   OneSided/TwoSided | OneSided, TwoSided | OneSided | No 
   Full/Partial | Full, Partial | Full | No 
   Algorithm | As in previous table | D2Columns | No 
-  Ordering | NAT, LFO, SAT, AGO | NAT | No 
+  Ordering | NaturalOrdering, LargestFirstOrderingDegrees, SAT, AGO | NaturalOrdering | No 
   RequiredElements | A list of edges, Matrix nonzeros | No default value | No 
   ExtraParameters | Algorithm-specific parameters, in a JSON format file | No default value | No 
   Coloring | Coloring results, Array format | ... | ... 
@@ -136,8 +136,8 @@ An example is as follows.
 precol PartialD2RestrictedColumns LFO_Nat BlockDiagonal 30 2 ex33.mtx
 ```
 in which the PartialD2RestrictedColumns is the coloring algorithm,
-the string LFO\_Nat containing
-two strings LFO and NAT are for the coloring and ILU orderings.
+the string LargestFirstOrderingDegrees\_Nat containing
+two strings LargestFirstOrderingDegrees and NaturalOrdering are for the coloring and ILU orderings.
 The next parameter BlockDiagonal specifies the sparsification method
 which is followed by the size of the block. Here, the block size is $30$.
 The next number $2$ specifies the level parameter of ILU.

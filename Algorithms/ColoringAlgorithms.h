@@ -53,6 +53,7 @@ public:
 
     virtual int color() = 0;
 
+
     template<class T>
     T get_par(string name) {
         return any_cast<T>(CustomParameters[name]);
@@ -82,6 +83,14 @@ public:
             boost::put(vertex_color, GraphInstance, v, value);
         });
     }
+
+    /**
+     * \brief Computes the number of distinct colors in the neighbors of the given vertex
+     *
+     * @param v The given vertex
+     * @return the number of distinct colors in the neighbors of v
+    */
+    int NumOfColorsOfNeighbors(int v);
 };
 
 #endif //PRECOL_COLORINGALGORITHMS_H

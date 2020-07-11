@@ -5,7 +5,7 @@
 #   PartialD2RestrictedColumnsNonReqDiag|D2RestrictedColumnsNonReqBalanced|D2RestrictedRows|
 #   SBSchemeCombinedVertexCoverColoring|SBSchemeCombinedVertexCoverColoringRestricted|
 #   SBSchemeCombinedVertexCoverColoringRestrictedNonReq|
-# Ordering: |LFO|SLO|IDO|
+# Ordering: |LargestFirstOrderingDegrees|SLO|IDO|
 # Independent Set: |Best|Variant|
 # Rho [1|1.5..]
 # Pattern: |Full|Diagonal|BlockDiagonal|CUSTOM
@@ -16,7 +16,7 @@
 
 MATRIX = ExampleMatrices/FloridaSparseMatrixCollection/ex33.mtx
 COLORING_ALGORITHM = D2RestrictedColumns
-COLORING_ORDERING = LFO
+COLORING_ORDERING = LargestFirstOrderingDegrees
 
 ### SPARSIFIFCATION
 KIND_OF_SPARSIFICATION = BlockDiagonal

@@ -54,3 +54,18 @@ bool restricted, map<string, any> pars)
     }
 };
 
+/**
+* \brief Computes the number of distinct colors in the neighbors of the given vertex
+ *
+* @param v The given vertex
+* @return the number of distinct colors in the neighbors of v
+*/
+int ColoringAlgorithms::NumOfColorsOfNeighbors(int v) {
+    std::set<int> unique_colors;
+    ForEachNeighborConst(GraphInstance, v, [&](int n) {
+        int c = get(vertex_color, GraphInstance, n);
+        unique_colors.insert(c);
+    });
+    return unique_colors.size();
+}
+
