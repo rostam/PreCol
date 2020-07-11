@@ -11,6 +11,7 @@
 
 #include "../../Graph/datatypes.hpp"
 #include "../../Graph/MatrixMarket.hpp"
+#include "../../Algorithms/algorithms.h"
 
 std::tuple<int, int, int, int, double>
 compute_discovered_misses(const std::vector<int> &color_vec, boost::numeric::ublas::matrix<double> &m, int color);
@@ -60,11 +61,11 @@ std::tuple<int, int, int> get_bounds_k(int num_cols) {
 int main(int argc, const char *argv[]) {
     using boost::numeric::ublas::matrix;
     using boost::numeric::ublas::matrix_column;
-    auto matrix_arr = {"bcsstk08",
-                       "str_400","bcsstm13","nos3","bp_1600",
-                       "plbuckle","fs_183_3","685_bus","bcsstk09",
-                       "str_200","bp_1400","G51","1138_bus"};
-//    auto matrix_arr = {"G51"};
+//    auto matrix_arr = {"bcsstk08",
+//                       "str_400","bcsstm13","nos3","bp_1600",
+//                       "plbuckle","fs_183_3","685_bus","bcsstk09",
+//                       "str_200","bp_1400","G51","1138_bus"};
+    auto matrix_arr = {"nos3"};
 //    auto matrix_arr = {"bcsstk08",
 //                       "str_400","bcsstm13","nos3","bp_1600",
 //                       "plbuckle","fs_183_3","685_bus","bcsstk09",
@@ -79,7 +80,8 @@ int main(int argc, const char *argv[]) {
             << "fnd_ignore_nat,fnd_ignore_ago,fnd_ignore_lfo,fnd_MaxDiscovered_nat,fnd_MaxDiscovered_ago,"
             << "fnd_MaxDiscovered_lfo,fnd_MaxGain_nat,fnd_MaxGain_ago,fnd_MaxGain_lfo"
             << endl;
-        std::string matrix_file_name = (std::string("mats/") + std::string(matrix_name) + std::string(".mtx"));
+        std::string matrix_file_name = (std::string("ExampleMatrices/FloridaSparseMatrixCollection/")
+                + std::string(matrix_name) + std::string(".mtx"));
         MatrixMarket mm(matrix_file_name.c_str());
         matrix<double> m = mm.ToUblasMatrix();
         double fnm = frobenius_norm(m);
@@ -89,8 +91,9 @@ int main(int argc, const char *argv[]) {
         Graph g;
         mm.MtXToColumnGainGraph(g, m, 0);
         cerr << boost::num_vertices(g);
-//        auto[num_colors_natural_full, color_vec_natural_full] = g.greedy_color(1000);
-//        cerr << endl << num_colors_natural_full << endl;
+        GreedyColoringSimpleGraph greedyColoringSimpleGraph(g);
+        auto[num_colors_natural_full, color_vec_natural_full] = greedyColoringSimpleGraph.ColorAndReturn();
+        cerr << endl << num_colors_natural_full << endl;
 //        auto[from, to, step] = //std::tuple<int,int,int>(57,157,10);
 //        get_bounds_colors(num_colors_natural_full);
 //        auto[kfrom, kto, kstep] = get_bounds_k(mm.N);

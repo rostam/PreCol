@@ -53,6 +53,10 @@ public:
 
     virtual int color() = 0;
 
+    std::tuple<int, std::vector<int>> ColorAndReturn() {
+        color();
+        return TupleNumOfColorAndColors();
+    }
 
     template<class T>
     T get_par(string name) {

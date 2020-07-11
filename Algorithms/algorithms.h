@@ -13,6 +13,7 @@
 #include "StarBicoloringVertexCover.h"
 #include "StarBicoloringVertexCoverNonReq.h"
 #include "GreedyColoringSimpleGraph.h"
+#include "GreedyColoringLimitedMaxColor.h"
 
 static vector<string> algs = {"D2Columns", "D2Rows", "GreedyColoring",
                        "D2RestrictedColumns", "D2RestrictedRows",
@@ -22,7 +23,8 @@ static vector<string> algs = {"D2Columns", "D2Rows", "GreedyColoring",
                        "D2RestrictedRows",
                        "SBSchemeCombinedVertexCoverColoring",
                        "SBSchemeCombinedVertexCoverColoringRestricted",
-                       "SBSchemeCombinedVertexCoverColoringRestrictedNonReq"};
+                       "SBSchemeCombinedVertexCoverColoringRestrictedNonReq",
+                       "GreedyColoringLimitedMaxColor"};
 
 /**
  * \brief returns a pointer to the correct coloring algorithm
@@ -65,6 +67,8 @@ static shared_ptr<ColoringAlgorithms> getAlg(int Mode2, const string &alg,
                                                                                   {{"Mode", Mode},{"Mode2",Mode2},{"alpha",alpha}}));
     } else if (alg == "GreedyColoring") {
         return shared_ptr<ColoringAlgorithms>(new GreedyColoringSimpleGraph(G_b));
+    } else if (alg == "GreedyColoringLimitedMaxColor") {
+        return shared_ptr<ColoringAlgorithms>(new GreedyColoringLimitedMaxColor(G_b));
     } else {
         return shared_ptr<ColoringAlgorithms>(new OneSidedD2Coloring(G_b, V_c, false));
     }
