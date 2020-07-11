@@ -146,15 +146,29 @@ namespace precol {
     }
 
     /**
-    * \brief iterate on the neighbors of v
+    * \brief Iterate on the neighbors of v
      *
     * @tparam Lambda
-    * @param g
-    * @param v
-    * @param func
+    * @param g The given graph
+    * @param v The given vertex
+    * @param func Function to apply
     */
     template<typename Lambda>
     void ForEachNeighbor(Graph &g, const Ver &v, Lambda func) {
+        auto av = adjacent_vertices(v, g);
+        std::for_each(av.first, av.second, func);
+    }
+
+    /**
+     * \brief Constant iterate on the neighbors of v
+     *
+     * @tparam Lambda Function to apply
+     * @param g The given graph
+     * @param v The given vertex
+     * @param func Function to apply
+     */
+    template<typename Lambda>
+    void ForEachNeighborConst(const Graph &g, const Ver &v, Lambda func) {
         auto av = adjacent_vertices(v, g);
         std::for_each(av.first, av.second, func);
     }

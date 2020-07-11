@@ -9,10 +9,28 @@
 #include "LFO.h"
 #include "SLO.h"
 #include "IDO.h"
+#include "NAT.h"
+#include "WeightOptimumOrdering.h"
 #include <fstream>
 #include "metis.h"
 
 static vector<string> ords = {"LFO","SLO","IDO"};
+//enum KindOfOrdering { LFO, SLO, IDO, NAT, WEIGHT_OPTIMUM };
+//static std::map<KindOfOrdering, std::string> KindOfOrderingToString = {
+//        {LFO, "LFO"},
+//        {SLO, "SLO"},
+//        {IDO, "IDO"},
+//        {NAT, "NAT"},
+//        {WEIGHT_OPTIMUM,"WEIGHT_OPTIMUM"},
+//};
+//static std::map<std::string, KindOfOrdering> StringToKindOfOrdering = {
+//        {"LFO", LFO},
+//        {"SLO", SLO},
+//        {"IDO", IDO},
+//        {"NAT", NAT},
+//        {"WEIGHT_OPTIMUM", WEIGHT_OPTIMUM},
+//        {"", NAT}
+//};
 
 /**
  * \brief Get coloring and ordering from an input string
@@ -20,12 +38,15 @@ static vector<string> ords = {"LFO","SLO","IDO"};
  * @param col_ord the string value contains both coloring and ordering
  * @return the ordering
  */
-static unique_ptr<Ordering> GetColoringOrder(const string& col_ord) {
-    if(col_ord=="LFO") return make_unique<LFO>();
-    else if(col_ord=="SLO") return make_unique<SLO>();
-    else if(col_ord=="IDO") return make_unique<IDO>();
-    else if(col_ord=="Nat") return make_unique<Nat>();
-    return make_unique<LFO>();
+static unique_ptr<Ordering> GetColoringOrder(const string& ColoringOrdering) {
+//    switch(StringToKindOfOrdering[ColoringOrdering]) {
+        if (ColoringOrdering == "LFO") return make_unique<LFO>();
+        else if (ColoringOrdering == "SLO") return make_unique<SLO>();
+        else if (ColoringOrdering == "IDO") return make_unique<IDO>();
+        else if (ColoringOrdering == "NAT") return make_unique<NAT>();
+        else if (ColoringOrdering == "WeightOptimumOrdering") return make_unique<WeighOptimumOrdering>();
+        return make_unique<NAT>();
+//    }
 }
 
 

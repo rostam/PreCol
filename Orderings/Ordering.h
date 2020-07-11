@@ -17,11 +17,7 @@
  * order_restricted. 
  */
 class Ordering {
-    static map<string, Ordering*> children;
 public:
-    static void register_children(string name, Ordering* ord) {
-        children[name]=ord;
-    }
     /**
      * \brief A virtual order function which is defined by subclasses
      *
@@ -31,15 +27,6 @@ public:
      * @return
      */
     virtual bool order(const Graph &G_b, vector<unsigned int> &V, bool restricted)=0;
-};
-
-/**
- * \brief The natural ordering of the given matrix
- *
- * A specific preordering for the coloring algorithm
- */
-class Nat : public Ordering {
-    bool order(const Graph &G_b, vector<unsigned int> &V, bool restricted) { return EXIT_SUCCESS; }
 };
 
 #endif //PRECOL_ORDERING_H

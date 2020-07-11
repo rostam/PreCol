@@ -4,7 +4,12 @@
 
 #include "ColoringAlgorithms.h"
 
-std::tuple<int, std::vector<int>> ColoringAlgorithms::tuple_numOfColor_Colors() {
+/**
+* \brief Return a pair of number of colors and the list of colors
+*
+* @return a pair of number of colors and the list of colors
+*/
+std::tuple<int, std::vector<int>> ColoringAlgorithms::TupleNumOfColorAndColors() {
     std::vector<int> colors;
     std::set<int> unique_colors;
     ForEachVertex(GraphInstance, [&](int v) {

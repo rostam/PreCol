@@ -38,9 +38,9 @@ protected:
     /**
      * \brief Return a pair of number of colors and the list of colors
      *
-     * @return
+     * @return a pair of number of colors and the list of colors
      */
-    std::tuple<int, std::vector<int>> tuple_numOfColor_Colors();
+    std::tuple<int, std::vector<int>> TupleNumOfColorAndColors();
 public:
     ColoringAlgorithms(Graph &G_b) : GraphInstance(G_b) { SetAllColorsTo(0);};
 

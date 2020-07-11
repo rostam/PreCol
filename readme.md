@@ -137,7 +137,7 @@ precol PartialD2RestrictedColumns LFO_Nat BlockDiagonal 30 2 ex33.mtx
 ```
 in which the PartialD2RestrictedColumns is the coloring algorithm,
 the string LFO\_Nat containing
-two strings LFO and Nat are for the coloring and ILU orderings.
+two strings LFO and NAT are for the coloring and ILU orderings.
 The next parameter BlockDiagonal specifies the sparsification method
 which is followed by the size of the block. Here, the block size is $30$.
 The next number $2$ specifies the level parameter of ILU.

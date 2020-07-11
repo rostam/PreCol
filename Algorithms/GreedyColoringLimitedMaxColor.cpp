@@ -61,5 +61,5 @@ int GreedyColoringLimitedMaxColor::color() {
         boost::put(vertex_color, GraphInstance, v, c);
     }
     return 0;
-//    return tuple_numOfColor_Colors();
+//    return TupleNumOfColorAndColors();
 }
