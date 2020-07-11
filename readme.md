@@ -40,7 +40,7 @@ These graph models are explained in [[1]](#1) and [[2]](#2).
 
 Other required parameters can be listed as follows,
 - The input matrix can be given in the format of Mtx.
-- All of the mentioned algorithms can be executed with three given pre-orderings NaturalOrdering (natural ordering), 
+- All of the mentioned algorithms can be executed with three given pre-orderings NaturalOrdering, 
 LargestFirstOrderingDegrees, SAT. Moreover, another pre-ordering called AGO is additionally available only for MaxGain and MaxDiscovered.
 - Extra parameters can be given which are algorithm-specific.
 
