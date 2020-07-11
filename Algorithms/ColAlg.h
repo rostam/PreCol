@@ -13,7 +13,7 @@
 #include "boost/graph/filtered_graph.hpp"
 #include "boost/graph/copy.hpp"
 #include "isets.h"
-#include "boost/any.hpp"
+#include <any>
 
 /**
  * \class ColAlg
@@ -22,8 +22,6 @@
  * This is an abstract class. The subclasses should define the coloring function.
  *
  */
-using boost::any;
-using boost::any_cast;
 
 class ColAlg {
 protected:
@@ -35,7 +33,7 @@ protected:
     Graph &G_b;
     shared_ptr<IndependentSet> ind_set;
     bool restricted;
-    map<string, boost::any> pars;
+    map<string, any> pars;
 
     /**
      * Return the number of colors in bipartite graph coloring
@@ -67,6 +65,20 @@ protected:
         }
         return ret;
     };
+
+    std::tuple<int, std::vector<int>> tuple_numOfColor_Colors() {
+        std::vector<int> colors;
+        std::set<int> unique_colors;
+        ForEachVertex(G_b, [&](int v) {
+            colors.push_back(get(vertex_color, G_b, v));
+            int the_color = get(vertex_color, G_b, v) - 1;
+            if (the_color != -1)
+                unique_colors.insert(the_color);
+            else
+                unique_colors.insert(0);
+        });
+        return {unique_colors.size(), colors};
+    }
 public:
     ColAlg(Graph &G_b) : G_b(G_b) {set_all_colors_to(0);};
 
@@ -86,7 +98,7 @@ public:
                         new ISetVariantRestricted(G_b, V_r, V_c, any_cast<int>(pars["Mode"]) / 2.0));
             }
         } else {
-            if (boost::any_cast<int>(pars["Mode"]) == 1) {
+            if (std::any_cast<int>(pars["Mode"]) == 1) {
                 ind_set = shared_ptr<IndependentSet>(
                         new ISet(G_b, V_r, V_c, any_cast<int>(pars["Mode2"]))); //ISet = IS_Coleman(G_b,V_r,V_c);
             } else {

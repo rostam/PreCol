@@ -99,7 +99,7 @@ public:
                     });
                     int cnt = 0;
                     for_each(pos_num.begin(), pos_num.end(), [&](auto map_elem) {
-                        if (cnt <= boost::any_cast<int>(pars["alpha"])) {
+                        if (cnt <= std::any_cast<int>(pars["alpha"])) {
                             if (map_elem.second == min_nreq_det) {
                                 cnt++;
                                 put(color, map_elem.first, distance(forbiddenColors.begin(), result));
@@ -133,13 +133,13 @@ public:
                         }
                     });
                     if (min_pos != -1) {
-                        if (boost::any_cast<int>(pars["alpha"]) == -1) {
+                        if (std::any_cast<int>(pars["alpha"]) == -1) {
                             //put(color, min_pos, distance(forbiddenColors.begin(), result));
                         }
                         //put(color, max_pos, distance(forbiddenColors.begin(), result));
                     }
                     if (max_nreq_pos != -1) {
-                        if (boost::any_cast<int>(pars["alpha"]) != -1) {
+                        if (std::any_cast<int>(pars["alpha"]) != -1) {
                             put(color, max_nreq_pos, distance(forbiddenColors.begin(), result));
                         }
                     }

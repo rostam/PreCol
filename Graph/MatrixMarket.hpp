@@ -32,6 +32,8 @@ struct MatrixMarket {
 
     boost::numeric::ublas::matrix<double> ToUblasMatrix();
 
+    std::map<int,std::vector<int>> ToGraphAsAdjacencyEdgesMap();
+
     bool writeToFile(char *filename);
 
 //    ~MatrixMarket() {}

@@ -128,9 +128,13 @@ MatrixMarket::MatrixMarket(Graph &G_b, string tag, int m, int n, bool bipartite)
  */
 bool MatrixMarket::writeToFile(char *filename) {
     const int size = nz;
-    double val[size];
-    fill(val, val + size, 1);
-    mm_write_mtx_crd(filename, M, N, nz, &I[0], &J[0], val, matcode);
+    if(val.size() == 0) {
+        double val[size];
+        fill(val, val + size, 1);
+        mm_write_mtx_crd(filename, M, N, nz, &I[0], &J[0], val, matcode);
+    } else {
+        mm_write_mtx_crd(filename, M, N, nz, &I[0], &J[0], &val[0], matcode);
+    }
     return true;
 }
 
@@ -297,3 +301,27 @@ boost::numeric::ublas::matrix<double> MatrixMarket::ToUblasMatrix() {
     return m;
 }
 
+/**
+ * \brief Computes the bipartite graph generated from the matrix in a specific format
+ *
+ * @param G_b the result matrix
+ * @return the bipartite graph generated from the matrix in a specific format
+ */
+std::map<int,std::vector<int>> MatrixMarket::ToGraphAsAdjacencyEdgesMap() {
+    std::map<int,std::vector<int>> mymat;
+    for (int i=0;i < std::max(M,N);i++) {
+        mymat[i] = std::vector<int>();
+    }
+    if (mm_is_symmetric(matcode)) {
+        for (int i = 0; i < nz; ++i) {
+            mymat[I[i]].push_back(J[i]);
+            mymat[J[i]].push_back(I[i]);
+        }
+    } else {
+        for (int i = 0; i < nz; ++i) {
+            mymat[I[i]].push_back(J[i]);
+        }
+    }
+
+    return mymat;
+}

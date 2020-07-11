@@ -85,7 +85,7 @@ namespace precol {
      * @param func
      */
     template<typename Lambda>
-    static void ForEachEdgeConst(Graph& g, Lambda func) {
+    static void ForEachEdgeConst(const Graph& g, Lambda func) {
         E_iter ei, ei_end;
         tie(ei, ei_end) = edges(g);
         std::for_each(ei,ei_end,func);
