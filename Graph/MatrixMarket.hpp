@@ -30,6 +30,8 @@ struct MatrixMarket {
 
     bool MtxToILUGraph(Graph &G_ilu);
 
+    bool MtXToColumnGainGraph(Graph& CGG, const boost::numeric::ublas::matrix<double> &Matrix, int NumOfEdgesToBeRemoved);
+
     boost::numeric::ublas::matrix<double> ToUblasMatrix();
 
     std::map<int,std::vector<int>> ToGraphAsAdjacencyEdgesMap();

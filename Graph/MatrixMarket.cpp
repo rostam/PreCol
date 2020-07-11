@@ -325,3 +325,41 @@ std::map<int,std::vector<int>> MatrixMarket::ToGraphAsAdjacencyEdgesMap() {
 
     return mymat;
 }
+
+/**
+ * \brief Converts ublas matrix to a column gain graph
+ *
+ * @param CGG the output graph
+ * @param Matrix the given ublas matrix
+ * @param NumOfEdgesToBeRemoved the number of edges that we are allowed to remove
+ * @return
+ */
+bool MatrixMarket::MtXToColumnGainGraph(Graph& CGG, const boost::numeric::ublas::matrix<double> &Matrix, int NumOfEdgesToBeRemoved) {
+    std::vector<std::tuple<int, int, int>> edges;
+    for (int i = 0; i < Matrix.size2(); i++) {
+        for (int j = i + 1; j < Matrix.size2(); j++) {
+            int E_discovered = 0, E_missed = 0;
+            for (int k = 0; k < Matrix.size1(); k++) {
+                if (Matrix(k, i) != 0 && Matrix(k, j) == 0) {
+                    E_discovered++;
+                } else if (Matrix(k, i) == 0 && Matrix(k, j) != 0) {
+                    E_discovered++;
+                } else if (Matrix(k, i) != 0 && Matrix(k, j) != 0) {
+                    E_missed += 2;
+                }
+            }
+            int weight = - E_missed;
+//            int weight = - E_missed;
+            if (E_missed != 0) edges.emplace_back(i, j, weight);
+        }
+    }
+
+    sort(begin(edges), end(edges),
+         [&](std::tuple<int, int, int> t1, std::tuple<int, int, int> t2) { return get<2>(t1) > get<2>(t2); });
+    for (int i = NumOfEdgesToBeRemoved; i < edges.size(); i++) {
+        auto[v1, v2, w] = edges[i];
+        add_edge(v1, v2, w, CGG);
+    }
+//    std::cerr << "num of edges: " << g.num_e() << std::endl;
+    return 0;
+}

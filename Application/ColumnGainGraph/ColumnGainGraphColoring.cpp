@@ -18,37 +18,6 @@ compute_discovered_misses(const std::vector<int> &color_vec, boost::numeric::ubl
 std::tuple<int, int, int, int, double>
 compute_discovered_misses_ignore(const std::vector<int> &color_vec, boost::numeric::ublas::matrix<double> &m, int color);
 
-// k is the number of edges that we want to remove
-Graph matrix2graph_limited(const boost::numeric::ublas::matrix<double> &m, int kk) {
-    Graph g(m.size2());
-    std::vector<std::tuple<int, int, int>> edges;
-    for (int i = 0; i < m.size2(); i++) {
-        for (int j = i + 1; j < m.size2(); j++) {
-            int E_discovered = 0, E_missed = 0;
-            for (int k = 0; k < m.size1(); k++) {
-                if (m(k, i) != 0 && m(k, j) == 0) {
-                    E_discovered++;
-                } else if (m(k, i) == 0 && m(k, j) != 0) {
-                    E_discovered++;
-                } else if (m(k, i) != 0 && m(k, j) != 0) {
-                    E_missed += 2;
-                }
-            }
-            int weight = -E_missed;
-//            int weight = - E_missed;
-            if (E_missed != 0) edges.emplace_back(i, j, weight);
-        }
-    }
-
-    sort(begin(edges), end(edges),
-         [&](std::tuple<int, int, int> t1, std::tuple<int, int, int> t2) { return get<2>(t1) > get<2>(t2); });
-    for (int i = kk; i < edges.size(); i++) {
-        auto[v1, v2, w] = edges[i];
-        add_edge(v1, v2, w, g);
-    }
-    return g;
-}
-
 int nnz(boost::numeric::ublas::matrix<double> &m) {
     int ret = 0;
     for (boost::numeric::ublas::matrix<double>::iterator1 it1 = m.begin1(); it1 != m.end1(); ++it1) {
@@ -117,7 +86,8 @@ int main(int argc, const char *argv[]) {
         int mycnt = nnz(m);
         cerr << "numOfNonzeros" << mycnt << endl;
 
-        Graph g = matrix2graph_limited(m, 0);
+        Graph g;
+        mm.MtXToColumnGainGraph(g, m, 0);
         cerr << boost::num_vertices(g);
 //        auto[num_colors_natural_full, color_vec_natural_full] = g.greedy_color(1000);
 //        cerr << endl << num_colors_natural_full << endl;
