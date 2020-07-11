@@ -104,14 +104,18 @@ or edges can be as easy as follows.
 ```
 ForEachVertex(G, f);
 ForEachVertex(G, [&](Ver v) {...});
+ForEachVertexConst(G, f);
 ForEachEdge(G, f);
 ForEachEdge(G, [&](Edge e) {...});
+ForEachEdgeConst(G, f);
 ForEachNeighbor(G, f);
 ForEachNeighbor(G, [&](Ver n) {...});
+ForEachNeighborConst(G, f);
 ```
 in which the variable $f$ is a function which gets an input parameter of a vertex or an edge.
 Also, the other syntax is the lambda function
-from the new C++ functional programming to implement an unnamed function.
+from the new C++ functional programming to implement an unnamed function. The "Const" word is to 
+make a constant iteration which makes sure the graph will not change in that iteration.
 
 Following a unique solution, we implement all parts of our heuristics
 with the use of the standard library of C++ which also improves the readability.
