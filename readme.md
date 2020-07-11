@@ -98,7 +98,7 @@ like a column intersection graph or a bipartite graph.
 Any resulting matrix like the sparsified matrix will also be saved in this file format.
 
 PreCol is developed in C++ using STL (the standard library) and
-the Boost library. Using concepts of functional programming in the new C++ release (C++11 and C++14),
+the Boost library. Using concepts of functional programming in Modern C++,
 we provide different functions which can be used 
 by a developer to work on graphs. For example, the iteration on vertices
 or edges can be as easy as follows.
