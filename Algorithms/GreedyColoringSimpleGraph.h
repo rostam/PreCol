@@ -5,7 +5,7 @@
 #ifndef PRECOL_GREEDYCOLORINGSIMPLEGRAPH_H
 #define PRECOL_GREEDYCOLORINGSIMPLEGRAPH_H
 
-#include "ColAlg.h"
+#include "ColoringAlgorithms.h"
 
 /**
  * \brief Compute a greedy coloring of a simple graph
@@ -16,9 +16,9 @@
  * Output:
  * - G a simple graph with colors as weights vertex_color
  */
-class GreedyColoringSimpleGraph : public ColAlg {
+class GreedyColoringSimpleGraph : public ColoringAlgorithms {
 public:
-    using ColAlg::ColAlg;
+    using ColoringAlgorithms::ColoringAlgorithms;
 
     int color();
 };

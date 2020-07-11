@@ -27,7 +27,7 @@ public:
      *
      * @param G_b the input graph
      * @param V the set of vertices which should be ordered
-     * @param restricted is the ordering restricted or not?
+     * @param restricted is the ordering IsRestrictedColoring or not?
      * @return
      */
     virtual bool order(const Graph &G_b, vector<unsigned int> &V, bool restricted)=0;

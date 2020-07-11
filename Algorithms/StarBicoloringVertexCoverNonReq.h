@@ -5,58 +5,58 @@
 #ifndef PRECOL_STAR_BICOLORING_VERTEX_COVER_NON_REQ_M_H
 #define PRECOL_STAR_BICOLORING_VERTEX_COVER_NON_REQ_M_H
 
-#include "ColAlg.h"
+#include "ColoringAlgorithms.h"
 #include "isets.h"
 
 /**
- * \brief Compute a star bicoloring of a bipartite graph G_b (this version
+ * \brief Compute a star bicoloring of a bipartite graph GraphInstance (this version
  * was implemented for Alexandru Calotoiu's diploma thesis)
  *
  * Combined means that a vertex is directly colored after its selection
  *
  * Input:
- * - G_b   bipartite graph
+ * - GraphInstance   bipartite graph
  * - V_r   contained row vertices are colored in the given ordering $v_1, ..., v_n$
  * - V_c   contained column vertices are colored in the given ordering $v_1, ..., v_n$
  * - Mode  parameter $\rho$ ($\rho=Mode/2$)
  * - Mode2 parameter $\rho$ if using independent set algorithm of Coleman ($Mode==1$)
  *
  * Output:
- * - G_b bipartite graph with colors given as weights vertex_color
+ * - GraphInstance bipartite graph with colors given as weights vertex_color
  */
-class StarBicoloringVertexCoverNonReq : public ColAlg{
+class StarBicoloringVertexCoverNonReq : public ColoringAlgorithms{
 public:
-    using ColAlg::ColAlg;
+    using ColoringAlgorithms::ColoringAlgorithms;
 
 /**
- * Compute a star bicoloring of a bipartite graph G_b (this version
+ * Compute a star bicoloring of a bipartite graph GraphInstance (this version
  * was implemented for Alexandru Calotoiu's diploma thesis)
  *
  * Combined means that a vertex is directly colored after its selection
  *
  * Input:
- * - G_b   bipartite graph
+ * - GraphInstance   bipartite graph
  * - V_r   contained row vertices are colored in the given ordering v_1, ..., v_n
  * - V_c   contained column vertices are colored in the given ordering v_1, ..., v_n
  * - Mode  parameter \rho (\rho=Mode/2)
  * - Mode2 parameter \rho if using independent set algorithm of Coleman (Mode==1)
  *
  * Output:
- * - G_b bipartite graph with colors given as weights vertex_color
+ * - GraphInstance bipartite graph with colors given as weights vertex_color
  */
     int color()
     {
-        if(restricted) {
+        if(IsRestrictedColoring) {
             color_restricted();
-            return num_colors();
+            return NumOfColors();
         }
         vector<int> IS;
-        property_map<Graph, vertex_color_t>::type color = get(vertex_color, G_b);
+        property_map<Graph, vertex_color_t>::type color = get(vertex_color, GraphInstance);
         vector<int> num_colors;
         vector<unsigned int> V_r_aux(V_r.size());
         vector<unsigned int> V_c_aux(V_c.size());
         Graph G_b_aux;
-        copy_graph(G_b,G_b_aux);
+        copy_graph(GraphInstance, G_b_aux);
         float ratio=1;
 
         if (get_par<int>("Mode")!=1)  ratio=get_par<int>("Mode")/2;
@@ -134,31 +134,31 @@ public:
                         clear_vertex((*di).first,G_b_aux);
                         di = Degree_V_r_aux.erase(di); --di;
 
-                        if (get(vertex_color, G_b, *v) == 0) {
+                        if (get(vertex_color, GraphInstance, *v) == 0) {
                             forbiddenColors[0] = *v;
 
                             graph_traits<Graph>::adjacency_iterator w, w_end;
-                            for (tie(w, w_end) = adjacent_vertices(*v, G_b); w != w_end; w++) {
-                                if (get(vertex_color, G_b, *w) <= 0) {
+                            for (tie(w, w_end) = adjacent_vertices(*v, GraphInstance); w != w_end; w++) {
+                                if (get(vertex_color, GraphInstance, *w) <= 0) {
 
                                     graph_traits<Graph>::adjacency_iterator x, x_end;
-                                    for (tie(x, x_end) = adjacent_vertices(*w, G_b); x != x_end; x++) {
-                                        if (get(vertex_color, G_b, *x) > 0) {
-                                            forbiddenColors[get(vertex_color, G_b, *x)] = *v;
+                                    for (tie(x, x_end) = adjacent_vertices(*w, GraphInstance); x != x_end; x++) {
+                                        if (get(vertex_color, GraphInstance, *x) > 0) {
+                                            forbiddenColors[get(vertex_color, GraphInstance, *x)] = *v;
                                         }
                                     }
                                 } else { //Color[w]>0
 
                                     graph_traits<Graph>::adjacency_iterator x, x_end;
-                                    for (tie(x, x_end) = adjacent_vertices(*w, G_b); x != x_end; x++) {
-                                        if (get(vertex_color, G_b, *x) > 0) {
+                                    for (tie(x, x_end) = adjacent_vertices(*w, GraphInstance); x != x_end; x++) {
+                                        if (get(vertex_color, GraphInstance, *x) > 0) {
 
                                             graph_traits<Graph>::adjacency_iterator y, y_end;
-                                            for (tie(y, y_end) = adjacent_vertices(*x, G_b); y != y_end; y++) {
-                                                if (get(vertex_color, G_b, *y) > 0) {
-                                                    if (get(vertex_color, G_b, *w) == get(vertex_color, G_b, *y) &&
+                                            for (tie(y, y_end) = adjacent_vertices(*x, GraphInstance); y != y_end; y++) {
+                                                if (get(vertex_color, GraphInstance, *y) > 0) {
+                                                    if (get(vertex_color, GraphInstance, *w) == get(vertex_color, GraphInstance, *y) &&
                                                         *w != *y) {
-                                                        forbiddenColors[get(vertex_color, G_b, *x)] = *v;
+                                                        forbiddenColors[get(vertex_color, GraphInstance, *x)] = *v;
                                                     }
                                                 }
                                             }
@@ -202,26 +202,26 @@ public:
                         forbiddenColors[0]=*v;
 
                         graph_traits<Graph>::adjacency_iterator w, w_end;
-                        for (tie(w,w_end) = adjacent_vertices(*v, G_b); w != w_end; w++) {
-                            if (get(vertex_color, G_b, *w)<=0) {
+                        for (tie(w,w_end) = adjacent_vertices(*v, GraphInstance); w != w_end; w++) {
+                            if (get(vertex_color, GraphInstance, *w) <= 0) {
 
                                 graph_traits<Graph>::adjacency_iterator x, x_end;
-                                for (tie(x,x_end) = adjacent_vertices(*w, G_b); x != x_end; x++) {
-                                    if (get(vertex_color, G_b, *x)>0) {
-                                        forbiddenColors[get(vertex_color, G_b, *x)]=*v;
+                                for (tie(x,x_end) = adjacent_vertices(*w, GraphInstance); x != x_end; x++) {
+                                    if (get(vertex_color, GraphInstance, *x) > 0) {
+                                        forbiddenColors[get(vertex_color, GraphInstance, *x)]=*v;
                                     }
                                 }
                             } else { //Color[w]>0
 
                                 graph_traits<Graph>::adjacency_iterator x, x_end;
-                                for (tie(x,x_end) = adjacent_vertices(*w, G_b); x != x_end; x++) {
-                                    if (get(vertex_color, G_b, *x)>0) {
+                                for (tie(x,x_end) = adjacent_vertices(*w, GraphInstance); x != x_end; x++) {
+                                    if (get(vertex_color, GraphInstance, *x) > 0) {
 
                                         graph_traits<Graph>::adjacency_iterator y, y_end;
-                                        for (tie(y,y_end) = adjacent_vertices(*x, G_b); y != y_end; y++) {
-                                            if (get(vertex_color, G_b, *y)>0) {
-                                                if (get(vertex_color, G_b, *w)==get(vertex_color, G_b, *y) && *w!=*y) {
-                                                    forbiddenColors[get(vertex_color, G_b, *x)]=*v;
+                                        for (tie(y,y_end) = adjacent_vertices(*x, GraphInstance); y != y_end; y++) {
+                                            if (get(vertex_color, GraphInstance, *y) > 0) {
+                                                if (get(vertex_color, GraphInstance, *w) == get(vertex_color, GraphInstance, *y) && *w != *y) {
+                                                    forbiddenColors[get(vertex_color, GraphInstance, *x)]=*v;
                                                 }
                                             }
                                         }
@@ -264,17 +264,17 @@ public:
             put(color,*IS_it,0);
         }
 
-        return ColAlg::num_colors();
+        return ColoringAlgorithms::NumOfColors();
     }
 
     int color_restricted() {
         vector<int> IS;
-        property_map<Graph, vertex_color_t>::type color = get(vertex_color, G_b);
+        property_map<Graph, vertex_color_t>::type color = get(vertex_color, GraphInstance);
         vector<int> num_colors;
         vector<unsigned int> V_r_aux(V_r.size());
         vector<unsigned int> V_c_aux(V_c.size());
         Graph G_b_aux;
-        copy_graph(G_b, G_b_aux);
+        copy_graph(GraphInstance, G_b_aux);
         float ratio = 1;
 
         if (get_par<int>("Mode") != 1) ratio = get_par<int>("Mode") / 2;
@@ -282,7 +282,7 @@ public:
         copy(V_r.begin(), V_r.end(), V_r_aux.begin());
         copy(V_c.begin(), V_c.end(), V_c_aux.begin());
 
-        // IS = ISet(G_b,V_r,V_c); //ISet = IS_Coleman(G_b,V_r,V_c);
+        // IS = ISet(GraphInstance,V_r,V_c); //ISet = IS_Coleman(GraphInstance,V_r,V_c);
 
         list <pair<unsigned int, unsigned int>> Degree_V_r_aux;
         list <pair<unsigned int, unsigned int>> Degree_V_c_aux;
@@ -339,17 +339,17 @@ public:
             }
 
             int cnt_nreq1 = 0, cnt_nreq2 = 0;
-            for_each(adjacent_vertices(*v1, G_b).first,
-                     adjacent_vertices(*v1, G_b).second,
+            for_each(adjacent_vertices(*v1, GraphInstance).first,
+                     adjacent_vertices(*v1, GraphInstance).second,
                      [&](Ver adj_nn) {
-                         if (get(edge_weight, G_b, edge(*v1, adj_nn, G_b).first) != 1) {
+                         if (get(edge_weight, GraphInstance, edge(*v1, adj_nn, GraphInstance).first) != 1) {
                              cnt_nreq1++;
                          }
                      });
-            for_each(adjacent_vertices(*v2, G_b).first,
-                     adjacent_vertices(*v2, G_b).second,
+            for_each(adjacent_vertices(*v2, GraphInstance).first,
+                     adjacent_vertices(*v2, GraphInstance).second,
                      [&](Ver adj_nn) {
-                         if (get(edge_weight, G_b, edge(*v2, adj_nn, G_b).first) != 1) {
+                         if (get(edge_weight, GraphInstance, edge(*v2, adj_nn, GraphInstance).first) != 1) {
                              cnt_nreq2++;
                          }
                      });
@@ -380,17 +380,17 @@ public:
             }
 
             int cnt_nreq1 = 0, cnt_nreq2 = 0;
-            for_each(adjacent_vertices(*v1, G_b).first,
-                     adjacent_vertices(*v1, G_b).second,
+            for_each(adjacent_vertices(*v1, GraphInstance).first,
+                     adjacent_vertices(*v1, GraphInstance).second,
                      [&](Ver adj_nn) {
-                         if (get(edge_weight, G_b, edge(*v1, adj_nn, G_b).first) != 1) {
+                         if (get(edge_weight, GraphInstance, edge(*v1, adj_nn, GraphInstance).first) != 1) {
                              cnt_nreq1++;
                          }
                      });
-            for_each(adjacent_vertices(*v2, G_b).first,
-                     adjacent_vertices(*v2, G_b).second,
+            for_each(adjacent_vertices(*v2, GraphInstance).first,
+                     adjacent_vertices(*v2, GraphInstance).second,
                      [&](Ver adj_nn) {
-                         if (get(edge_weight, G_b, edge(*v2, adj_nn, G_b).first) != 1) {
+                         if (get(edge_weight, GraphInstance, edge(*v2, adj_nn, GraphInstance).first) != 1) {
                              cnt_nreq2++;
                          }
                      });
@@ -451,11 +451,11 @@ public:
                         if(cnt == 1) first_v = *v;
                         if(cnt > 1) {
                             int cnt_nreq =0;
-                            for_each(adjacent_vertices(first_v, G_b).first,
-                                     adjacent_vertices(first_v, G_b).second,
+                            for_each(adjacent_vertices(first_v, GraphInstance).first,
+                                     adjacent_vertices(first_v, GraphInstance).second,
                                      [&](Ver adj_nn) {
-                                         if (get(edge_weight, G_b, edge(first_v, adj_nn, G_b).first) != 1) {
-                                             if (!edge(adj_nn, *v, G_b).second) {
+                                         if (get(edge_weight, GraphInstance, edge(first_v, adj_nn, GraphInstance).first) != 1) {
+                                             if (!edge(adj_nn, *v, GraphInstance).second) {
                                                  cnt_nreq++;
                                              }
                                          }
@@ -465,30 +465,30 @@ public:
                         }
 
                         graph_traits<Graph>::adjacency_iterator w, w_end;
-                        for (tie(w, w_end) = adjacent_vertices(*v, G_b); w != w_end; w++) {
-                            if (get(vertex_color, G_b, *w) <= 0) {
+                        for (tie(w, w_end) = adjacent_vertices(*v, GraphInstance); w != w_end; w++) {
+                            if (get(vertex_color, GraphInstance, *w) <= 0) {
 
                                 graph_traits<Graph>::adjacency_iterator x, x_end;
-                                for (tie(x, x_end) = adjacent_vertices(*w, G_b); x != x_end; x++) {
-                                    if (get(vertex_color, G_b, *x) > 0) {
-                                        if (get(edge_weight, G_b, edge(*v, *w, G_b).first) == 1 ||
-                                            get(edge_weight, G_b, edge(*w, *x, G_b).first) == 1) {
-                                            forbiddenColors[get(vertex_color, G_b, *x)] = *v;
+                                for (tie(x, x_end) = adjacent_vertices(*w, GraphInstance); x != x_end; x++) {
+                                    if (get(vertex_color, GraphInstance, *x) > 0) {
+                                        if (get(edge_weight, GraphInstance, edge(*v, *w, GraphInstance).first) == 1 ||
+                                            get(edge_weight, GraphInstance, edge(*w, *x, GraphInstance).first) == 1) {
+                                            forbiddenColors[get(vertex_color, GraphInstance, *x)] = *v;
                                         }
                                     }
                                 }
                             } else { //Color[w]>0
 
                                 graph_traits<Graph>::adjacency_iterator x, x_end;
-                                for (tie(x, x_end) = adjacent_vertices(*w, G_b); x != x_end; x++) {
-                                    if (get(vertex_color, G_b, *x) > 0) {
-                                        if (get(edge_weight, G_b, edge(*w, *x, G_b).first) == 1) {
+                                for (tie(x, x_end) = adjacent_vertices(*w, GraphInstance); x != x_end; x++) {
+                                    if (get(vertex_color, GraphInstance, *x) > 0) {
+                                        if (get(edge_weight, GraphInstance, edge(*w, *x, GraphInstance).first) == 1) {
                                             graph_traits<Graph>::adjacency_iterator y, y_end;
-                                            for (tie(y, y_end) = adjacent_vertices(*x, G_b); y != y_end; y++) {
-                                                if (get(vertex_color, G_b, *y) > 0) {
-                                                    if (get(vertex_color, G_b, *w) == get(vertex_color, G_b, *y) &&
+                                            for (tie(y, y_end) = adjacent_vertices(*x, GraphInstance); y != y_end; y++) {
+                                                if (get(vertex_color, GraphInstance, *y) > 0) {
+                                                    if (get(vertex_color, GraphInstance, *w) == get(vertex_color, GraphInstance, *y) &&
                                                         *w != *y) {
-                                                        forbiddenColors[get(vertex_color, G_b, *x)] = *v;
+                                                        forbiddenColors[get(vertex_color, GraphInstance, *x)] = *v;
                                                     }
                                                 }
                                             }
@@ -536,11 +536,11 @@ public:
 //                    if(cnt == 1) first_v = *v;
 //                    if(cnt > 1) {
 //                        int cnt_nreq =0;
-//                        for_each(adjacent_vertices(first_v, G_b).first,
-//                                 adjacent_vertices(first_v, G_b).second,
+//                        for_each(adjacent_vertices(first_v, GraphInstance).first,
+//                                 adjacent_vertices(first_v, GraphInstance).second,
 //                                 [&](Ver adj_nn) {
-//                                     if (get(edge_weight, G_b, edge(first_v, adj_nn, G_b).first) != 1) {
-//                                         if (!edge(adj_nn, *v, G_b).second) {
+//                                     if (get(edge_weight, GraphInstance, edge(first_v, adj_nn, GraphInstance).first) != 1) {
+//                                         if (!edge(adj_nn, *v, GraphInstance).second) {
 //                                             cnt_nreq++;
 //                                         }
 //                                     }
@@ -552,30 +552,30 @@ public:
                         forbiddenColors[0] = *v;
 
                         graph_traits<Graph>::adjacency_iterator w, w_end;
-                        for (tie(w, w_end) = adjacent_vertices(*v, G_b); w != w_end; w++) {
-                            if (get(vertex_color, G_b, *w) <= 0) {
+                        for (tie(w, w_end) = adjacent_vertices(*v, GraphInstance); w != w_end; w++) {
+                            if (get(vertex_color, GraphInstance, *w) <= 0) {
 
                                 graph_traits<Graph>::adjacency_iterator x, x_end;
-                                for (tie(x, x_end) = adjacent_vertices(*w, G_b); x != x_end; x++) {
-                                    if (get(vertex_color, G_b, *x) > 0) {
-                                        if (get(edge_weight, G_b, edge(*v, *w, G_b).first) == 1 ||
-                                            get(edge_weight, G_b, edge(*w, *x, G_b).first) == 1) {
-                                            forbiddenColors[get(vertex_color, G_b, *x)] = *v;
+                                for (tie(x, x_end) = adjacent_vertices(*w, GraphInstance); x != x_end; x++) {
+                                    if (get(vertex_color, GraphInstance, *x) > 0) {
+                                        if (get(edge_weight, GraphInstance, edge(*v, *w, GraphInstance).first) == 1 ||
+                                            get(edge_weight, GraphInstance, edge(*w, *x, GraphInstance).first) == 1) {
+                                            forbiddenColors[get(vertex_color, GraphInstance, *x)] = *v;
                                         }
                                     }
                                 }
                             } else { //Color[w]>0
 
                                 graph_traits<Graph>::adjacency_iterator x, x_end;
-                                for (tie(x, x_end) = adjacent_vertices(*w, G_b); x != x_end; x++) {
-                                    if (get(vertex_color, G_b, *x) > 0) {
-                                        if (get(edge_weight, G_b, edge(*w, *x, G_b).first) == 1) {
+                                for (tie(x, x_end) = adjacent_vertices(*w, GraphInstance); x != x_end; x++) {
+                                    if (get(vertex_color, GraphInstance, *x) > 0) {
+                                        if (get(edge_weight, GraphInstance, edge(*w, *x, GraphInstance).first) == 1) {
                                             graph_traits<Graph>::adjacency_iterator y, y_end;
-                                            for (tie(y, y_end) = adjacent_vertices(*x, G_b); y != y_end; y++) {
-                                                if (get(vertex_color, G_b, *y) > 0) {
-                                                    if (get(vertex_color, G_b, *w) == get(vertex_color, G_b, *y) &&
+                                            for (tie(y, y_end) = adjacent_vertices(*x, GraphInstance); y != y_end; y++) {
+                                                if (get(vertex_color, GraphInstance, *y) > 0) {
+                                                    if (get(vertex_color, GraphInstance, *w) == get(vertex_color, GraphInstance, *y) &&
                                                         *w != *y) {
-                                                        forbiddenColors[get(vertex_color, G_b, *x)] = *v;
+                                                        forbiddenColors[get(vertex_color, GraphInstance, *x)] = *v;
                                                     }
                                                 }
                                             }

@@ -5,7 +5,7 @@
 #ifndef PRECOL_ALGS_H
 #define PRECOL_ALGS_H
 
-#include "ColAlg.h"
+#include "ColoringAlgorithms.h"
 #include "OneSidedD2Coloring.h"
 #include "OneSidedD2ColoringNonReq.h"
 #include "OneSidedD2ColoringNonReqBalanced.h"
@@ -36,37 +36,37 @@ static vector<string> algs = {"D2Columns", "D2Rows", "GreedyColoring",
  * @param order the ordering of vertices for coloring
  * @return
  */
-static shared_ptr<ColAlg> getAlg(int Mode2, const string &alg,
-                                 int Mode, Graph &G_b, vector<unsigned int> &V_r,
-                                 vector<unsigned int> &V_c,
-                                 unique_ptr<Ordering>& order, int alpha) {
+static shared_ptr<ColoringAlgorithms> getAlg(int Mode2, const string &alg,
+                                             int Mode, Graph &G_b, vector<unsigned int> &V_r,
+                                             vector<unsigned int> &V_c,
+                                             unique_ptr<Ordering>& order, int alpha) {
     if (alg == "D2Columns") {
-        return shared_ptr<ColAlg>(new OneSidedD2Coloring(G_b, V_c, false));
+        return shared_ptr<ColoringAlgorithms>(new OneSidedD2Coloring(G_b, V_c, false));
     } else if (alg == "D2Rows") {
-        return shared_ptr<ColAlg>(new OneSidedD2Coloring(G_b, V_r, false));
+        return shared_ptr<ColoringAlgorithms>(new OneSidedD2Coloring(G_b, V_r, false));
     } else if (alg == "D2RestrictedColumns") {
-        return shared_ptr<ColAlg>(new OneSidedD2Coloring(G_b, V_c, true));
+        return shared_ptr<ColoringAlgorithms>(new OneSidedD2Coloring(G_b, V_c, true));
     } else if (alg == "D2RestrictedRows") {
-        return shared_ptr<ColAlg>(new OneSidedD2Coloring(G_b, V_r, true));
+        return shared_ptr<ColoringAlgorithms>(new OneSidedD2Coloring(G_b, V_r, true));
     } else if (alg == "D2RestrictedColumnsNonReq") {
-        return shared_ptr<ColAlg>(new OneSidedD2ColoringNonReq(G_b, V_c, true, {{"alpha", alpha}}));
+        return shared_ptr<ColoringAlgorithms>(new OneSidedD2ColoringNonReq(G_b, V_c, true, {{"alpha", alpha}}));
     } else if (alg == "D2RestrictedColumnsNonReqBalanced") {
-        return shared_ptr<ColAlg>(new OneSidedD2ColoringNonReqBalanced(G_b, V_c, true, {{"alpha", alpha}}));
+        return shared_ptr<ColoringAlgorithms>(new OneSidedD2ColoringNonReqBalanced(G_b, V_c, true, {{"alpha", alpha}}));
     } else if (alg == "D2RestrictedColumnsNonReqDiag") {
-        return shared_ptr<ColAlg>(new OneSidedD2ColorNonReqDiag(G_b, V_c, true, {{"alpha", alpha}}));
+        return shared_ptr<ColoringAlgorithms>(new OneSidedD2ColorNonReqDiag(G_b, V_c, true, {{"alpha", alpha}}));
     } else if (alg == "D2RestrictedRows") {
-        return shared_ptr<ColAlg>(new OneSidedD2Coloring(G_b, V_r, true));
+        return shared_ptr<ColoringAlgorithms>(new OneSidedD2Coloring(G_b, V_r, true));
     } else if (alg == "SBSchemeCombinedVertexCoverColoring") {
-        return shared_ptr<ColAlg>(new StarBicoloringVertexCover(G_b, V_r, V_c,false, {{"Mode", Mode},{"Mode2",Mode2}}));
+        return shared_ptr<ColoringAlgorithms>(new StarBicoloringVertexCover(G_b, V_r, V_c, false, {{"Mode", Mode}, {"Mode2", Mode2}}));
     } else if (alg == "SBSchemeCombinedVertexCoverColoringRestricted") {
-        return shared_ptr<ColAlg>(new StarBicoloringVertexCover(G_b, V_r, V_c, true, {{"Mode", Mode},{"Mode2",Mode2}}));
+        return shared_ptr<ColoringAlgorithms>(new StarBicoloringVertexCover(G_b, V_r, V_c, true, {{"Mode", Mode}, {"Mode2", Mode2}}));
     } else if (alg == "SBSchemeCombinedVertexCoverColoringRestrictedNonReq") {
-        return shared_ptr<ColAlg>(new StarBicoloringVertexCoverNonReq(G_b, V_r, V_c, true,
-                                   {{"Mode", Mode},{"Mode2",Mode2},{"alpha",alpha}}));
+        return shared_ptr<ColoringAlgorithms>(new StarBicoloringVertexCoverNonReq(G_b, V_r, V_c, true,
+                                                                                  {{"Mode", Mode},{"Mode2",Mode2},{"alpha",alpha}}));
     } else if (alg == "GreedyColoring") {
-        return shared_ptr<ColAlg>(new GreedyColoringSimpleGraph(G_b));
+        return shared_ptr<ColoringAlgorithms>(new GreedyColoringSimpleGraph(G_b));
     } else {
-        return shared_ptr<ColAlg>(new OneSidedD2Coloring(G_b, V_c, false));
+        return shared_ptr<ColoringAlgorithms>(new OneSidedD2Coloring(G_b, V_c, false));
     }
 }
 

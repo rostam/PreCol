@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
     int NumOfRemainedNonzeros = sparsifier(G_b, SparsificationKind, mm.nrows(), BlockSize, "");
 
     ColoringOrder->order(G_b, V_r, ColoringAlgorithm.find("Restricted") != string::npos);
-//    ApplyColoringOrder(ColoringAlgorithm, ColoringOrder, G_b, V_r, V_c);
+//    ApplyColoringOrder(ColoringAlgorithm, ColoringOrder, GraphInstance, V_r, V_c);
     //Coloring of the vertices
     int cols = getAlg(Mode2, ColoringAlgorithm, Mode, G_b, V_r, V_c, ColoringOrder, AlphaForBalancedColoring)->color();
     end = clock();
@@ -61,9 +61,9 @@ int main(int argc, char *argv[]) {
     copy_if(edges(G_b).first, edges(G_b).second, back_inserter(edge_ordering), [&G_b](Edge e) {
         return get(edge_weight, G_b, e) == 0;
     });
-//   sort(edge_ordering.begin(),edge_ordering.end(),le_cols(G_b));
+//   sort(edge_ordering.begin(),edge_ordering.end(),le_cols(GraphInstance));
 
-    //int pot = potentialRequiredNonzerosD2(G_b, edge_ordering);
+    //int pot = potentialRequiredNonzerosD2(GraphInstance, edge_ordering);
     int pot = potentialRequiredNonzerosSB(G_b, edge_ordering);
     MatrixMarket mm_p(G_b, "p", V_c.size(), V_r.size(), true);
     mm_p.writeToFile((char *) "pot.mtx");
@@ -138,7 +138,7 @@ int main(int argc, char *argv[]) {
 //    MatrixMarket mm_amat(ret,V_c.size(),V_c.size(),false);
 //    mm_amat.writeToFile((char *) "add_mat.mtx");
     int add = num_addReqElements;
-//    int add = addReqElements(G_b, edge_ordering2);
+//    int add = addReqElements(GraphInstance, edge_ordering2);
 
     MatrixMarket mm_a(G_b2, "a", V_c.size(), V_r.size(), true);
     mm_a.writeToFile((char *) "add.mtx");

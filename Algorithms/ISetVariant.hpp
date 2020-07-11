@@ -107,7 +107,7 @@ public:
         return IS;
     }
 
-// vector<int> VC(Graph G_b,
+// vector<int> VC(Graph GraphInstance,
 // 	       const vector<unsigned int>& V_r,
 // 	       const vector<unsigned int>& V_c)
 // {
@@ -126,7 +126,7 @@ public:
 //     i++;
 //   }
 
-//   while(num_edges(G_b)>0) {
+//   while(num_edges(GraphInstance)>0) {
 
 //     vector<list<pair<unsigned int,pair<unsigned int,unsigned int> > >::iterator> temp_V_r;
 //     vector<list<pair<unsigned int,pair<unsigned int,unsigned int> > >::iterator> temp_V_c;
@@ -138,8 +138,8 @@ public:
 // 	 v != Vertices.end();
 // 	 ++v) {
 
-//       (*v).second.first = degree((*v).first,G_b);
-//       vector<unsigned int> N2 = neighbors::Distance2Neighbors(G_b,(*v).first);
+//       (*v).second.first = degree((*v).first,GraphInstance);
+//       vector<unsigned int> N2 = neighbors::Distance2Neighbors(GraphInstance,(*v).first);
 //       (*v).second.second = N2.size();
 
 //       if ((*v).second.second>max_degree_n2) {
@@ -176,7 +176,7 @@ public:
 // 	   vi != temp_V_c.end();
 // 	   ++vi) {
 
-// 	clear_vertex((**vi).first,G_b);
+// 	clear_vertex((**vi).first,GraphInstance);
 // 	Vertices.erase(*vi);
 //       }
 //     } else {
@@ -186,7 +186,7 @@ public:
 // 	   vi != temp_V_r.end();
 // 	   ++vi) {
 
-// 	clear_vertex((**vi).first,G_b);
+// 	clear_vertex((**vi).first,GraphInstance);
 // 	Vertices.erase(*vi);
 //       }
 //     }
@@ -194,7 +194,7 @@ public:
 // //     list<pair<unsigned int,pair<unsigned int,unsigned int> > >::iterator v =
 // //       max_element(Vertices.begin(),Vertices.end(),cmp_degrees);
 
-// //     clear_vertex((*v).first,G_b);
+// //     clear_vertex((*v).first,GraphInstance);
 // //     Vertices.erase(v);
 
 

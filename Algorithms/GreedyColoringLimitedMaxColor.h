@@ -5,7 +5,7 @@
 #ifndef PRECOL_GREEDYCOLORINGLIMITEDMAXCOLOR_H
 #define PRECOL_GREEDYCOLORINGLIMITEDMAXCOLOR_H
 
-#include "ColAlg.h"
+#include "ColoringAlgorithms.h"
 
 /**
  * \brief Compute a greedy coloring of a simple graph when
@@ -17,9 +17,9 @@
  * Output:
  * - G a simple graph with colors as weights vertex_color
  */
-class GreedyColoringLimitedMaxColor : public ColAlg {
+class GreedyColoringLimitedMaxColor : public ColoringAlgorithms {
 public:
-    using ColAlg::ColAlg;
+    using ColoringAlgorithms::ColoringAlgorithms;
 
     int color();
 };

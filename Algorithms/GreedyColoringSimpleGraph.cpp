@@ -10,7 +10,7 @@
  * @return the number of colors
  */
 int GreedyColoringSimpleGraph::color() {
-    Graph &g = G_b;
+    Graph &g = GraphInstance;
     typedef graph_traits<Graph>::vertices_size_type vertices_size_type;
     typedef property_map<Graph, boost::vertex_index_t>::const_type vertex_index_map;
     std::vector<vertices_size_type> color_vec(boost::num_vertices(g));

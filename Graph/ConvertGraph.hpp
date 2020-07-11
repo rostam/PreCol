@@ -16,8 +16,8 @@
  * @return
  */
 bool BipartiteToColumnIntersectionGraph(const Graph& G_b, const vector<unsigned int>& V_c, Graph& ColumnIntersectionGraph);
-//static bool G_bToG_cRestricted(const Graph& G_b, const vector<unsigned int>& V_c, Graph& G_c);
-//static bool G_bToG_r(const Graph& G_b, const vector<unsigned int>& V_r, Graph& G_r);
-//static bool G_bToG_rRestricted(const Graph& G_b, const vector<unsigned int>& V_r, Graph& G_r);
+//static bool G_bToG_cRestricted(const Graph& GraphInstance, const vector<unsigned int>& V_c, Graph& G_c);
+//static bool G_bToG_r(const Graph& GraphInstance, const vector<unsigned int>& V_r, Graph& G_r);
+//static bool G_bToG_rRestricted(const Graph& GraphInstance, const vector<unsigned int>& V_r, Graph& G_r);
 
 #endif

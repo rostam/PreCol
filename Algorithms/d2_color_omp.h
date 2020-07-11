@@ -4,7 +4,7 @@
 #include <iostream>
 #include "../Graph/datatypes.hpp"
 #include "../Graph/neighbors.hpp"
-#include "ColAlg.h"
+#include "ColoringAlgorithms.h"
 #include <omp.h>
 
 /**

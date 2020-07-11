@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         BOOST_CHECK_EQUAL(V_c.size(), 6);
         int entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, "");
         BOOST_CHECK_EQUAL(entries_pattern, 16);
-        shared_ptr<ColAlg> ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
+        shared_ptr<ColoringAlgorithms> ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
         int num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 6);
 
@@ -138,7 +138,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         BOOST_CHECK_EQUAL(V_c.size(), 6);
         int entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, "");
         BOOST_CHECK_EQUAL(entries_pattern, 17);
-        shared_ptr<ColAlg> ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
+        shared_ptr<ColoringAlgorithms> ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
         int num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 6);
 
@@ -178,7 +178,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         BOOST_CHECK_EQUAL(V_c.size(), 6);
         int entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, "");
         BOOST_CHECK_EQUAL(entries_pattern, 16);
-        shared_ptr<ColAlg> ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
+        shared_ptr<ColoringAlgorithms> ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
         int num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 5);
 

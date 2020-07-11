@@ -1,7 +1,7 @@
 #include "pot.hpp"
 
 /** Iterates over all vertices and checks if an edge can be added
- *  without an extra color (distance-2 coloring restricted)
+ *  without an extra color (distance-2 coloring IsRestrictedColoring)
  *
  * \param G_b  weighted bipartite graph (in,out)
  * \param V    vertex ordering
@@ -46,7 +46,7 @@ int potentialRequiredNonzerosD2(Graph& G_b, const vector<graph_traits<Graph>::ed
 }
 
 /** Iterates over all vertices and checks if an edge can be added
- *  without an extra color (star bicoloring restricted)
+ *  without an extra color (star bicoloring IsRestrictedColoring)
  *
  * \param G_b  weighted bipartite graph (in,out)
  * \param V    vertex ordering

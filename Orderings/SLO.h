@@ -65,7 +65,7 @@ class SLO : public Ordering {
                 cout << "i= " << i << endl;
             }
 
-//     vector<unsigned int> neighbors = neighbors::Distance2Neighbors(G_b, (*v).first);
+//     vector<unsigned int> neighbors = neighbors::Distance2Neighbors(GraphInstance, (*v).first);
 //     for (list<pair<unsigned int,unsigned int> >::iterator i = VertexDegree.begin();
 // 	 i != VertexDegree.end(); ++i) {
 

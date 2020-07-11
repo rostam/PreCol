@@ -42,23 +42,23 @@ int GetSuitableColor(const Graph& GraphInstance, int res_color, int max_color, i
 
 
 int GreedyColoringLimitedMaxColor::color() {
-    int MaxColor = std::any_cast<int>(pars["MaxColor"]);
-    vector<int> order = std::any_cast<vector<int>>(pars["ColoringOrder"]);
-    ForEachVertex(G_b, [&](Ver v) {
-        boost::put(vertex_color, G_b, v, 0);
+    int MaxColor = std::any_cast<int>(CustomParameters["MaxColor"]);
+    vector<int> order = std::any_cast<vector<int>>(CustomParameters["ColoringOrder"]);
+    ForEachVertex(GraphInstance, [&](Ver v) {
+        boost::put(vertex_color, GraphInstance, v, 0);
     });
     for (int v : order) {
-        std::vector<unsigned int> forbiddenColors(boost::num_vertices(G_b), -1);
+        std::vector<unsigned int> forbiddenColors(boost::num_vertices(GraphInstance), -1);
         forbiddenColors[0] = v;
-        ForEachNeighbor(G_b, v, [&](int n) {
-            int c = boost::get(vertex_color, G_b, n);
+        ForEachNeighbor(GraphInstance, v, [&](int n) {
+            int c = boost::get(vertex_color, GraphInstance, n);
             if (c > 0)forbiddenColors[c] = v;
         });
         //Find first color which can be assigned to v
         auto result = find_if(forbiddenColors.begin(), forbiddenColors.end(), [&](int i) { return i != v; });
         auto res_color = distance(forbiddenColors.begin(), result);
-        int c = GetSuitableColor(G_b, res_color, MaxColor, v);
-        boost::put(vertex_color, G_b, v, c);
+        int c = GetSuitableColor(GraphInstance, res_color, MaxColor, v);
+        boost::put(vertex_color, GraphInstance, v, c);
     }
     return 0;
 //    return tuple_numOfColor_Colors();

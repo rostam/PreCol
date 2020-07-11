@@ -22,9 +22,9 @@ bool BipartiteToColumnIntersectionGraph(const Graph& G_b, const vector<unsigned 
 //
 //
 ////Convert bipartite graph to column intersection graph
-//static bool bipartiteToCIG(const Graph& G_b, const vector<unsigned int>& V_c, Graph& G_c) {
+//static bool bipartiteToCIG(const Graph& GraphInstance, const vector<unsigned int>& V_c, Graph& G_c) {
 //    for_each(V_c.begin(),V_c.end(),[&](unsigned int vc){
-//        vector<unsigned int> Distance2Neighbors = neighbors::Distance2NeighborsRestricted(G_b,vc);
+//        vector<unsigned int> Distance2Neighbors = neighbors::Distance2NeighborsRestricted(GraphInstance,vc);
 //        for_each(N_2.begin(),Distance2Neighbors.end(),[&](unsigned int n2){
 //            add_edge(vc - V_c.size(), n2 - V_c.size(), 1, G_c);
 //        });
@@ -33,7 +33,7 @@ bool BipartiteToColumnIntersectionGraph(const Graph& G_b, const vector<unsigned 
 ////         v_c != V_c.end();
 ////         ++v_c) {
 ////        vector<unsigned int> Distance2Neighbors;
-////        Distance2Neighbors = neighbors::Distance2NeighborsRestricted(G_b, *v_c);
+////        Distance2Neighbors = neighbors::Distance2NeighborsRestricted(GraphInstance, *v_c);
 ////        int num_vertices_G_c = V_c.size();
 ////
 ////        for (vector<unsigned int>::iterator n_2 = N_2.begin(); n_2 != Distance2Neighbors.end(); ++n_2) {
@@ -49,7 +49,7 @@ bool BipartiteToColumnIntersectionGraph(const Graph& G_b, const vector<unsigned 
 //
 ////Convert bipartite graph to column intersection graph with respect to
 ////the required elements
-//static bool G_bToG_cRestricted(const Graph& G_b, const vector<unsigned int>& V_c,
+//static bool G_bToG_cRestricted(const Graph& GraphInstance, const vector<unsigned int>& V_c,
 //                        Graph& G_c)
 //{
 //    for (vector<unsigned int>::const_iterator v_c = V_c.begin();
@@ -57,7 +57,7 @@ bool BipartiteToColumnIntersectionGraph(const Graph& G_b, const vector<unsigned 
 //         ++v_c) {
 //
 //        vector<unsigned int> Distance2Neighbors;
-//        Distance2Neighbors = neighbors::Distance2NeighborsRestricted(G_b,*v_c);
+//        Distance2Neighbors = neighbors::Distance2NeighborsRestricted(GraphInstance,*v_c);
 //        int num_vertices_G_c = num_vertices(G_c);
 //
 //        for (vector<unsigned int>::iterator n_2 = Distance2Neighbors.begin();
@@ -75,13 +75,13 @@ bool BipartiteToColumnIntersectionGraph(const Graph& G_b, const vector<unsigned 
 //
 ////Convert bipartite graph to row intersection graph (column
 ////intersection graph for rows instead of colums)
-//static bool G_bToG_r(const Graph& G_b, const vector<unsigned int>& V_r, Graph& G_r) {
+//static bool G_bToG_r(const Graph& GraphInstance, const vector<unsigned int>& V_r, Graph& G_r) {
 //    for (vector<unsigned int>::const_iterator v_r = V_r.begin();
 //         v_r != V_r.end();
 //         ++v_r) {
 //
 //        vector<unsigned int> Distance2Neighbors;
-//        Distance2Neighbors = neighbors::Distance2NeighborsRestricted(G_b, *v_r);
+//        Distance2Neighbors = neighbors::Distance2NeighborsRestricted(GraphInstance, *v_r);
 //
 //        for (vector<unsigned int>::iterator n_2 = Distance2Neighbors.begin();
 //             n_2 != Distance2Neighbors.end();
@@ -99,14 +99,14 @@ bool BipartiteToColumnIntersectionGraph(const Graph& G_b, const vector<unsigned 
 ////Convert bipartite graph to row intersection graph with respect to
 ////the required elements (column intersection graph for rows instead of
 ////colums)
-//static bool G_bToG_rRestricted(const Graph& G_b, const vector<unsigned int>& V_r,
+//static bool G_bToG_rRestricted(const Graph& GraphInstance, const vector<unsigned int>& V_r,
 //                        Graph& G_r) {
 //    for (vector<unsigned int>::const_iterator v_r = V_r.begin();
 //         v_r != V_r.end();
 //         ++v_r) {
 //
 //        vector<unsigned int> Distance2Neighbors;
-//        Distance2Neighbors = neighbors::Distance2NeighborsRestricted(G_b, *v_r);
+//        Distance2Neighbors = neighbors::Distance2NeighborsRestricted(GraphInstance, *v_r);
 //
 //        for (vector<unsigned int>::iterator n_2 = Distance2Neighbors.begin();
 //             n_2 != Distance2Neighbors.end();

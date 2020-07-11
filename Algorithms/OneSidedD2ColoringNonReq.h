@@ -5,42 +5,42 @@
 #ifndef PRECOL_NEWHEURISTIC
 #define PRECOL_NEWHEURISTIC
 
-#include "ColAlg.h"
+#include "ColoringAlgorithms.h"
 /**
- * \brief Compute a distance-2 coloring of a bipartite graph G_b considering nonrequired elements
+ * \brief Compute a distance-2 coloring of a bipartite graph GraphInstance considering nonrequired elements
  *
- * It can be also restricted to some required edges if the
- * restricted value is equal to true.
+ * It can be also IsRestrictedColoring to some required edges if the
+ * IsRestrictedColoring value is equal to true.
  *
  * Input:
- * - G_b bipartite graph
+ * - GraphInstance bipartite graph
  * - V   contained vertices are colored in the given ordering v_1, ..., v_n
  *
  * Output:
- * - G_b bipartite graph with colors as weights vertex_color
+ * - GraphInstance bipartite graph with colors as weights vertex_color
  */
-class OneSidedD2ColoringNonReq : public ColAlg {
+class OneSidedD2ColoringNonReq : public ColoringAlgorithms {
     //int alpha = 0;
 public:
-    using ColAlg::ColAlg;
+    using ColoringAlgorithms::ColoringAlgorithms;
     int color() {
         vector<unsigned int> V = V_c;
-        property_map<Graph, vertex_color_t>::type color = get(vertex_color, G_b);
+        property_map<Graph, vertex_color_t>::type color = get(vertex_color, GraphInstance);
         vector<unsigned int> N_2;
-        vector<unsigned int> forbiddenColors(num_vertices(G_b), -1);
+        vector<unsigned int> forbiddenColors(num_vertices(GraphInstance), -1);
         //All edges in E_S have edge_weight=1; otherwise edge_weight=0
         //Iterate over all vertices which should be colored
         for_each(V.begin(), V.end(), [&](unsigned int v) {
-            if (get(vertex_color, G_b, v) == 0) {
+            if (get(vertex_color, GraphInstance, v) == 0) {
                 forbiddenColors[0] = v;
-                if (neighbors::IncidentToReqEdge(G_b, v)) {
+                if (neighbors::IncidentToReqEdge(GraphInstance, v)) {
                     //Get the distance-2 neighbors
-                    N_2 = neighbors::Distance2NeighborsRestricted(G_b, v);
+                    N_2 = neighbors::Distance2NeighborsRestricted(GraphInstance, v);
                     //Iterate over distance-2 neighbors
                     for_each(N_2.begin(), N_2.end(), [&](unsigned int n_2) {
                         //Mark colors which are used by distance-2 neighbors in forbiddenColors
-                        if (get(vertex_color, G_b, n_2) > 0) {
-                            forbiddenColors[get(vertex_color, G_b, n_2)] = v;
+                        if (get(vertex_color, GraphInstance, n_2) > 0) {
+                            forbiddenColors[get(vertex_color, GraphInstance, n_2)] = v;
                         }
                     });
 
@@ -56,7 +56,7 @@ public:
                     vector<unsigned int> non_neighbours;
                     for_each(V_c.begin(), V_c.end(), [&](Ver vc) {
                         if (find(N_2.begin(), N_2.end(), vc) == N_2.end())
-                            if(get(vertex_color, G_b, vc) == 0)
+                            if(get(vertex_color, GraphInstance, vc) == 0)
                                 non_neighbours.push_back(vc);
                     });
                     int max_nreq_det = 0;
@@ -69,18 +69,18 @@ public:
                     for_each(non_neighbours.begin(), non_neighbours.end(), [&](unsigned int nn) {
                         int cnt_nreq_det = 0;
                         //Mark colors which are used by distance-2 neighbors in forbiddenColors
-                        for_each(adjacent_vertices(nn, G_b).first, adjacent_vertices(nn, G_b).second,
+                        for_each(adjacent_vertices(nn, GraphInstance).first, adjacent_vertices(nn, GraphInstance).second,
                                  [&](Ver adj_nn) {
-                                     if (get(edge_weight, G_b, edge(nn, adj_nn, G_b).first) != 1) {
-                                         if (!edge(adj_nn, v, G_b).second) {
+                                     if (get(edge_weight, GraphInstance, edge(nn, adj_nn, GraphInstance).first) != 1) {
+                                         if (!edge(adj_nn, v, GraphInstance).second) {
                                              cnt_nreq_det++;
                                          }
                                      }
                                  });
-                        for_each(adjacent_vertices(v, G_b).first, adjacent_vertices(v, G_b).second,
+                        for_each(adjacent_vertices(v, GraphInstance).first, adjacent_vertices(v, GraphInstance).second,
                                  [&](Ver adj_v) {
-                                     if (get(edge_weight, G_b, edge(v, adj_v, G_b).first) != 1) {
-                                         if (!edge(adj_v, nn, G_b).second) {
+                                     if (get(edge_weight, GraphInstance, edge(v, adj_v, GraphInstance).first) != 1) {
+                                         if (!edge(adj_v, nn, GraphInstance).second) {
                                              cnt_nreq_det++;
                                          }
                                      }
@@ -104,7 +104,7 @@ public:
                 }
             }
         });
-        return num_colors();
+        return NumOfColors();
     }
 };
 

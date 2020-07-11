@@ -25,15 +25,15 @@ These graph models are explained in [[1]](#1) and [[2]](#2).
 1. CIG: column-intersection graph coloring.
 2. D2Columns: distance-2 coloring for columns (Algorithm 3.1 from [[1]](#1))
 3. D2Rows: distance-2 coloring for rows (Algorithm 3.1 from [[1]](#1))
-4. D2RestrictedColumns: restricted (partial) distance-2 coloring for columns (Algorithm 3.1 from [[1]](#1))
-5. D2RestrictedRows: restricted (partial) distance-2 coloring for rows (Algorithm 3.1 from [[1]](#1))
-6. D2RestrictedColumnsNonReq: restricted (partial) distance-2 coloring for columns considering non-requirement elements (Algorithm 3.2 from [[1]](#1))
-7. PartialD2RestrictedColumnsNonReqDiag: restricted (partial) distance-2 coloring for columns considering diagonal elements (Algorithm 3.2 from [[1]](#1))
+4. D2RestrictedColumns: IsRestrictedColoring (partial) distance-2 coloring for columns (Algorithm 3.1 from [[1]](#1))
+5. D2RestrictedRows: IsRestrictedColoring (partial) distance-2 coloring for rows (Algorithm 3.1 from [[1]](#1))
+6. D2RestrictedColumnsNonReq: IsRestrictedColoring (partial) distance-2 coloring for columns considering non-requirement elements (Algorithm 3.2 from [[1]](#1))
+7. PartialD2RestrictedColumnsNonReqDiag: IsRestrictedColoring (partial) distance-2 coloring for columns considering diagonal elements (Algorithm 3.2 from [[1]](#1))
 8. D2RestrictedColumnsNonReqBalanced: a balanced version of D2RestrictedColumnsNonReq (Algorithm 3.5 from [[1]](#1))
 9. SBSchemeCombinedVertexCoverColoring: star bicoloring for two-sided coloring (Algorithm 3.6 from [[1]](#1))
-10. SBSchemeCombinedVertexCoverColoringRestricted: restricted (partial) star bicoloring for two-sided coloring (Algorithm 3.6 from [[1]](#1))
-11. SBSchemeCombinedVertexCoverColoringRestrictedNonReq: restricted (partial) star bicoloring for two-sided coloring considering non-requirement elements (Algorithm 3.7 from [[1]](#1))
-12. SBSchemeCombinedVertexCoverColoringRestrictedDiag: restricted (partial) star bicoloring for two-sided coloring considering diagonal elements (Algorithm 3.8 from [[1]](#1))
+10. SBSchemeCombinedVertexCoverColoringRestricted: IsRestrictedColoring (partial) star bicoloring for two-sided coloring (Algorithm 3.6 from [[1]](#1))
+11. SBSchemeCombinedVertexCoverColoringRestrictedNonReq: IsRestrictedColoring (partial) star bicoloring for two-sided coloring considering non-requirement elements (Algorithm 3.7 from [[1]](#1))
+12. SBSchemeCombinedVertexCoverColoringRestrictedDiag: IsRestrictedColoring (partial) star bicoloring for two-sided coloring considering diagonal elements (Algorithm 3.8 from [[1]](#1))
 13. MaxGain: Graph coloring for maximum gain ([[3]](#3)))
 14. MaxDiscovered: Graph coloring for maximum discovered elements ([[3]](#3))
 
@@ -74,10 +74,10 @@ Two main ingredients, coloring and orderings, can be implemented only by derivin
 For example, a new coloring and ordering can be added as easy as the following code.
 ```
 class New_Ordering : public Ordering {
-  void order(const Graph &G, vector<unsigned int> &ord, bool restricted) {...}
+  void order(const Graph &G, vector<unsigned int> &ord, bool IsRestrictedColoring) {...}
 };
 
-class New_Coloring : public ColAlg {
+class New_Coloring : public ColoringAlgorithms {
    vector<int> color() {...}
 };
 ```

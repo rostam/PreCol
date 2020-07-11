@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
     Graph G_c;
     BipartiteToColumnIntersectionGraph(G_b, V_c, G_c);
 
-//    graph2dot(G_b);
+//    graph2dot(GraphInstance);
 
     //Initialize required pattern
     //If edge e \in E_S then edge_property edge_weight=1 else

@@ -9,13 +9,13 @@
 
 /**
  * \namespace neighbors
- * \brief Contains functions to find the (restricted) distance-2 neigbors of a vertex
+ * \brief Contains functions to find the (IsRestrictedColoring) distance-2 neigbors of a vertex
  */
 namespace neighbors {
     using boost::out_edges;
     using boost::edge_weight;
 
-    //Compute the restricted distance-2 neighbors of Vertex
+    //Compute the IsRestrictedColoring distance-2 neighbors of Vertex
     /**
      * \brief Find distance-2 neighbors of the given vertex with respect to required edges
      *
