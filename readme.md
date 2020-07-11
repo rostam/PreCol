@@ -9,6 +9,7 @@
  4. [Usages](#usage) 
  5. [HowToCite](#the-best-source-for-citing-this-work)
  6. [Reposity Structure](#repo)
+ 7. [Applications](#Applications)
  &nbsp;
 
 ## Partial Coloring
@@ -170,6 +171,10 @@ in which the input parameters are passed directly to PreCol.
 - CMakeLists.txt: The cmake file for the project
 - Application: An application in the automatic differentation
 - OtherSources: Other experiments in this direction
+
+## Applications
+- Combining Automatic Differentiation and Preconditioning [More...](Application/Preconditioning/readme.md)
+- Column Gain Graph Coloring [More...](Application/ColumnGainGraph/readme.md)
 
 
 ## References
