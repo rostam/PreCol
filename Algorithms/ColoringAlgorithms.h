@@ -44,7 +44,7 @@ protected:
 public:
     ColoringAlgorithms(Graph &G_b) : GraphInstance(G_b) { SetAllColorsTo(0);};
 
-    ColoringAlgorithms(Graph &G_b, vector<unsigned int> &V, bool restricted, map<string, any> pars = {})
+    ColoringAlgorithms(Graph &G_b, vector<unsigned int> &V, bool restricted = false, map<string, any> pars = {})
             : IsRestrictedColoring(restricted), V_c(V), GraphInstance(G_b), CustomParameters(pars) { SetAllColorsTo(0);};
 
     ColoringAlgorithms(Graph &G_b, vector<unsigned int> &V_r, vector<unsigned int> &V_c,
@@ -52,6 +52,10 @@ public:
 //            : IsRestrictedColoring(restricted), V_r(V_r), V_c(V_c), GraphInstance(G_b), CustomParameters(pars);
 
     virtual int color() = 0;
+
+    void SetOrdering(std::vector<unsigned int> order) {
+        V_c = order;
+    }
 
     std::tuple<int, std::vector<int>> ColorAndReturn() {
         color();

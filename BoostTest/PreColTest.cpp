@@ -109,9 +109,21 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         BOOST_CHECK_EQUAL(num_edges(G_CIG), 15);
 
         alg = "GreedyColoring";
+        vector<unsigned int> order;
+        ForEachVertex(G_CIG, [&](Ver v) { order.push_back(v); });
+        ret = getAlg(Mode2, alg, Mode, G_CIG, V_r, order, col_ord_c, alpha);
+        num_of_colors = ret->color();
+        BOOST_CHECK_EQUAL(num_of_colors, 6);
+
+        alg = "GreedyColoringBoost";
         ret = getAlg(Mode2, alg, Mode, G_CIG, V_r, V_c, col_ord_c, alpha);
         num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 6);
+
+//        alg = "GreedyColoringLimitedMaxColor"
+//        ret = getAlg(Mode2, alg, Mode, G_CIG, V_r, V_c, col_ord_c, alpha);
+//        num_of_colors = ret->color();
+//        BOOST_CHECK_EQUAL(num_of_colors, 6);
     }
 
     BOOST_AUTO_TEST_CASE(ArrowShapedPlusOneTest) {

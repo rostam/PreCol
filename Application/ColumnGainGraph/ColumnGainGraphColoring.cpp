@@ -12,6 +12,7 @@
 #include "../../Graph/datatypes.hpp"
 #include "../../Graph/MatrixMarket.hpp"
 #include "../../Algorithms/algorithms.h"
+#include "../../Orderings/orderings.h"
 
 std::tuple<int, int, int, int, double>
 compute_discovered_misses(const std::vector<int> &color_vec, boost::numeric::ublas::matrix<double> &m, int color);
@@ -94,16 +95,19 @@ int main(int argc, const char *argv[]) {
         GreedyColoringSimpleGraph greedyColoringSimpleGraph(g);
         auto[num_colors_natural_full, color_vec_natural_full] = greedyColoringSimpleGraph.ColorAndReturn();
         cerr << endl << num_colors_natural_full << endl;
-//        auto[from, to, step] = //std::tuple<int,int,int>(57,157,10);
-//        get_bounds_colors(num_colors_natural_full);
-//        auto[kfrom, kto, kstep] = get_bounds_k(mm.N);
-//        for (int k = kfrom; k <= kto; k += kstep) {
-//            Graph g = matrix2graph_limited(m, k);
-//            auto[num_colors_natural_full, color_vec_natural_full] = g.greedy_color(1000000);
+        auto[from, to, step] = //std::tuple<int,int,int>(57,157,10);
+        get_bounds_colors(num_colors_natural_full);
+        auto[kfrom, kto, kstep] = get_bounds_k(mm.N);
+        for (int k = kfrom; k <= kto; k += kstep) {
+            mm.MtXToColumnGainGraph(g, m, k);
+            auto[num_colors_natural_full, color_vec_natural_full] = greedyColoringSimpleGraph.ColorAndReturn();
 //            auto[num_colors_natural, color_vec_natural] = g.greedy_color(100000);
 //            std::vector<int> lfo_ord = g.largest_first_order();
 //            auto[num_colors_lfo, color_vec_lfo] = g.greedy_color_limited(lfo_ord, 100000);
 ////            auto[num_colors_sat, color_vec_sat] = g.saturation_degree_ordering_coloring(100000);
+              vector<unsigned int> ord;
+              WeighOptimumOrdering().order(g,ord,false);
+              greedyColoringSimpleGraph.SetOrdering(ord);
 //            std::vector<int> ord = g.optimum_order();
 //            auto[num_colors_newIdea, color_vec_newIdea] = g.greedy_color_limited(ord, 100000);
 //            for (int color = from; color <= to; color += step) {
@@ -152,7 +156,7 @@ int main(int argc, const char *argv[]) {
 //                    << fnd_MaxGain_nat << ","<< fnd_MaxGain_ago << ","<< fnd_MaxGain_lfo
 //                    << endl;
 //            }
-//        }
+        }
         out.flush();
         out.close();
     }

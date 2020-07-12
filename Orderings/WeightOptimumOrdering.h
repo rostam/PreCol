@@ -8,6 +8,7 @@
 #include "Ordering.h"
 
 class WeighOptimumOrdering : public Ordering {
+public:
     /**
      * \brief A virtual order function which is defined by subclasses
      *

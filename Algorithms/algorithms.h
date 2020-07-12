@@ -12,10 +12,11 @@
 #include "OneSidedD2ColorNonReqDiag.h"
 #include "StarBicoloringVertexCover.h"
 #include "StarBicoloringVertexCoverNonReq.h"
+#include "GreedyColoringSimpleGraphBoost.h"
 #include "GreedyColoringSimpleGraph.h"
 #include "GreedyColoringLimitedMaxColor.h"
 
-static vector<string> algs = {"D2Columns", "D2Rows", "GreedyColoring",
+static vector<string> algs = {"D2Columns", "D2Rows", "GreedyColoring", "GreedyColoringBoost"
                        "D2RestrictedColumns", "D2RestrictedRows",
                        "D2RestrictedColumnsNonReq",
                        "PartialD2RestrictedColumnsNonReqDiag",
@@ -65,8 +66,10 @@ static shared_ptr<ColoringAlgorithms> getAlg(int Mode2, const string &alg,
     } else if (alg == "SBSchemeCombinedVertexCoverColoringRestrictedNonReq") {
         return shared_ptr<ColoringAlgorithms>(new StarBicoloringVertexCoverNonReq(G_b, V_r, V_c, true,
                                                                                   {{"Mode", Mode},{"Mode2",Mode2},{"alpha",alpha}}));
+    } else if (alg == "GreedyColoringBoost") {
+        return shared_ptr<ColoringAlgorithms>(new GreedyColoringSimpleGraphBoost(G_b));
     } else if (alg == "GreedyColoring") {
-        return shared_ptr<ColoringAlgorithms>(new GreedyColoringSimpleGraph(G_b));
+        return shared_ptr<ColoringAlgorithms>(new GreedyColoringSimpleGraph(G_b, V_c));
     } else if (alg == "GreedyColoringLimitedMaxColor") {
         return shared_ptr<ColoringAlgorithms>(new GreedyColoringLimitedMaxColor(G_b));
     } else {

@@ -1,5 +1,5 @@
 //
-// Created by rostam on 28.06.20.
+// Created by rostam on 11.07.20.
 //
 
 #ifndef PRECOL_GREEDYCOLORINGSIMPLEGRAPH_H

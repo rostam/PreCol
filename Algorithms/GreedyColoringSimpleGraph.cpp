@@ -1,23 +1,28 @@
 //
-// Created by rostam on 28.06.20.
+// Created by rostam on 11.07.20.
 //
 
 #include "GreedyColoringSimpleGraph.h"
-#include "boost/graph/sequential_vertex_coloring.hpp"
 
 /**
- * Coloring algorithm
+ * \brief Greedy coloring algorithm
+ *
  * @return the number of colors
  */
 int GreedyColoringSimpleGraph::color() {
-    Graph &g = GraphInstance;
-    typedef graph_traits<Graph>::vertices_size_type vertices_size_type;
-    typedef property_map<Graph, boost::vertex_index_t>::const_type vertex_index_map;
-    std::vector<vertices_size_type> color_vec(boost::num_vertices(g));
-    boost::iterator_property_map<vertices_size_type*, vertex_index_map> color(&color_vec.front(), get(boost::vertex_index, g));
-    auto num_colors = boost::sequential_vertex_coloring(g, color);
-    ForEachVertexConst(g, [&](Ver v) {
-        boost::put(vertex_color, g, v, color[v]);
-    });
-    return num_colors;
+    vector<unsigned int> &order = V_c;
+    for (int v : order) {
+        // Since vertex numbering starts at zero, we initialize forbiddenColors with the (non-existing) vertex -1
+        std::vector<unsigned int> forbiddenColors(boost::num_vertices(GraphInstance), -1);
+        forbiddenColors[0] = v;
+        ForEachNeighbor(GraphInstance, v, [&](int n) {
+            int c = boost::get(vertex_color, GraphInstance, n);
+            if (c > 0) forbiddenColors[c] = v;
+        });
+        //Find first color which can be assigned to v
+        auto result = find_if(forbiddenColors.begin(), forbiddenColors.end(), [&](int i) { return i != v; });
+        auto res_color = distance(forbiddenColors.begin(), result);
+        boost::put(vertex_color, GraphInstance, v, res_color);
+    }
+    return NumOfColors();
 }
