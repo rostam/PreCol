@@ -12,13 +12,13 @@
  * @return
  */
 int GetSuitableColor(const Graph& GraphInstance, int res_color, int max_color, int v) {
-    if (res_color < max_color) {
+    if (res_color <= max_color) {
         return res_color;
     } else {
         int nv = 0;
         double max_w = -1000;
 
-        ForEachEdgeConst(GraphInstance, [&](Edge ei) {
+        ForEachOutEdgesConst(GraphInstance, v, [&](Edge ei) {
             double w = get(boost::edge_weight_t(), GraphInstance, ei);
             auto source = boost::source(ei, GraphInstance);
             auto target = boost::target(ei, GraphInstance);
@@ -43,7 +43,7 @@ int GetSuitableColor(const Graph& GraphInstance, int res_color, int max_color, i
 
 int GreedyColoringLimitedMaxColor::color() {
     int MaxColor = std::any_cast<int>(CustomParameters["MaxColor"]);
-    vector<int> order = std::any_cast<vector<int>>(CustomParameters["ColoringOrder"]);
+    vector<unsigned int>& order = V_c;
     ForEachVertex(GraphInstance, [&](Ver v) {
         boost::put(vertex_color, GraphInstance, v, 0);
     });

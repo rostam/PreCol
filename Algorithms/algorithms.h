@@ -42,7 +42,7 @@ static vector<string> algs = {"D2Columns", "D2Rows", "GreedyColoring", "GreedyCo
 static shared_ptr<ColoringAlgorithms> getAlg(int Mode2, const string &alg,
                                              int Mode, Graph &G_b, vector<unsigned int> &V_r,
                                              vector<unsigned int> &V_c,
-                                             unique_ptr<Ordering>& order, int alpha) {
+                                             unique_ptr<Ordering>& order, int alpha, int MaxColor = 0) {
     if (alg == "D2Columns") {
         return shared_ptr<ColoringAlgorithms>(new OneSidedD2Coloring(G_b, V_c, false));
     } else if (alg == "D2Rows") {
@@ -71,7 +71,7 @@ static shared_ptr<ColoringAlgorithms> getAlg(int Mode2, const string &alg,
     } else if (alg == "GreedyColoring") {
         return shared_ptr<ColoringAlgorithms>(new GreedyColoringSimpleGraph(G_b, V_c));
     } else if (alg == "GreedyColoringLimitedMaxColor") {
-        return shared_ptr<ColoringAlgorithms>(new GreedyColoringLimitedMaxColor(G_b));
+        return shared_ptr<ColoringAlgorithms>(new GreedyColoringLimitedMaxColor(G_b, V_c, false, {{"MaxColor", MaxColor}}));
     } else {
         return shared_ptr<ColoringAlgorithms>(new OneSidedD2Coloring(G_b, V_c, false));
     }

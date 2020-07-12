@@ -33,7 +33,7 @@ std::tuple<int, std::vector<int>> ColoringAlgorithms::TupleNumOfColorAndColors()
  * @param pars
  */
 ColoringAlgorithms::ColoringAlgorithms(Graph &G_b, vector<unsigned int> &V_r, vector<unsigned int> &V_c,
-bool restricted, map<string, any> pars)
+bool restricted, map<string, any>&& pars)
 : IsRestrictedColoring(restricted), V_r(V_r), V_c(V_c), GraphInstance(G_b), CustomParameters(pars) {
     SetAllColorsTo(0);
     //Compute independent set

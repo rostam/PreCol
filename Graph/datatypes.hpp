@@ -160,6 +160,34 @@ namespace precol {
     }
 
     /**
+     * \brief Iterate on the out edges of v
+     *
+     * @tparam Lambda
+     * @param g Given graph
+     * @param v Given vertex
+     * @param func Function to apply
+     */
+    template<typename Lambda>
+    void ForEachOutEdges(Graph &g, const Ver &v, Lambda func) {
+        auto oe = out_edges(v, g);
+        std::for_each(oe.first, oe.second, func);
+    }
+
+    /**
+     * \brief Constant iterate on the out edges of v
+     *
+     * @tparam Lambda
+     * @param g Given graph
+     * @param v Given vertex
+     * @param func Function to apply
+     */
+    template<typename Lambda>
+    void ForEachOutEdgesConst(const Graph &g, const Ver &v, Lambda func) {
+        auto oe = out_edges(v, g);
+        std::for_each(oe.first, oe.second, func);
+    }
+
+    /**
      * \brief Constant iterate on the neighbors of v
      *
      * @tparam Lambda Function to apply

@@ -14,6 +14,7 @@
 #include "boost/graph/copy.hpp"
 #include "isets.h"
 #include <any>
+#include <utility>
 
 /**
  * \class ColoringAlgorithms
@@ -32,7 +33,7 @@ protected:
     vector<unsigned int> V_r; //!< The set of row vertices
     Graph &GraphInstance;
     shared_ptr<IndependentSet> IndependentSetInstance;
-    bool IsRestrictedColoring;
+    bool IsRestrictedColoring{};
     map<string, any> CustomParameters;
 
     /**
@@ -42,13 +43,13 @@ protected:
      */
     std::tuple<int, std::vector<int>> TupleNumOfColorAndColors();
 public:
-    ColoringAlgorithms(Graph &G_b) : GraphInstance(G_b) { SetAllColorsTo(0);};
+    explicit ColoringAlgorithms(Graph &G_b) : GraphInstance(G_b) { SetAllColorsTo(0);};
 
-    ColoringAlgorithms(Graph &G_b, vector<unsigned int> &V, bool restricted = false, map<string, any> pars = {})
-            : IsRestrictedColoring(restricted), V_c(V), GraphInstance(G_b), CustomParameters(pars) { SetAllColorsTo(0);};
+    ColoringAlgorithms(Graph &G_b, vector<unsigned int> &V, bool restricted = false, map<string, any>&& pars = {})
+            : IsRestrictedColoring(restricted), V_c(V), GraphInstance(G_b), CustomParameters(std::move(pars)) { SetAllColorsTo(0);};
 
     ColoringAlgorithms(Graph &G_b, vector<unsigned int> &V_r, vector<unsigned int> &V_c,
-                       bool restricted, map<string, any> pars = {});
+                       bool restricted, map<string, any>&& pars = {});
 //            : IsRestrictedColoring(restricted), V_r(V_r), V_c(V_c), GraphInstance(G_b), CustomParameters(pars);
 
     virtual int color() = 0;

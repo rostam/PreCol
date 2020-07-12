@@ -108,6 +108,7 @@ int main(int argc, const char *argv[]) {
               vector<unsigned int> ord;
               WeighOptimumOrdering().order(g,ord,false);
               greedyColoringSimpleGraph.SetOrdering(ord);
+            auto[num_colors_newIdea, color_vec_newIdea] = greedyColoringSimpleGraph.ColorAndReturn();
 //            std::vector<int> ord = g.optimum_order();
 //            auto[num_colors_newIdea, color_vec_newIdea] = g.greedy_color_limited(ord, 100000);
 //            for (int color = from; color <= to; color += step) {
