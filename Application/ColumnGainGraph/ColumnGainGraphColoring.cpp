@@ -106,9 +106,8 @@ int main(int argc, const char *argv[]) {
 //            auto[num_colors_lfo, color_vec_lfo] = g.greedy_color_limited(lfo_ord, 100000);
 ////            auto[num_colors_sat, color_vec_sat] = g.saturation_degree_ordering_coloring(100000);
               vector<unsigned int> ord;
-              WeighOptimumOrdering().order(g,ord,false);
-              greedyColoringSimpleGraph.SetOrdering(ord);
-            auto[num_colors_newIdea, color_vec_newIdea] = greedyColoringSimpleGraph.ColorAndReturn();
+            WeighOptimumOrdering().OrderGivenVertexSubset(g, ord, false);
+            auto[num_colors_newIdea, color_vec_newIdea] = greedyColoringSimpleGraph.ColorWithOrdering(ord);
 //            std::vector<int> ord = g.optimum_order();
 //            auto[num_colors_newIdea, color_vec_newIdea] = g.greedy_color_limited(ord, 100000);
 //            for (int color = from; color <= to; color += step) {

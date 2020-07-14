@@ -12,7 +12,7 @@
  * \brief A specific preordering for the coloring
  */
 class IDO : public Ordering {
-    bool order(const Graph &G_b, vector<unsigned int> &V, bool restricted) {
+    bool OrderGivenVertexSubset(const Graph &G_b, vector<unsigned int> &V, bool restricted) {
         //Degree (second.first) and incident degree (second.second)
         vector<pair<int, pair<int, int> > > Degrees;
         vector<unsigned int> Ordering;

@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
     //edge_weight=0
     int NumOfRemainedNonzeros = sparsifier(G_b, SparsificationKind, mm.nrows(), BlockSize, "");
 
-    ColoringOrder->order(G_b, V_r, ColoringAlgorithm.find("Restricted") != string::npos);
+    ColoringOrder->OrderGivenVertexSubset(G_b, V_r, ColoringAlgorithm.find("Restricted") != string::npos);
 //    ApplyColoringOrder(ColoringAlgorithm, ColoringOrder, GraphInstance, V_r, V_c);
     //Coloring of the vertices
     int cols = getAlg(Mode2, ColoringAlgorithm, Mode, G_b, V_r, V_c, ColoringOrder, AlphaForBalancedColoring)->color();

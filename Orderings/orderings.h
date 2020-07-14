@@ -50,8 +50,8 @@ static unique_ptr<Ordering> GetColoringOrder(const string& ColoringOrdering) {
 }
 
 
-/** Based on the given algorithm and order the correct
- * order is generated in the corresponding collection V_r and V_c.
+/** Based on the given algorithm and OrderGivenVertexSubset the correct
+ * OrderGivenVertexSubset is generated in the corresponding collection V_r and V_c.
  *
  * \param alg the coloring algorithm
  * \param ord the type of ordering (LargestFirstOrderingDegrees, IDO, ...)
@@ -63,8 +63,8 @@ static unique_ptr<Ordering> GetColoringOrder(const string& ColoringOrdering) {
  */
 static void ApplyColoringOrder(const string &alg, unique_ptr<Ordering>& ord, const Graph &G_b,
                                vector<unsigned int> &V_r, vector<unsigned int> &V_c) {
-    ord->order(G_b, V_r, alg.find("Restricted") != string::npos);
-    ord->order(G_b, V_c, alg.find("Restricted") != string::npos);
+    ord->OrderGivenVertexSubset(G_b, V_r, alg.find("Restricted") != string::npos);
+    ord->OrderGivenVertexSubset(G_b, V_c, alg.find("Restricted") != string::npos);
 }
 
 #endif //PRECOL_ORDERINGS_H

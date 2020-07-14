@@ -5,6 +5,8 @@
 #include "GreedyColoringLimitedMaxColor.h"
 
 /**
+ * \brief Get the suitable color based on the given maximum color and the current color
+ *
  *
  * @param res_color
  * @param max_color
@@ -40,7 +42,16 @@ int GetSuitableColor(const Graph& GraphInstance, int res_color, int max_color, i
     }
 }
 
-
+/**
+ * \brief Compute a greedy coloring of a simple graph when
+ * the number of colors are limited to a maximum color
+ *
+ * Input:
+ * - G a simple graph
+ *
+ * Output:
+ * - G a simple graph with colors as weights vertex_color
+ */
 int GreedyColoringLimitedMaxColor::color() {
     int MaxColor = std::any_cast<int>(CustomParameters["MaxColor"]);
     vector<unsigned int>& order = V_c;

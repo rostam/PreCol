@@ -26,9 +26,6 @@
 
 class ColoringAlgorithms {
 protected:
-    enum BipartiteGraphColoringType {
-        RowColoring, ColumnColoring, TwoSidedColoring
-    };
     vector<unsigned int> V_c; //!< The set of column vertices
     vector<unsigned int> V_r; //!< The set of row vertices
     Graph &GraphInstance;
@@ -54,11 +51,27 @@ public:
 
     virtual int color() = 0;
 
-    void SetOrdering(std::vector<unsigned int> order) {
+    /**
+     * \brief Set the coloring ordering
+     *
+     * @param order the coloring ordering
+     */
+    void SetOrdering(const std::vector<unsigned int>& order) {
         V_c = order;
     }
 
+    /**
+     * \brief Color the graph and return both the number of colors and the coloring itself
+     *
+     * @return both the number of colors and the coloring itself
+     */
     std::tuple<int, std::vector<int>> ColorAndReturn() {
+        color();
+        return TupleNumOfColorAndColors();
+    }
+
+    std::tuple<int, std::vector<int>> ColorWithOrdering(const vector<unsigned int>& order) {
+        SetOrdering(order);
         color();
         return TupleNumOfColorAndColors();
     }
@@ -69,8 +82,9 @@ public:
     }
 
     /**
+     * \brief Compute number of colors based on the vertex parameter
      *
-     * @return
+     * @return Number of colors
      */
     int NumOfColors() {
         int max_color = 0;

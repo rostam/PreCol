@@ -33,7 +33,7 @@
  * \brief Constructor for SILU factorization on a given bipartite graph
  *
  * @param G_b the input bipartite graph
- * @param pre_ord the list of integers specifies the order in which the
+ * @param pre_ord the list of integers specifies the OrderGivenVertexSubset in which the
  * ILU should be computed
  * @return
  */
@@ -57,8 +57,8 @@ SILU::SILU(Graph& G_b, const string& pre_ord) : G_ilu(num_vertices(G_b)/2) {
         }
     } else if(pre_ord == "Metis"){
         getMetisOrdering(G_ilu,"graph", order);
-//        reverse(order.begin(),order.end());
-//        getMetisOrdering2(G_ilu,"graph", order);
+//        reverse(order.begin(),OrderGivenVertexSubset.end());
+//        getMetisOrdering2(G_ilu,"graph", OrderGivenVertexSubset);
     } else if(pre_ord == "Min") {
         list<pair<int, int> > VertexDegree;
         ForEachVertex(G_ilu, [&](Ver v) {

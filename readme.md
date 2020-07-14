@@ -75,7 +75,7 @@ Two main ingredients, coloring and orderings, can be implemented only by derivin
 For example, a new coloring and ordering can be added as easy as the following code.
 ```
 class New_Ordering : public Ordering {
-  void order(const Graph &G, vector<unsigned int> &ord, bool IsRestrictedColoring) {...}
+  void OrderGivenVertexSubset(const Graph &G, vector<unsigned int> &ord, bool IsRestrictedColoring) {...}
 };
 
 class New_Coloring : public ColoringAlgorithms {

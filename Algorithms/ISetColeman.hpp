@@ -8,6 +8,8 @@
 #include "boost/graph/filtered_graph.hpp"
 #include "../Graph/datatypes.hpp"
 #include "IndependentSet.h"
+
+
 class ISetColeman : public IndSet{
 public:
 	using IndSet::IndSet;

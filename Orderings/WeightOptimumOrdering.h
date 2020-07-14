@@ -10,14 +10,14 @@
 class WeighOptimumOrdering : public Ordering {
 public:
     /**
-     * \brief A virtual order function which is defined by subclasses
+     * \brief A virtual OrderGivenVertexSubset function which is defined by subclasses
      *
      * @param G_b the input graph
      * @param V the set of vertices which should be ordered
      * @param restricted is the ordering IsRestrictedColoring or not?
      * @return
      */
-    bool order(const Graph &G_b, vector<unsigned int> &V, bool restricted) {
+    bool OrderGivenVertexSubset(const Graph &G_b, vector<unsigned int> &V, bool restricted) {
         std::vector<std::tuple<int, int>> vertex_weight;
         ForEachVertexConst(G_b, [&](int v) {
             int sum = 0;
