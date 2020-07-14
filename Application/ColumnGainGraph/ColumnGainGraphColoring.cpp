@@ -66,7 +66,7 @@ int main(int argc, const char *argv[]) {
 //                       "str_400","bcsstm13","nos3","bp_1600",
 //                       "plbuckle","fs_183_3","685_bus","bcsstk09",
 //                       "str_200","bp_1400","G51","1138_bus"};
-    auto matrix_arr = {"nos3"};
+    auto matrix_arr = {"str_200"};
 //    auto matrix_arr = {"bcsstk08",
 //                       "str_400","bcsstm13","nos3","bp_1600",
 //                       "plbuckle","fs_183_3","685_bus","bcsstk09",
@@ -99,18 +99,20 @@ int main(int argc, const char *argv[]) {
         get_bounds_colors(num_colors_natural_full);
         auto[kfrom, kto, kstep] = get_bounds_k(mm.N);
         for (int k = kfrom; k <= kto; k += kstep) {
+            cerr << k << endl;
             mm.MtXToColumnGainGraph(g, m, k);
             auto[num_colors_natural_full, color_vec_natural_full] = greedyColoringSimpleGraph.ColorAndReturn();
 //            auto[num_colors_natural, color_vec_natural] = g.greedy_color(100000);
 //            std::vector<int> lfo_ord = g.largest_first_order();
 //            auto[num_colors_lfo, color_vec_lfo] = g.greedy_color_limited(lfo_ord, 100000);
 ////            auto[num_colors_sat, color_vec_sat] = g.saturation_degree_ordering_coloring(100000);
-              vector<unsigned int> ord;
-            WeighOptimumOrdering().OrderGivenVertexSubset(g, ord, false);
-            auto[num_colors_newIdea, color_vec_newIdea] = greedyColoringSimpleGraph.ColorWithOrdering(ord);
+//              vector<unsigned int> ord;
+//            WeighOptimumOrdering().OrderGivenVertexSubset(g, ord, false);
+            auto[num_colors_newIdea, color_vec_newIdea] = greedyColoringSimpleGraph
+                    .ColorWithOrdering(WeighOptimumOrdering().GenerateOrdering(g));
 //            std::vector<int> ord = g.optimum_order();
 //            auto[num_colors_newIdea, color_vec_newIdea] = g.greedy_color_limited(ord, 100000);
-//            for (int color = from; color <= to; color += step) {
+            for (int color = from; color <= to; color += step) {
 //                auto[all_sum_nat, all_discovered_color_zero_sum_nat, all_misses_nat, all_misses_color_zero_sum_nat, fnd_ignore_nat] = compute_discovered_misses_ignore(
 //                        color_vec_natural, m, color);
 //                auto[all_sum_new, all_discovered_color_zero_sum_new, all_misses_new, all_misses_color_zero_sum_new, fnd_ignore_ago] = compute_discovered_misses_ignore(
@@ -155,7 +157,7 @@ int main(int argc, const char *argv[]) {
 //                    << fnd_MaxDiscovered_nat << "," << fnd_MaxDiscovered_ago << "," << fnd_MaxDiscovered_lfo << ","
 //                    << fnd_MaxGain_nat << ","<< fnd_MaxGain_ago << ","<< fnd_MaxGain_lfo
 //                    << endl;
-//            }
+            }
         }
         out.flush();
         out.close();

@@ -27,6 +27,19 @@ public:
      * @return
      */
     virtual bool OrderGivenVertexSubset(const Graph &G_b, vector<unsigned int> &Ordering, bool IsRestricted)=0;
+
+    /**
+     * \brief Generate ordering for GraphInstance
+     *
+     * @param GraphInstance Given graph
+     * @return Ordering for GraphInstance
+     */
+    vector<unsigned int> GenerateOrdering(const Graph &GraphInstance) {
+        vector<unsigned int> ret;
+        ForEachVertexConst(GraphInstance, [&ret](Ver v) { ret.emplace_back(v); });
+        OrderGivenVertexSubset(GraphInstance, ret, false);
+        return ret;
+    }
 };
 
 #endif //PRECOL_ORDERING_H
