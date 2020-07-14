@@ -24,7 +24,7 @@ namespace precol {
     typedef boost::adjacency_list<boost::setS, boost::vecS, boost::undirectedS,
             property<boost::vertex_color_t, int>,
             property<boost::edge_weight_t, int,
-            property<boost::edge_name_t, string>>> Graph;
+                    property<boost::edge_name_t, string>>> Graph;
 
     typedef boost::graph_traits<Graph>::vertex_iterator V_iter;
     typedef boost::graph_traits<Graph>::edge_iterator E_iter;
@@ -57,10 +57,10 @@ namespace precol {
      * @param func
      */
     template<typename Lambda>
-    static void ForEachVertexConst(const Graph& g, Lambda func) {
+    static void ForEachVertexConst(const Graph &g, Lambda func) {
         V_iter vi, vi_end;
         tie(vi, vi_end) = vertices(g);
-        std::for_each(vi,vi_end,func);
+        std::for_each(vi, vi_end, func);
     }
 
     /**
@@ -85,10 +85,10 @@ namespace precol {
      * @param func
      */
     template<typename Lambda>
-    static void ForEachEdgeConst(const Graph& g, Lambda func) {
+    static void ForEachEdgeConst(const Graph &g, Lambda func) {
         E_iter ei, ei_end;
         tie(ei, ei_end) = edges(g);
-        std::for_each(ei,ei_end,func);
+        std::for_each(ei, ei_end, func);
     }
 
     static auto ge_degree = [](pair<int, int> t1, pair<int, int> t2) { return t1.second >= t2.second; };
@@ -222,6 +222,44 @@ namespace precol {
         });
 
         for (int i : tmp) func(i);
+    }
+
+    /**
+    * \brief Get the suitable color based on the given maximum color and the current color
+    *
+    *
+    * @param res_color
+    * @param max_color
+    * @param v
+    * @return
+    */
+    static int GetSuitableColor(const Graph &GraphInstance, int res_color, int max_color, int v) {
+        if (res_color <= max_color) {
+            return res_color;
+        } else {
+            int nv = 0;
+            double max_w = -1000;
+
+            ForEachOutEdgesConst(GraphInstance, v, [&](Edge ei) {
+                double w = get(boost::edge_weight_t(), GraphInstance, ei);
+                auto source = boost::source(ei, GraphInstance);
+                auto target = boost::target(ei, GraphInstance);
+                if (w > max_w) {
+                    if (boost::get(vertex_color, GraphInstance, nv) != -1) {
+                        max_w = w;
+                        nv = target;
+                    }
+                }
+            });
+
+//            if(max_w < -1) return 0;
+//            std::cerr<<max_w<<std::endl;
+            if (boost::get(vertex_color, GraphInstance, nv) != -1) {
+                return boost::get(vertex_color, GraphInstance, nv);
+            } else {
+                return 1;
+            }
+        }
     }
 }
 

@@ -4,43 +4,7 @@
 
 #include "GreedyColoringLimitedMaxColor.h"
 
-/**
- * \brief Get the suitable color based on the given maximum color and the current color
- *
- *
- * @param res_color
- * @param max_color
- * @param v
- * @return
- */
-int GetSuitableColor(const Graph& GraphInstance, int res_color, int max_color, int v) {
-    if (res_color <= max_color) {
-        return res_color;
-    } else {
-        int nv = 0;
-        double max_w = -1000;
 
-        ForEachOutEdgesConst(GraphInstance, v, [&](Edge ei) {
-            double w = get(boost::edge_weight_t(), GraphInstance, ei);
-            auto source = boost::source(ei, GraphInstance);
-            auto target = boost::target(ei, GraphInstance);
-            if (w > max_w) {
-                if (boost::get(vertex_color, GraphInstance, nv) != -1) {
-                    max_w = w;
-                    nv = target;
-                }
-            }
-        });
-
-//            if(max_w < -1) return 0;
-//            std::cerr<<max_w<<std::endl;
-        if (boost::get(vertex_color, GraphInstance, nv) != -1) {
-            return boost::get(vertex_color, GraphInstance, nv);
-        } else {
-            return 1;
-        }
-    }
-}
 
 /**
  * \brief Compute a greedy coloring of a simple graph when

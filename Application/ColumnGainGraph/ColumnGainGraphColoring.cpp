@@ -101,10 +101,8 @@ int main(int argc, const char *argv[]) {
         for (int k = kfrom; k <= kto; k += kstep) {
             cerr << k << endl;
             mm.MtXToColumnGainGraph(g, m, k);
-            auto[num_colors_natural_full, color_vec_natural_full] = greedyColoringSimpleGraph.ColorAndReturn();
-//            auto[num_colors_natural, color_vec_natural] = g.greedy_color(100000);
-//            std::vector<int> lfo_ord = g.largest_first_order();
-//            auto[num_colors_lfo, color_vec_lfo] = g.greedy_color_limited(lfo_ord, 100000);
+            auto[num_colors_natural, color_vec_natural] = greedyColoringSimpleGraph.ColorAndReturn();
+            auto[num_colors_lfo, color_vec_lfo] = greedyColoringSimpleGraph.ColorWithOrdering(LargestFirstOrderingDegrees().GenerateOrdering(g));
 ////            auto[num_colors_sat, color_vec_sat] = g.saturation_degree_ordering_coloring(100000);
 //              vector<unsigned int> ord;
 //            WeighOptimumOrdering().OrderGivenVertexSubset(g, ord, false);
@@ -113,8 +111,8 @@ int main(int argc, const char *argv[]) {
 //            std::vector<int> ord = g.optimum_order();
 //            auto[num_colors_newIdea, color_vec_newIdea] = g.greedy_color_limited(ord, 100000);
             for (int color = from; color <= to; color += step) {
-//                auto[all_sum_nat, all_discovered_color_zero_sum_nat, all_misses_nat, all_misses_color_zero_sum_nat, fnd_ignore_nat] = compute_discovered_misses_ignore(
-//                        color_vec_natural, m, color);
+                auto[all_sum_nat, all_discovered_color_zero_sum_nat, all_misses_nat, all_misses_color_zero_sum_nat, fnd_ignore_nat] = compute_discovered_misses_ignore(
+                        color_vec_natural, m, color);
 //                auto[all_sum_new, all_discovered_color_zero_sum_new, all_misses_new, all_misses_color_zero_sum_new, fnd_ignore_ago] = compute_discovered_misses_ignore(
 //                        color_vec_newIdea, m, color);
 //                auto[all_sum_lfo, all_discovered_color_zero_sum_lfo, all_misses_lfo, all_misses_color_zero_sum_lfo, fnd_ignore_lfo] = compute_discovered_misses_ignore(
