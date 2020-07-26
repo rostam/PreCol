@@ -14,8 +14,8 @@
 class IndependentSet {
 protected:
     int mode;
-    vector<unsigned int>& V_r;
-    vector<unsigned int>& V_c;
+    vector<unsigned int> V_r;
+    vector<unsigned int> V_c;
     Graph& G_b;
     double ratio;
 public:
@@ -25,6 +25,7 @@ public:
             G_b(g), V_r(Vr), V_c(Vc), ratio(r) {}
     IndependentSet(Graph& g, vector<unsigned int>& Vr, vector<unsigned int>& Vc, int m) :
             G_b(g), V_r(Vr), V_c(Vc), mode(m) {}
+    IndependentSet(Graph& g) : G_b(g) {}
 
     virtual vector<int> compute()=0;
 };

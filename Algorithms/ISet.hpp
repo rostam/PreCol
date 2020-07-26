@@ -9,7 +9,7 @@
 #include "../Graph/datatypes.hpp"
 #include "IndependentSet.h"
 
-class ISet : public IndependentSet{
+class ISet : public IndependentSet {
 public:
     using IndependentSet::IndependentSet;
 

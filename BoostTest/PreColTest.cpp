@@ -19,6 +19,7 @@
 #include <memory>
 
 #include "../Algorithms/IndependentSet.h"
+#include "../Algorithms/MonteCarloHeuristicLuby.h"
 
 BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
 
@@ -206,7 +207,35 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 3);
     }
-    BOOST_AUTO_TEST_CASE(IndependentSet) {
 
+    BOOST_AUTO_TEST_CASE(DifferentIndependentSet) {
+        std::string alg = "D2Columns";
+        std::string col_ord = "LargestFirstOrderingDegrees";
+        unique_ptr<Ordering> col_ord_c = GetColoringOrder(col_ord);
+        std::string pre_ord = "NaturalOrdering";
+        std::string filename = "ExampleMatrices/arrow-shaped.mtx";
+        KindOfSparsify sparsify = Full;
+        int blockSize = 30, el = 2, Mode = 0, Mode2 = 0, alpha = 10;
+        MatrixMarket mm(filename.c_str());
+        Graph G_b(2 * mm.nrows());
+        //Add edges to graph
+        mm.MtxToBipGraph(G_b, 0);
+        vector<unsigned int> V_r, V_c;
+        ForEachVertex(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
+        int entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, "");
+        shared_ptr<ColoringAlgorithms> ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
+        int num_of_colors = ret->color();
+
+        mm.MtxToBipGraph(G_b, 1);
+        property_map<Graph, edge_weight_t>::type weight = get(edge_weight, G_b);
+        Graph G_CIG;
+        BipartiteToColumnIntersectionGraph(G_b, V_c, G_CIG);
+        BOOST_CHECK_EQUAL(num_vertices(G_CIG), 6);
+        BOOST_CHECK_EQUAL(num_edges(G_CIG), 15);
+
+        MonteCarloHueristicLuby mchl(G_CIG);
+        vector<int> indset = mchl.compute();
+        for(int i : indset)
+            cerr << i << ", ";
     }
 BOOST_AUTO_TEST_SUITE_END()
