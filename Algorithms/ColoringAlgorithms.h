@@ -5,7 +5,7 @@
 #ifndef PRECOL_COLORINGALGORITHMS_H
 #define PRECOL_COLORINGALGORITHMS_H
 
-#include "../Graph/datatypes.hpp"
+#include "../Graph/GraphDataType.hpp"
 #include "../Orderings/Ordering.h"
 #include <boost/config.hpp>
 #include "boost/graph/adjacency_list.hpp"

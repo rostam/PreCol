@@ -4,7 +4,7 @@
 
 #ifndef PRECOL_HANDLEINPUTOUTPUT_H
 #define PRECOL_HANDLEINPUTOUTPUT_H
-#include "../Graph/datatypes.hpp"
+#include "../Graph/GraphDataType.hpp"
 #include "../Orderings/Ordering.h"
 #include "../Graph/sparsify.h"
 #include <tuple>

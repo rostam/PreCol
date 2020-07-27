@@ -10,7 +10,7 @@
 #include <ctime>
 #include <iomanip>
 #include <memory>
-#include "../Graph/datatypes.hpp"
+#include "../Graph/GraphDataType.hpp"
 #include "../Graph/MatrixMarket.hpp"
 #include "../Orderings/orderings.h"
 #include "../Algorithms/algorithms.h"

@@ -5,7 +5,7 @@
 #ifndef PRECOL_INDEPENDENTSET_H
 #define PRECOL_INDEPENDENTSET_H
 
-#include "../Graph/datatypes.hpp"
+#include "../Graph/GraphDataType.hpp"
 
 /**
  * \brief Computing the independent set

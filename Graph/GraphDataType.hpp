@@ -9,7 +9,7 @@
 #include <fstream>
 #include <boost/dynamic_bitset.hpp>
 
-namespace precol {
+namespace PreCol {
 
     using namespace std;
     using boost::property;
@@ -264,5 +264,5 @@ namespace precol {
     }
 }
 
-using namespace precol;
+using namespace PreCol;
 #endif

@@ -5,7 +5,7 @@
 #ifndef PRECOL_IDO_H
 #define PRECOL_IDO_H
 
-#include "../Graph/datatypes.hpp"
+#include "../Graph/GraphDataType.hpp"
 #include "Ordering.h"
 
 /**

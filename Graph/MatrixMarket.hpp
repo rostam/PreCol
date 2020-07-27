@@ -1,7 +1,7 @@
 #ifndef MTX2BIPGRAPH_HPP
 #define MTX2BIPGRAPH_HPP
 
-#include "datatypes.hpp"
+#include "GraphDataType.hpp"
 #include "mmio.h"
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/io.hpp>

@@ -2,7 +2,7 @@
 
 ![PreCol](doc/images/image.png)
  
- 1. [Partial Coloring and Preconditioning](#precol)
+ 1. [Partial Coloring and Preconditioning](#PreCol)
  2. [Coloring Algorithms](#colalg)
  &nbsp;
  

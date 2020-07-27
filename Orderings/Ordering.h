@@ -5,7 +5,7 @@
 #ifndef PRECOL_ORDERING_H
 #define PRECOL_ORDERING_H
 
-#include "../Graph/datatypes.hpp"
+#include "../Graph/GraphDataType.hpp"
 #include <memory>
 #include "../Graph/neighbors.hpp"
 

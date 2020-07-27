@@ -4,7 +4,7 @@
 #include <iostream>
 #include <ctime>
 #include <iomanip>
-#include "../../Graph/datatypes.hpp"
+#include "../../Graph/GraphDataType.hpp"
 #include "../../Graph/ConvertGraph.hpp"
 //#include "../../Algs/kClique.hpp"
 #include "../../Orderings/orderings.h"

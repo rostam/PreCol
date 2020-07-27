@@ -1,7 +1,7 @@
 #include <iostream>
 #include <set>
 #include <algorithm>
-#include "../Graph/datatypes.hpp"
+#include "../Graph/GraphDataType.hpp"
 
 using namespace std;
 

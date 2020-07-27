@@ -2,7 +2,7 @@
 #define PARTIALD2COLORINGRESTRICTEDOMP_HPP
 
 #include <iostream>
-#include "../Graph/datatypes.hpp"
+#include "../Graph/GraphDataType.hpp"
 #include "../Graph/neighbors.hpp"
 #include "ColoringAlgorithms.h"
 #include <omp.h>

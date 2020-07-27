@@ -9,7 +9,7 @@
 #include <omp.h>
 #include <chrono>
 
-#include "../../Graph/datatypes.hpp"
+#include "../../Graph/GraphDataType.hpp"
 #include "../../Graph/MatrixMarket.hpp"
 #include "../../Algorithms/algorithms.h"
 #include "../../Orderings/orderings.h"

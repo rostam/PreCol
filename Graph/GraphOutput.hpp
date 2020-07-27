@@ -5,7 +5,7 @@
 #include <iostream>
 #include "boost/config.hpp"
 #include "boost/graph/adjacency_list.hpp"
-#include "datatypes.hpp"
+#include "GraphDataType.hpp"
 
 /**
  * \brief Output the graph as vcg 
