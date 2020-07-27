@@ -28,7 +28,7 @@ static bool is_indep_set(Graph g, dynbit myset) {
 
 template <typename Lambda>
 static void gen_ind_set(Graph g,Lambda func) {
-    power_set(num_vertices(g), [&](dynbit vi) {
+    power_set(NumOfVertices(g), [&](dynbit vi) {
         if (is_indep_set(g, vi)) {
             cerr << vi << endl;
             func(vi);
@@ -48,7 +48,7 @@ static int alpha(dynbit X, set<dynbit> F) {
 //F is actually the all independent set
 static int c_k(set<dynbit> F, Graph g, int k) {
     int cnt = 0;
-    power_set(num_vertices(g), [&](dynbit vi) {
+    power_set(NumOfVertices(g), [&](dynbit vi) {
         cnt += pow(-1.0f,vi.count())*pow(alpha(vi,F),k);
     });
     return cnt;

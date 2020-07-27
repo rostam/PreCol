@@ -82,7 +82,7 @@ public:
         for(auto v_r : V_r_aux) Degree_V_r_aux.push_back(make_pair(v_r, degree(v_r, G_b_aux)));
         for(auto v_c : V_c_aux) Degree_V_c_aux.push_back(make_pair(v_c, degree(v_c, G_b_aux)));
 
-        while (num_edges(G_b_aux) > 0) {
+        while (NumOfEdges(G_b_aux) > 0) {
             unsigned int max_degree_V_r_aux = 0;
 
             for (auto di = Degree_V_r_aux.begin();di != Degree_V_r_aux.end();++di) {

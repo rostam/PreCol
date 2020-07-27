@@ -65,13 +65,13 @@
 //     * Number of vertices
 //     * @returns number of vertices
 //     */
-//    unsigned long num_v() { return boost::num_vertices(g); }
+//    unsigned long num_v() { return boost::NumOfVertices(g); }
 //
 //    /**
 //     * Number of edges
 //     * @returns number of edges
 //     */
-//    unsigned long num_e() { return boost::num_edges(g); }
+//    unsigned long num_e() { return boost::NumOfEdges(g); }
 //
 //    /**
 //     * Returns the color of a given vertex
@@ -461,7 +461,7 @@
 //////        std::vector<unsigned int> V = V_c;
 ////        property_map<Graph, vertex_color_t>::type color = get(vertex_color, G_b);
 ////        std::vector<unsigned int> N_2;
-////        vector<unsigned int> forbiddenColors(num_vertices(G_b), -1);
+////        vector<unsigned int> forbiddenColors(NumOfVertices(G_b), -1);
 ////        //All edges in E_S have edge_weight=1; otherwise edge_weight=0
 ////        //Initialize colors
 ////        for_each(V.begin(), V.end(), [&](Ver v) { put(color, v, 0); });

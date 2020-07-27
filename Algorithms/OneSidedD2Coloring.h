@@ -26,7 +26,7 @@ public:
     int color() {
         vector<unsigned int> V = V_c;
         property_map<Graph, vertex_color_t>::type color = get(vertex_color, GraphInstance);
-        vector<unsigned int> forbiddenColors(num_vertices(GraphInstance), -1);
+        vector<unsigned int> forbiddenColors(NumOfVertices(GraphInstance), -1);
         //All edges in E_S have edge_weight=1; otherwise edge_weight=0
 
         //Iterate over all vertices which should be colored

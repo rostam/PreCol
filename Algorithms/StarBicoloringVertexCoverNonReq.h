@@ -94,7 +94,7 @@ public:
             Degree_V_c_aux.push_back(make_pair(*v_c,degree(*v_c,G_b_aux)));
         }
 
-        while(num_edges(G_b_aux)>0) {
+        while(NumOfEdges(G_b_aux)>0) {
             unsigned int max_degree_V_r_aux = 0;
             for (list<pair<unsigned int,unsigned int> >::iterator di =
                     Degree_V_r_aux.begin(); di != Degree_V_r_aux.end(); ++di) {
@@ -397,7 +397,7 @@ public:
             return cnt_nreq1 > cnt_nreq2;
         });
 
-        while (num_edges(G_b_aux) > 0) {
+        while (NumOfEdges(G_b_aux) > 0) {
 
             unsigned int max_degree_V_r_aux = 0;
             for (list<pair<unsigned int, unsigned int> >::iterator di =

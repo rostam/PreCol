@@ -33,7 +33,7 @@ class SLO : public Ordering {
 
             //    int minElement = (*v).first;
 
-            (*v).second = num_edges(G_b);
+            (*v).second = NumOfEdges(G_b);
 
             //Add vertex to Ordering
             //    Ordering.insert(Ordering.begin(),(*v).first); ->

@@ -272,6 +272,14 @@ namespace PreCol {
             }
         }
     }
+
+    static inline int NumOfVertices(const Graph& g) {
+        return boost::num_vertices(g);
+    }
+
+    static inline int NumOfEdges(const Graph& g) {
+        return boost::num_edges(g);
+    }
 }
 
 using namespace PreCol;
