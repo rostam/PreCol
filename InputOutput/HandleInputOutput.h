@@ -10,7 +10,7 @@
 #include <tuple>
 #include <fstream>
 
-
+using std::tuple;
 /**
  * \brief handle the input from file to the program
  *

@@ -235,7 +235,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
 
         MonteCarloHueristicLuby mchl(G_CIG);
         vector<int> indset = mchl.compute();
-        for(int i : indset)
-            cerr << i << ", ";
+//        for(int i : indset)
+//            cerr << i << ", ";
     }
 BOOST_AUTO_TEST_SUITE_END()

@@ -105,15 +105,15 @@ SILU::SILU(Graph& G_b, const string& pre_ord) : G_ilu(num_vertices(G_b)/2) {
 int SILU::getFillinMinDeg(int el) {
     vector<unsigned int> &ord = order;
     Graph& g = G_ilu;
-    for_each(vertices(g).first, vertices(g).second, [&](unsigned int ver1) {
-        for_each(vertices(g).first, vertices(g).second, [&](unsigned int ver2) {
+    std::for_each(vertices(g).first, vertices(g).second, [&](unsigned int ver1) {
+        std::for_each(vertices(g).first, vertices(g).second, [&](unsigned int ver2) {
             if (edge(ver1, ver2, g).second) {
                 put(edge_weight, g, edge(ver1, ver2, g).first, 0);
             }
         });
     });
 
-    for_each(ord.begin(), ord.end(), [&](unsigned int i) {
+    std::for_each(ord.begin(), ord.end(), [&](unsigned int i) {
         ILUOneStep(g, i, el);
     });
     int counter = 0;
@@ -135,14 +135,14 @@ int SILU::getFillinMinDeg(int el) {
  */
 void SILU::ILUOneStep(Graph &g, int selected, int el) {
     vector<unsigned int> inVer, outVer;
-    for_each(vertices(g).first, vertices(g).second, [&](unsigned int ver) {
+    std::for_each(vertices(g).first, vertices(g).second, [&](unsigned int ver) {
         if (edge(ver, selected, g).second || edge(selected, ver, g).second) {
             inVer.push_back(ver);
             outVer.push_back(ver);
         }
     });
 
-    for_each(inVer.begin(), inVer.end(), [&](unsigned int anInVer) {
+    std::for_each(inVer.begin(), inVer.end(), [&](unsigned int anInVer) {
         for_each(outVer.begin(), outVer.end(), [&](unsigned int anOutVer) {
             if (anInVer != anOutVer) {
                 if (selected < anInVer && selected < anOutVer) {

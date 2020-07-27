@@ -24,8 +24,6 @@ class SLO : public Ordering {
             VertexDegree.push_back(make_pair(*v, neighbors::Distance2NeighborsRestricted(G_b, *v).size()));
         }
 
-        cout << "mark1" << endl;
-
         //  while (!VertexDegree.empty()) {
         for (unsigned int i = 0; i < V.size(); ++i) {
 
@@ -62,7 +60,7 @@ class SLO : public Ordering {
             }
 
             if (i % 100 == 0) {
-                cout << "i= " << i << endl;
+//                cout << "i= " << i << endl;
             }
 
 //     vector<unsigned int> neighbors = neighbors::Distance2Neighbors(GraphInstance, (*v).first);

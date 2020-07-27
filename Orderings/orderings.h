@@ -38,15 +38,14 @@ static vector<string> ords = {"LargestFirstOrderingDegrees","SLO","IDO"};
  * @param col_ord the string value contains both coloring and ordering
  * @return the ordering
  */
-static unique_ptr<Ordering> GetColoringOrder(const string& ColoringOrdering) {
-//    switch(StringToKindOfOrdering[ColoringOrdering]) {
-        if (ColoringOrdering == "LargestFirstOrderingDegrees") return make_unique<LargestFirstOrderingDegrees>();
-        else if (ColoringOrdering == "SLO") return make_unique<SLO>();
-        else if (ColoringOrdering == "IDO") return make_unique<IDO>();
-        else if (ColoringOrdering == "NaturalOrdering") return make_unique<NaturalOrdering>();
-        else if (ColoringOrdering == "WeightOptimumOrdering") return make_unique<WeighOptimumOrdering>();
-        return make_unique<NaturalOrdering>();
-//    }
+static std::unique_ptr<Ordering> GetColoringOrder(const string& ColoringOrdering) {
+    using std::make_unique;
+    if (ColoringOrdering == "LargestFirstOrderingDegrees") return make_unique<LargestFirstOrderingDegrees>();
+    else if (ColoringOrdering == "SLO") return make_unique<SLO>();
+    else if (ColoringOrdering == "IDO") return make_unique<IDO>();
+    else if (ColoringOrdering == "NaturalOrdering") return make_unique<NaturalOrdering>();
+    else if (ColoringOrdering == "WeightOptimumOrdering") return make_unique<WeighOptimumOrdering>();
+    return make_unique<NaturalOrdering>();
 }
 
 
@@ -61,7 +60,7 @@ static unique_ptr<Ordering> GetColoringOrder(const string& ColoringOrdering) {
  *
  * \return void
  */
-static void ApplyColoringOrder(const string &alg, unique_ptr<Ordering>& ord, const Graph &G_b,
+static void ApplyColoringOrder(const string &alg, std::unique_ptr<Ordering>& ord, const Graph &G_b,
                                vector<unsigned int> &V_r, vector<unsigned int> &V_c) {
     ord->OrderGivenVertexSubset(G_b, V_r, alg.find("Restricted") != string::npos);
     ord->OrderGivenVertexSubset(G_b, V_c, alg.find("Restricted") != string::npos);

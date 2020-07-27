@@ -23,15 +23,18 @@
  * This is an abstract class. The subclasses should define the coloring function.
  *
  */
+using std::any;
+using std::any_cast;
+
 
 class ColoringAlgorithms {
 protected:
     vector<unsigned int> V_c; //!< The set of column vertices
     vector<unsigned int> V_r; //!< The set of row vertices
     Graph &GraphInstance;
-    shared_ptr<IndependentSet> IndependentSetInstance;
+    std::shared_ptr<IndependentSet> IndependentSetInstance;
     bool IsRestrictedColoring{};
-    map<string, any> CustomParameters;
+    map<string, std::any> CustomParameters;
 
     /**
      * \brief Return a pair of number of colors and the list of colors

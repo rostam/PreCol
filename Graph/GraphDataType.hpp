@@ -10,8 +10,18 @@
 #include <boost/dynamic_bitset.hpp>
 
 namespace PreCol {
+    using std::vector;
+    using std::string;
+    using std::pair;
+    using std::ofstream;
+    using std::ifstream;
+    using std::endl;
+    using std::list;
+    using std::make_pair;
+    using std::unique_ptr;
+    using std::shared_ptr;
+    using std::map;
 
-    using namespace std;
     using boost::property;
     using boost::edge_name;
     using boost::edge_weight;
@@ -23,9 +33,9 @@ namespace PreCol {
     using boost::vertex_color;
     typedef boost::adjacency_list<boost::setS, boost::vecS, boost::undirectedS,
             property<boost::vertex_color_t, int,
-            property<boost::vertex_priority_t, double>>,
+                    property<boost::vertex_priority_t, double>>,
             property<boost::edge_weight_t, int,
-            property<boost::edge_name_t, string>>> Graph;
+                    property<boost::edge_name_t, string>>> Graph;
 
     typedef boost::graph_traits<Graph>::vertex_iterator V_iter;
     typedef boost::graph_traits<Graph>::edge_iterator E_iter;
@@ -46,7 +56,7 @@ namespace PreCol {
     template<typename Lambda>
     void ForEachVertex(Graph &g, Lambda func) {
         V_iter vi, vi_end;
-        tie(vi, vi_end) = vertices(g);
+        std::tie(vi, vi_end) = vertices(g);
         std::for_each(vi, vi_end, func);
     }
 
@@ -60,7 +70,7 @@ namespace PreCol {
     template<typename Lambda>
     static void ForEachVertexConst(const Graph &g, Lambda func) {
         V_iter vi, vi_end;
-        tie(vi, vi_end) = vertices(g);
+        std::tie(vi, vi_end) = vertices(g);
         std::for_each(vi, vi_end, func);
     }
 
@@ -74,7 +84,7 @@ namespace PreCol {
     template<typename Lambda>
     void ForEachEdge(Graph &g, Lambda func) {
         E_iter ei, ei_end;
-        tie(ei, ei_end) = edges(g);
+        std::tie(ei, ei_end) = edges(g);
         std::for_each(ei, ei_end, func);
     }
 
@@ -88,7 +98,7 @@ namespace PreCol {
     template<typename Lambda>
     static void ForEachEdgeConst(const Graph &g, Lambda func) {
         E_iter ei, ei_end;
-        tie(ei, ei_end) = edges(g);
+        std::tie(ei, ei_end) = edges(g);
         std::for_each(ei, ei_end, func);
     }
 
@@ -129,7 +139,7 @@ namespace PreCol {
             string tmp = "";
             for (int j = 0; j < num_vertices(g); j++) {
                 if (edge(i, j, g).second) {
-                    tmp += to_string(j + 1) + " ";
+                    tmp += std::to_string(j + 1) + " ";
                 }
             }
             of << tmp << endl;

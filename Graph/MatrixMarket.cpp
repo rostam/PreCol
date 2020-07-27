@@ -130,7 +130,7 @@ bool MatrixMarket::writeToFile(char *filename) {
     const int size = nz;
     if(val.size() == 0) {
         double val[size];
-        fill(val, val + size, 1);
+        std::fill(val, val + size, 1);
         mm_write_mtx_crd(filename, M, N, nz, &I[0], &J[0], val, matcode);
     } else {
         mm_write_mtx_crd(filename, M, N, nz, &I[0], &J[0], &val[0], matcode);

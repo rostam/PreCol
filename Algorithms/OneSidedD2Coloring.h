@@ -45,7 +45,7 @@ public:
                 });
 
                 //Find first color which can be assigned to v
-                auto result = find_if(forbiddenColors.begin(), forbiddenColors.end(), bind1st(not_equal_to<int>(), v));
+                auto result = find_if(forbiddenColors.begin(), forbiddenColors.end(), std::bind1st(std::not_equal_to<int>(), v));
 
                 //Color v
                 put(color, v, distance(forbiddenColors.begin(), result));

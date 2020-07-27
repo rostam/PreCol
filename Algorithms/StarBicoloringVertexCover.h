@@ -123,13 +123,13 @@ public:
                         ForEachNeighbor(GraphInstance, *v, [&](Ver w) {
                             if (get(vertex_color, GraphInstance, w) <= 0) {
                                 ForEachNeighbor(GraphInstance, w, [&](Ver x) {
-                                    if (get(vertex_color, GraphInstance, x) > 0) {
+                                    if (boost::get(vertex_color, GraphInstance, x) > 0) {
                                         forbiddenColors[get(vertex_color, GraphInstance, x)] = *v;
                                     }
                                 });
                             } else { //Color[w]>0
                                 ForEachNeighbor(GraphInstance, w, [&](Ver x) {
-                                    if (get(vertex_color, GraphInstance, x) > 0) {
+                                    if (boost::get(vertex_color, GraphInstance, x) > 0) {
                                         ForEachNeighbor(GraphInstance, x, [&](Ver y) {
                                             if (get(vertex_color, GraphInstance, y) > 0) {
                                                 if (get(vertex_color, GraphInstance, w) == get(vertex_color, GraphInstance, y) &&

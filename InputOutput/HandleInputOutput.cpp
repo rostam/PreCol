@@ -94,6 +94,8 @@ GetInputParametersForApplication(std::string FileName) {
 }
 
 
+using std::cout;
+using std::ostream_iterator;
 /**
  * \brief handle the input to the program
  *
@@ -121,7 +123,7 @@ tuple<string,shared_ptr<Ordering>,string,int,int,string,int, int,string, int> Ge
         cout << "\nBlocksize integer";
         cout << "\nLevel parameter";
         cout << "\nNote that not all parameters are required for all algorithms\n";
-        return make_tuple("", nullptr,"",0,0,"",0, 0,"",0);
+        return std::make_tuple("", nullptr,"",0,0,"",0, 0,"",0);
     }
 
     string alg = argv[1];
@@ -130,7 +132,7 @@ tuple<string,shared_ptr<Ordering>,string,int,int,string,int, int,string, int> Ge
              "' must be a coloring algorithm from the following list:\n";
         copy(algs.begin(), algs.end(), ostream_iterator<string>(cout, "|"));
         cout << endl;
-        return make_tuple("", nullptr,"",0,0,"",0, 0,"",0);
+        return std::make_tuple("", nullptr,"",0,0,"",0, 0,"",0);
     }
 
     string ord = argv[2];

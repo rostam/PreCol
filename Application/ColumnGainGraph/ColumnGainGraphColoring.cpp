@@ -58,7 +58,8 @@ double frobenius_norm(boost::numeric::ublas::matrix<double> &m) {
 std::tuple<int, int, int> get_bounds_k(int num_cols) {
     return {0, 900, 100};
 }
-
+using std::cerr;
+using std::cout;
 int main(int argc, const char *argv[]) {
     using boost::numeric::ublas::matrix;
     using boost::numeric::ublas::matrix_column;
@@ -74,7 +75,7 @@ int main(int argc, const char *argv[]) {
     auto start = std::chrono::steady_clock::now();
 //#pragma omp parallel for
     for (auto matrix_name : matrix_arr) {
-        cerr << matrix_name << endl;
+        std::cerr << matrix_name << endl;
         std::ofstream out(std::string(matrix_name) + std::string("_res.csv"));
         out << "p,ignore_nat,ignore_ago,ignore_lfo,MaxDiscovered_nat,MaxDiscovered_ago,MaxDiscovered_lfo,"
             << "MaxGain_nat,MaxGain_ago,MaxGain_lfo,k,pmink,mat,rows,cols,nnz,fnm,"

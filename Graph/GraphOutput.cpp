@@ -14,11 +14,11 @@ int graph2vcg(Graph& g) {
   E_iter   ei, ei_end;
 
   outFile << "graph: {" << endl;
-  for (tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi) {
+  for (std::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi) {
     outFile << "node: { title:\"" << *vi << "\" } ";
   }
 
-  for (tie(ei,ei_end) = edges(g); ei != ei_end; ++ei) {
+  for (std::tie(ei,ei_end) = edges(g); ei != ei_end; ++ei) {
     outFile << "edge: { arrowstyle: none sourcename: \""
 	    << source(*ei, g) << "\" targetname: \""
 	    << target(*ei, g) << "\" }" << endl;
@@ -45,7 +45,7 @@ int graph2dot(Graph& g) {
     E_iter   ei, ei_end;
 
   outFile << "graph {" << endl;
-  for (tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi) {
+  for (std::tie(vi,vi_end) = vertices(g); vi != vi_end; ++vi) {
     outFile << *vi << endl;
   }
 

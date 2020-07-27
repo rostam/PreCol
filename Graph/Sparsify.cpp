@@ -79,7 +79,7 @@ int SparsifyBipartiteGraph(Graph& G_b, KindOfSparsify sparsify, int nrows, int b
             put(name, e, "r");
             entries_pattern++;
         } else {
-            cout << "No required pattern" << endl;
+//            cout << "No required pattern" << endl;
             return 0;
         }
         return 0;
