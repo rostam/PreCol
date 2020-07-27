@@ -9,7 +9,7 @@
 #include "../Orderings/orderings.h"
 #include "../Graph/GraphOutput.hpp"
 #include "../Algorithms/algorithms.h"
-#include "../Graph/sparsify.h"
+#include "../Graph/Sparsify.h"
 #include "../InputOutput/HandleInputOutput.h"
 #include "../Graph/MatrixMarket.hpp"
 
@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
     //Initialize required pattern
     //If edge e \in E_S then edge_property edge_weight=1 else
     //edge_weight=0
-    int NumOfRemainedNonzeros = sparsifier(G_b, SparsificationKind, mm.nrows(), BlockSize, "");
+    int NumOfRemainedNonzeros = SparsifyBipartiteGraph(G_b, SparsificationKind, mm.nrows(), BlockSize, "");
 
     ColoringOrder->OrderGivenVertexSubset(G_b, V_r, ColoringAlgorithm.find("Restricted") != string::npos);
 

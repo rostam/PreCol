@@ -2,24 +2,8 @@
 // Created by rostam on 01.08.16.
 //
 
-#ifndef PRECOL_SPARSIFY_H
-#define PRECOL_SPARSIFY_H
-
+#include "Sparsify.h"
 #include <sstream>
-
-enum KindOfSparsify { Custom, Diagonal, BlockDiagonal, Full };
-static std::map<KindOfSparsify, std::string> KindOfSparsifyToString = {
-        {Full, "Full"},
-        {BlockDiagonal, "BlockDiagonal"},
-        {Diagonal, "Diagonal"},
-        {Custom, "Custom"}
-};
-static std::map<std::string, KindOfSparsify> StringToKindOfSparsify = {
-        {"Full", Full},
-        {"BlockDiagonal", BlockDiagonal},
-        {"Diagonal", Diagonal},
-        {"Custom", Custom}
-};
 
 /**
  * \brief Sparsify a given bipartite graph
@@ -31,7 +15,7 @@ static std::map<std::string, KindOfSparsify> StringToKindOfSparsify = {
  * @param custom File name for reading the custom sparsification
  * @return Number of remaining nonzero elements
  */
-static int sparsifier(Graph& G_b, KindOfSparsify sparsify, int nrows, int blockSize, std::string custom) {
+int SparsifyBipartiteGraph(Graph& G_b, KindOfSparsify sparsify, int nrows, int blockSize, std::string custom) {
     property_map<Graph, edge_weight_t>::type weight = get(edge_weight, G_b);
     property_map<Graph, edge_name_t>::type name = get(edge_name, G_b);
 
@@ -102,5 +86,3 @@ static int sparsifier(Graph& G_b, KindOfSparsify sparsify, int nrows, int blockS
     });
     return entries_pattern;
 }
-
-#endif //PRECOL_SPARSIFY_H

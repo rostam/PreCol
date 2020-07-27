@@ -14,7 +14,7 @@
 #include "../Graph/MatrixMarket.hpp"
 #include "../Orderings/orderings.h"
 #include "../Algorithms/algorithms.h"
-#include "../Graph/sparsify.h"
+#include "../Graph/Sparsify.h"
 #include "../Graph/ConvertGraph.hpp"
 #include <memory>
 
@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         ForEachVertex(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
         BOOST_CHECK_EQUAL(V_r.size(), 6);
         BOOST_CHECK_EQUAL(V_c.size(), 6);
-        int entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, "");
+        int entries_pattern = SparsifyBipartiteGraph(G_b, sparsify, mm.nrows(), blockSize, "");
         BOOST_CHECK_EQUAL(entries_pattern, 16);
         shared_ptr<ColoringAlgorithms> ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
         int num_of_colors = ret->color();
@@ -53,14 +53,14 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         alg = "D2RestrictedColumns";
         sparsify = BlockDiagonal;
         blockSize = 2;
-        entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, "");
+        entries_pattern = SparsifyBipartiteGraph(G_b, sparsify, mm.nrows(), blockSize, "");
         BOOST_CHECK_EQUAL(entries_pattern, 8);
         num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 3);
 
         sparsify = BlockDiagonal;
         blockSize = 3;
-        entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, "");
+        entries_pattern = SparsifyBipartiteGraph(G_b, sparsify, mm.nrows(), blockSize, "");
         BOOST_CHECK_EQUAL(entries_pattern, 10);
         num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 4);
@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         alg = "D2Columns";
         sparsify = Diagonal;
         ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
-        entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, "");
+        entries_pattern = SparsifyBipartiteGraph(G_b, sparsify, mm.nrows(), blockSize, "");
         BOOST_CHECK_EQUAL(entries_pattern, 6);
         num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 2);
@@ -86,7 +86,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         alg = "SBSchemeCombinedVertexCoverColoring";
         Mode = 1;
         sparsify = Full;
-        entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, "");
+        entries_pattern = SparsifyBipartiteGraph(G_b, sparsify, mm.nrows(), blockSize, "");
         BOOST_CHECK_EQUAL(entries_pattern, 16);
         ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
         num_of_colors = ret->color();
@@ -96,7 +96,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         Mode = 1;
         sparsify = BlockDiagonal;
         blockSize = 3;
-        entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, "");
+        entries_pattern = SparsifyBipartiteGraph(G_b, sparsify, mm.nrows(), blockSize, "");
         BOOST_CHECK_EQUAL(entries_pattern, 10);
         ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
         num_of_colors = ret->color();
@@ -149,20 +149,20 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         ForEachVertex(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
         BOOST_CHECK_EQUAL(V_r.size(), 6);
         BOOST_CHECK_EQUAL(V_c.size(), 6);
-        int entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, "");
+        int entries_pattern = SparsifyBipartiteGraph(G_b, sparsify, mm.nrows(), blockSize, "");
         BOOST_CHECK_EQUAL(entries_pattern, 17);
         shared_ptr<ColoringAlgorithms> ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
         int num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 6);
 
         sparsify = Custom;
-        entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, custom_required_pattern);
+        entries_pattern = SparsifyBipartiteGraph(G_b, sparsify, mm.nrows(), blockSize, custom_required_pattern);
         BOOST_CHECK_EQUAL(entries_pattern, 9);
         num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 4);
 
         sparsify = Diagonal;
-        entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, custom_required_pattern);
+        entries_pattern = SparsifyBipartiteGraph(G_b, sparsify, mm.nrows(), blockSize, custom_required_pattern);
         BOOST_CHECK_EQUAL(entries_pattern, 6);
         num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 3);
@@ -189,7 +189,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         ForEachVertex(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
         BOOST_CHECK_EQUAL(V_r.size(), 6);
         BOOST_CHECK_EQUAL(V_c.size(), 6);
-        int entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, "");
+        int entries_pattern = SparsifyBipartiteGraph(G_b, sparsify, mm.nrows(), blockSize, "");
         BOOST_CHECK_EQUAL(entries_pattern, 16);
         shared_ptr<ColoringAlgorithms> ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
         int num_of_colors = ret->color();
@@ -202,7 +202,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
 
         alg = "D2Columns";
         sparsify = Diagonal;
-        entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, "");
+        entries_pattern = SparsifyBipartiteGraph(G_b, sparsify, mm.nrows(), blockSize, "");
         BOOST_CHECK_EQUAL(entries_pattern, 6);
         num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 3);
@@ -222,7 +222,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         mm.MtxToBipGraph(G_b, 0);
         vector<unsigned int> V_r, V_c;
         ForEachVertex(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
-        int entries_pattern = sparsifier(G_b, sparsify, mm.nrows(), blockSize, "");
+        int entries_pattern = SparsifyBipartiteGraph(G_b, sparsify, mm.nrows(), blockSize, "");
         shared_ptr<ColoringAlgorithms> ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
         int num_of_colors = ret->color();
 

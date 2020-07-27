@@ -6,7 +6,7 @@
 #define PRECOL_HANDLEINPUTOUTPUT_H
 #include "../Graph/GraphDataType.hpp"
 #include "../Orderings/Ordering.h"
-#include "../Graph/sparsify.h"
+#include "../Graph/Sparsify.h"
 #include <tuple>
 #include <fstream>
 
