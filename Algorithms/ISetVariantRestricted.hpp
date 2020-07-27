@@ -39,7 +39,6 @@ public:
 
             unsigned int max_degree_V_r = 0;
             for (auto di = Degree_V_r.begin();di != Degree_V_r.end();++di) {
-
                 (*di).second = degree((*di).first,G_b);
                 unsigned int degree_v_r = (*di).second;
                 if (degree_v_r > max_degree_V_r) {

@@ -4,8 +4,6 @@
 
 #include "GreedyColoringLimitedMaxColor.h"
 
-
-
 /**
  * \brief Compute a greedy coloring of a simple graph when
  * the number of colors are limited to a maximum color
