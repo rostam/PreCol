@@ -171,7 +171,8 @@ public:
                                                                        forbiddenColors.end(),
                                                                        bind1st(not_equal_to<int>(), *v)
                             );
-                            put(color, *v, distance(forbiddenColors.begin(), color_v_it));
+                            SetVertexColor(GraphInstance, *v, distance(forbiddenColors.begin(), color_v_it));
+//                            put(color, *v, distance(forbiddenColors.begin(), color_v_it));
                         }
                     }
                 }
@@ -234,7 +235,8 @@ public:
                                                                    forbiddenColors.end(),
                                                                    bind1st(not_equal_to<int>(), *v)
                         );
-                        put(color,*v,distance(forbiddenColors.begin(),color_v_it));
+                        SetVertexColor(GraphInstance, *v, distance(forbiddenColors.begin(),color_v_it));
+//                        put(color,*v,distance(forbiddenColors.begin(),color_v_it));
 
                     }
                 }
@@ -261,7 +263,8 @@ public:
              IS_it != IS.end();
              ++IS_it) {
 
-            put(color,*IS_it,0);
+            SetVertexColor(GraphInstance, *IS_it, 0);
+//            put(color,*IS_it,0);
         }
 
         return ColoringAlgorithms::NumOfColors();
@@ -502,7 +505,8 @@ public:
                                                                    forbiddenColors.end(),
                                                                    bind1st(not_equal_to<int>(), *v)
                         );
-                        put(color, *v, distance(forbiddenColors.begin(), color_v_it));
+                        SetVertexColor(GraphInstance, *v, distance(forbiddenColors.begin(), color_v_it));
+//                        put(color, *v, distance(forbiddenColors.begin(), color_v_it));
 
 
                     }
@@ -589,7 +593,8 @@ public:
                                                                    forbiddenColors.end(),
                                                                    bind1st(not_equal_to<int>(), *v)
                         );
-                        put(color, *v, distance(forbiddenColors.begin(), color_v_it));
+                        SetVertexColor(GraphInstance, *v, distance(forbiddenColors.begin(), color_v_it));
+//                        put(color, *v, distance(forbiddenColors.begin(), color_v_it));
                     }
                 }
             }
@@ -615,7 +620,8 @@ public:
              IS_it != IS.end();
              ++IS_it) {
 
-            put(color, *IS_it, 0);
+            SetVertexColor(GraphInstance, *IS_it, 0);
+//            put(color, *IS_it, 0);
         }
 
         return EXIT_SUCCESS;

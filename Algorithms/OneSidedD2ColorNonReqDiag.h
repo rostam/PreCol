@@ -73,8 +73,8 @@ public:
 //                cerr << col1 << " " << col2 << endl;
                 //   Color v
 //                int random_ = rand()%100;
-                if (col1 < col2) put(color, source(e, GraphInstance), col1);
-                else put(color, target(e, GraphInstance), col2);
+                if (col1 < col2) SetVertexColor(GraphInstance, source(e, GraphInstance), col1);//put(color, source(e, GraphInstance), col1);
+                else SetVertexColor(GraphInstance, target(e, GraphInstance), col2);//put(color, target(e, GraphInstance), col2);
             }
         });
         return NumOfColors();

@@ -22,7 +22,7 @@ int GreedyColoringSimpleGraph::color() {
         //Find first color which can be assigned to v
         auto result = find_if(forbiddenColors.begin(), forbiddenColors.end(), [&](int i) { return i != v; });
         auto res_color = distance(forbiddenColors.begin(), result);
-        boost::put(vertex_color, GraphInstance, v, res_color);
+        SetVertexColor(GraphInstance, v, res_color);
     }
     return NumOfColors();
 }

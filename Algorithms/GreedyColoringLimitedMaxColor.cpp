@@ -18,7 +18,7 @@ int GreedyColoringLimitedMaxColor::color() {
     int MaxColor = std::any_cast<int>(CustomParameters["MaxColor"]);
     vector<unsigned int>& order = V_c;
     ForEachVertex(GraphInstance, [&](Ver v) {
-        boost::put(vertex_color, GraphInstance, v, 0);
+        SetVertexColor(GraphInstance, v, 0);
     });
     for (int v : order) {
         std::vector<unsigned int> forbiddenColors(boost::num_vertices(GraphInstance), -1);
@@ -31,7 +31,8 @@ int GreedyColoringLimitedMaxColor::color() {
         auto result = find_if(forbiddenColors.begin(), forbiddenColors.end(), [&](int i) { return i != v; });
         auto res_color = distance(forbiddenColors.begin(), result);
         int c = GetSuitableColor(GraphInstance, res_color, MaxColor, v);
-        boost::put(vertex_color, GraphInstance, v, c);
+        SetVertexColor(GraphInstance,v, c);
+//        boost::put(vertex_color, GraphInstance, v, c);
     }
     return NumOfColors();
 //    return TupleNumOfColorAndColors();

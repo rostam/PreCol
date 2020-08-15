@@ -49,7 +49,8 @@ public:
                                                                     std::bind1st(std::not_equal_to<int>(), v));
 
                     //Color v
-                    put(color, v, distance(forbiddenColors.begin(), result));
+                    SetVertexColor(GraphInstance, v, distance(forbiddenColors.begin(), result));
+//                    put(color, v, distance(forbiddenColors.begin(), result));
 
                     /////////////////////////////////////////////////////////////////////////////
                     /////////////////////////////////////////////////////////////////////////////
@@ -97,10 +98,12 @@ public:
 
                     });
                     if (max_nreq_pos != -1) {
-                        put(color, max_nreq_pos, distance(forbiddenColors.begin(), result));
+                        SetVertexColor(GraphInstance, max_nreq_pos, distance(forbiddenColors.begin(), result));
+//                        put(color, max_nreq_pos, distance(forbiddenColors.begin(), result));
                     }
                 } else {
-                    put(color, v, 0);
+                    SetVertexColor(GraphInstance, v, 0);
+//                    put(color, v, 0);
                 }
             }
         });

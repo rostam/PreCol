@@ -147,7 +147,8 @@ public:
                                                                    forbiddenColors.end(),
                                                                    bind1st(not_equal_to<int>(), *v)
                         );
-                        put(color, *v, distance(forbiddenColors.begin(), color_v_it));
+                        SetVertexColor(GraphInstance, *v, distance(forbiddenColors.begin(), color_v_it));
+//                        put(color, *v, distance(forbiddenColors.begin(), color_v_it));
 
 
                     }
@@ -203,7 +204,8 @@ public:
                         //Find first color which can be assigned to v_c
                         auto color_v_it = find_if(forbiddenColors.begin(), forbiddenColors.end(),
                                                   bind1st(not_equal_to<int>(), *v));
-                        put(color, *v, distance(forbiddenColors.begin(), color_v_it));
+                        SetVertexColor(GraphInstance, *v, distance(forbiddenColors.begin(), color_v_it));
+//                        put(color, *v, distance(forbiddenColors.begin(), color_v_it));
                     }
                 }
             }
@@ -213,7 +215,7 @@ public:
         for(auto di : Degree_V_c_aux) IS.push_back(di.first);
 
         //Color vertices in independent set with color 0
-        for(auto IS_it : IS) put(color, IS_it, 0);
+        for(auto IS_it : IS) SetVertexColor(GraphInstance, IS_it, 0);//put(color, IS_it, 0);
 
         return ColoringAlgorithms::NumOfColors();
     }

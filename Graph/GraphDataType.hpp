@@ -280,6 +280,14 @@ namespace PreCol {
     static inline int NumOfEdges(const Graph& g) {
         return boost::num_edges(g);
     }
+
+    static inline void SetVertexColor(Graph& g, Ver v, int color) {
+        boost::put(vertex_color, g, v, color);
+    }
+
+    static inline int GetVertexColor(Graph& g, Ver v, int color) {
+        return boost::get(vertex_color, g, v);
+    }
 }
 
 using namespace PreCol;

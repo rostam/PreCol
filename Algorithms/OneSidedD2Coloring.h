@@ -48,9 +48,11 @@ public:
                 auto result = find_if(forbiddenColors.begin(), forbiddenColors.end(), std::bind1st(std::not_equal_to<int>(), v));
 
                 //Color v
-                put(color, v, distance(forbiddenColors.begin(), result));
+                SetVertexColor(GraphInstance, v,distance(forbiddenColors.begin(), result));
+//                put(color, v, distance(forbiddenColors.begin(), result));
             } else {
-                put(color, v, 0);
+                SetVertexColor(GraphInstance, v, 0);
+//                put(color, v, 0);
             }
         });
         return NumOfColors();

@@ -34,7 +34,8 @@ int SaturatedDegreeOrderingColoring::color() {
         auto res_color = distance(forbiddenColors.begin(), result);
         int MaxColor = std::any_cast<int>(CustomParameters["MaxColor"]);
         int c = GetSuitableColor(GraphInstance, res_color, MaxColor, sat_v);
-        boost::put(vertex_color, GraphInstance, sat_v, c);
+        SetVertexColor(GraphInstance, sat_v, c);
+//        boost::put(vertex_color, GraphInstance, sat_v, c);
         vs.remove(sat_v);
     }
     return NumOfColors();
