@@ -19,7 +19,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    
     # install dependencies
+    - name: clone_metis
+      run: git clone https://github.com/KarypisLab/METIS.git
+    - name: make_metis
+      run: make install
     - name: boost
       run: sudo apt-get update && sudo apt-get install -yq libboost1.74-dev
       
