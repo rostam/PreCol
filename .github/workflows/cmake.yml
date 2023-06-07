@@ -25,7 +25,7 @@ jobs:
     - name: metis 
       run: sudo apt-get install libmetis-dev
     - name: boost
-      run: sudo apt-get update && sudo apt-get install -yq libboost1.74-dev
+      run: sudo apt-get update && sudo apt-get install -yq libboost-all-dev
       
     # build project
     - name: mkdir
