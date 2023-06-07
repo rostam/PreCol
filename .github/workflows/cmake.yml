@@ -22,8 +22,8 @@ jobs:
     - name: build_essential
       run: sudo apt-get install build-essential
     # install dependencies
-    - name: clone_metis 
-      run: git clone https://github.com/KarypisLab/METIS.git ; cd METIS ; make config shared=1 cc=gcc prefix=~/local ; make install
+    - name: metis 
+      run: sudo apt-get install libmetis-dev
     - name: boost
       run: sudo apt-get update && sudo apt-get install -yq libboost1.74-dev
       
