@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.2.2)
 project(precol)
 find_package(Boost REQUIRED  COMPONENTS unit_test_framework)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -fopenmp -lmetis")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -fopenmp")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -fopenmp  -D_GLIBCXX_PARALLEL")
 include_directories(${Boost_INCLUDE_DIRS})
 file(GLOB ALG_SRC "Algorithms/*.cpp")

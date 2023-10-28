@@ -12,7 +12,7 @@
 #include "NaturalOrdering.h"
 #include "WeightOptimumOrdering.h"
 #include <fstream>
-#include "metis.h"
+//#include "metis.h"
 
 static vector<string> ords = {"LargestFirstOrderingDegrees","SLO","IDO"};
 //enum KindOfOrdering { LargestFirstOrderingDegrees, SLO, IDO, NaturalOrdering, WEIGHT_OPTIMUM };
