@@ -30,7 +30,8 @@ jobs:
       run:  cmake -B build -S .
     - name: cmake make
       run: cmake --build build/ --target all
-      
+
+
   documentation:
     runs-on: ubuntu-latest
     steps:
@@ -49,7 +50,9 @@ jobs:
             sphinx-book-theme
 
       - name: Generate Doxygen XML
-        run: doxygen Documentation/Doxyfile
+        run:
+          cd Documentation
+          doxygen Doxyfile
 
       - name: Build Sphinx docs
         run: sphinx-build -b html Documentation docs/sphinx
