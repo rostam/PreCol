@@ -7,31 +7,27 @@ on:
     branches: [ "master" ]
 
 env:
-  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
 
 jobs:
   build:
-    # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
-    # You can convert this to a matrix build if you need cross-platform coverage.
-    # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
     - name: build_essential
-      run: sudo apt-get install build-essential
+      run: sudo apt-get update && sudo apt-get install -y build-essential
     # install dependencies
     - name: metis 
       run: sudo apt-get install libmetis-dev
     - name: boost
       run: sudo apt-get update && sudo apt-get install -yq libboost-all-dev
       
-    # build project
+    # build a project
     - name: mkdir
       run: mkdir build
     - name: cmake build
-      run: cmake -Bbuild -H.
+      run:  cmake -B build -S .
     - name: cmake make
       run: cmake --build build/ --target all
       
@@ -40,17 +36,25 @@ jobs:
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v3
-      #- name: Generate Doxygen documentation
-      #  uses: mattnotmitt/doxygen-action@v1.9.5
-      #  with:
-      #    working-directory: '.'
-      #    doxyfile-path: 'Documentation'
-      - name: Process the Doxygen output using Sphinx
-        uses: ammaraskar/sphinx-action@master
-        with:
-          build-command: "sphinx-build -b html . sphinx"
-          docs-folder: 'Documentation/'
-      - name: Deploy to Github pages
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install doxygen python3-pip -y
+          pip install --upgrade pip
+          pip install \
+            sphinx==6.2.1 \
+            breathe==4.35.0 \
+            pydata-sphinx-theme==0.14.4 \
+            sphinx-book-theme
+
+      - name: Generate Doxygen XML
+        run: doxygen Documentation/Doxyfile
+
+      - name: Build Sphinx docs
+        run: sphinx-build -b html Documentation docs/sphinx
+
+      - name: Deploy to Github Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
