@@ -46,7 +46,7 @@ public:
     explicit ColoringAlgorithms(Graph &G_b) : GraphInstance(G_b) { SetAllColorsTo(0);};
 
     ColoringAlgorithms(Graph &G_b, vector<unsigned int> &V, bool restricted = false, map<string, any>&& pars = {})
-            : IsRestrictedColoring(restricted), V_c(V), GraphInstance(G_b), CustomParameters(std::move(pars)) { SetAllColorsTo(0);};
+            : V_c(V), GraphInstance(G_b), IsRestrictedColoring(restricted), CustomParameters(std::move(pars)) { SetAllColorsTo(0);};
 
     ColoringAlgorithms(Graph &G_b, vector<unsigned int> &V_r, vector<unsigned int> &V_c,
                        bool restricted, map<string, any>&& pars = {});
@@ -80,7 +80,7 @@ public:
     }
 
     template<class T>
-    T get_par(string name) {
+    T get_par(const string& name) {
         return any_cast<T>(CustomParameters[name]);
     }
 
@@ -116,7 +116,7 @@ public:
      * @param v The given vertex
      * @return the number of distinct colors in the neighbors of v
     */
-    int NumOfColorsOfNeighbors(int v);
+    int NumOfColorsOfNeighbors(int v) const;
 };
 
 #endif //PRECOL_COLORINGALGORITHMS_H

@@ -34,7 +34,7 @@ std::tuple<int, std::vector<int>> ColoringAlgorithms::TupleNumOfColorAndColors()
  */
 ColoringAlgorithms::ColoringAlgorithms(Graph &G_b, vector<unsigned int> &V_r, vector<unsigned int> &V_c,
 bool restricted, map<string, any>&& pars)
-: IsRestrictedColoring(restricted), V_r(V_r), V_c(V_c), GraphInstance(G_b), CustomParameters(pars) {
+: V_c(V_c), V_r(V_r), GraphInstance(G_b), IsRestrictedColoring(restricted), CustomParameters(pars) {
     SetAllColorsTo(0);
     //Compute independent set
     if (restricted) {
@@ -60,7 +60,8 @@ bool restricted, map<string, any>&& pars)
 * @param v The given vertex
 * @return the number of distinct colors in the neighbors of v
 */
-int ColoringAlgorithms::NumOfColorsOfNeighbors(int v) {
+int ColoringAlgorithms::NumOfColorsOfNeighbors(const int v) const
+{
     std::set<int> unique_colors;
     ForEachNeighborConst(GraphInstance, v, [&](int n) {
         int c = get(vertex_color, GraphInstance, n);

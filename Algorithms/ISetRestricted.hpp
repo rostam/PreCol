@@ -1,13 +1,10 @@
 #ifndef ISET_RESTRICTED_HPP
 #define ISET_RESTRICTED_HPP
 
-#include <iostream>
-#include <boost/config.hpp>
 #include "boost/graph/adjacency_list.hpp"
-#include "boost/graph/graph_utility.hpp"
-#include "boost/graph/filtered_graph.hpp"
 #include "../Graph/GraphDataType.hpp"
 #include "IndependentSet.h"
+
 class ISetRestricted : public IndependentSet{
 public:
 	using IndependentSet::IndependentSet;
@@ -34,30 +31,22 @@ public:
         while (!E_1.empty()) {
 
             vector<int> Degree(NumVertices, 0);
-            vector<int>::iterator Degree_border = Degree.begin() + NumVertices_V_r;
 
-            for (list<graph_traits<Graph>::edge_iterator>::iterator e = E_1.begin();
-                 e != E_1.end();
-                 ++e) {
+            for (auto & e : E_1) {
 
-                Degree[source(**e, G_b)]++;
-                Degree[target(**e, G_b)]++;
+                Degree[source(*e, G_b)]++;
+                Degree[target(*e, G_b)]++;
             }
 
-            for (list<graph_traits<Graph>::edge_iterator>::iterator e = E_4.begin();
-                 e != E_4.end();
-                 ++e) {
+            for (auto & e : E_4) {
 
-                Degree[source(**e, G_b)]++;
-                Degree[target(**e, G_b)]++;
+                Degree[source(*e, G_b)]++;
+                Degree[target(*e, G_b)]++;
             }
 
             //element with minimum degree in V_r
             unsigned int v_r = *V_r.begin();
-            for (vector<unsigned int>::iterator v_r_it = ++V_r.begin();
-                 v_r_it != V_r.end();
-                 ++v_r_it) {
-
+            for (auto v_r_it = ++V_r.begin();v_r_it != V_r.end();++v_r_it) {
                 if (Degree[*v_r_it] < Degree[v_r]) {
                     v_r = *v_r_it;
                 }
@@ -65,10 +54,7 @@ public:
 
             //element with minimum degree in V_c
             unsigned int v_c = *V_c.begin();
-            for (vector<unsigned int>::iterator v_c_it = ++V_c.begin();
-                 v_c_it != V_c.end();
-                 ++v_c_it) {
-
+            for (auto v_c_it = ++V_c.begin();v_c_it != V_c.end();++v_c_it) {
                 if (Degree[*v_c_it] < Degree[v_c]) {
                     v_c = *v_c_it;
                 }
@@ -77,26 +63,20 @@ public:
             int maxDegree_v_r = 0;
             int maxDegree_v_c = 0;
 
-            for (list<graph_traits<Graph>::edge_iterator>::iterator e = E_2.begin();
-                 e != E_2.end();
-                 ++e) {
-
-                if (source(**e, G_b) == v_r || target(**e, G_b) == v_r) {
+            for (auto & e : E_2) {
+                if (source(*e, G_b) == v_r || target(*e, G_b) == v_r) {
                     maxDegree_v_r++;
                 }
-                if (source(**e, G_b) == v_c || target(**e, G_b) == v_c) {
+                if (source(*e, G_b) == v_c || target(*e, G_b) == v_c) {
                     maxDegree_v_c++;
                 }
             }
 
-            for (list<graph_traits<Graph>::edge_iterator>::iterator e = E_3.begin();
-                 e != E_3.end();
-                 ++e) {
-
-                if (source(**e, G_b) == v_r || target(**e, G_b) == v_r) {
+            for (auto & e : E_3) {
+                if (source(*e, G_b) == v_r || target(*e, G_b) == v_r) {
                     maxDegree_v_r++;
                 }
-                if (source(**e, G_b) == v_c || target(**e, G_b) == v_c) {
+                if (source(*e, G_b) == v_c || target(*e, G_b) == v_c) {
                     maxDegree_v_c++;
                 }
             }
@@ -157,9 +137,7 @@ public:
 
                     //E_1 -> E_2
                     //Emulate reverse_iterator because of erase-operation
-                    for (list<graph_traits<Graph>::edge_iterator>::iterator e = E_1.begin();
-                         e != E_1.end();
-                         ++e) {
+                    for (auto e = E_1.begin();e != E_1.end();++e) {
 
                         if (source(**e, G_b) == *n_1 || target(**e, G_b) == *n_1) {
 

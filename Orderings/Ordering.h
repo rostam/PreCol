@@ -18,6 +18,7 @@
  */
 class Ordering {
 public:
+    virtual ~Ordering() = default;
     /**
      * \brief A virtual OrderGivenVertexSubset function which is defined by subclasses
      *

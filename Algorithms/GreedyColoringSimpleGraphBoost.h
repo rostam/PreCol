@@ -20,7 +20,7 @@ class GreedyColoringSimpleGraphBoost : public ColoringAlgorithms {
 public:
     using ColoringAlgorithms::ColoringAlgorithms;
 
-    int color();
+    int color() override;
 };
 
 

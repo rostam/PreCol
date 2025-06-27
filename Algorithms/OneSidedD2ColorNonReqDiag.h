@@ -26,7 +26,8 @@ public:
 
 //    OneSidedD2ColoringNonReq(Graph &GraphInstance, vector<unsigned int> &V, bool IsRestrictedColoring, int alpha)
 //            : ColoringAlgorithms(GraphInstance, V, IsRestrictedColoring),alpha(alpha) {}
-    int color() {
+    int color() override
+    {
         vector<unsigned int> V = V_c;
         property_map<Graph, vertex_color_t>::type color = get(vertex_color, GraphInstance);
         vector<unsigned int> N_2;
@@ -45,8 +46,8 @@ public:
                     }
                 });
 
-                //Find first color which can be assigned to v
-                vector<unsigned int>::iterator result = find_if(forbiddenColors.begin(), forbiddenColors.end(),
+                //Find the first color which can be assigned to v
+                auto result = find_if(forbiddenColors.begin(), forbiddenColors.end(),
                                                                 bind1st(not_equal_to<int>(), v));
 
                 int col1 = distance(forbiddenColors.begin(), result);

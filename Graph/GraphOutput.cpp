@@ -77,14 +77,12 @@ int graph2dot(Graph& g, list<int>& list_g_a, list<int>& list_g_b) {
 
   outFile << "graph G {" << endl;
   outFile << "subgraph G_A {" << endl;
-  for (list<int>::iterator i = list_g_a.begin();
-       i != list_g_a.end();
-       ++i) {
-    outFile << *i << endl;
+  for (const int & i : list_g_a) {
+    outFile << i << endl;
   }
   outFile << "}" << endl;
   outFile << "subgraph G_B {" << endl;
-  for (list<int>::iterator i = list_g_b.begin();
+  for (auto i = list_g_b.begin();
        i != list_g_b.end();
        ++i) {
     outFile << *i << endl;

@@ -19,7 +19,7 @@ using std::tuple;
  * @return tuple<algorithm, col_ord,ilu_ord, mode, sparsify, block_size, level_ilu, matrix>
  */
 tuple<string, string, unique_ptr<Ordering>, KindOfSparsify, int, string, int, string, int, int, int>
-GetInputParametersForApplication(std::string FileName);
+GetInputParametersForApplication(const std::string& FileName);
 
 /**
  * \brief handle the input to the program

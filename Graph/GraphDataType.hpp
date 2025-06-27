@@ -114,11 +114,11 @@ namespace PreCol {
  */
     static bool cmp_degrees(pair<int, pair<int, int> > t1, pair<int, pair<int, int> > t2) {
         if (t1.second.second < t2.second.second) {
-            return 1;
+            return true;
         } else if (t1.second.second == t2.second.second && t1.second.first < t2.second.first) {
-            return 1;
+            return true;
         } else {
-            return 0;
+            return false;
         }
     }
 

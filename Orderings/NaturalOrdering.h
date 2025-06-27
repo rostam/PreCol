@@ -11,7 +11,7 @@
  * A specific preordering for the coloring algorithm
  */
 class NaturalOrdering : public Ordering {
-    bool OrderGivenVertexSubset(const Graph &G_b, vector<unsigned int> &V, bool restricted) { return EXIT_SUCCESS; }
+    bool OrderGivenVertexSubset(const Graph &G_b, vector<unsigned int> &V, bool restricted) override { return EXIT_SUCCESS; }
 };
 
 #endif //PRECOL_NATURALORDERING_H

@@ -12,38 +12,35 @@
  * \brief A specific preordering for the coloring
  */
 class IDO : public Ordering {
-    bool OrderGivenVertexSubset(const Graph &G_b, vector<unsigned int> &V, bool restricted) {
+    bool OrderGivenVertexSubset(const Graph &G_b, vector<unsigned int> &V, bool restricted) override
+    {
         //Degree (second.first) and incident degree (second.second)
         vector<pair<int, pair<int, int> > > Degrees;
         vector<unsigned int> Ordering;
 
         //Compute Distance2Neighbors-degree for all vertices in v
-        for (vector<unsigned int>::iterator v = V.begin(); v != V.end(); ++v) {
-                Degrees.push_back(make_pair(*v, make_pair(neighbors::Distance2NeighborsRestricted(G_b, *v).size(), 0)));
+        for (unsigned int & v : V) {
+                Degrees.emplace_back(v, make_pair(neighbors::Distance2NeighborsRestricted(G_b, v).size(), 0));
         }
 
         for (unsigned int i = 0; i < V.size(); ++i) {
-
-            vector<pair<int, pair<int, int> > >::iterator v =
-                    max_element(Degrees.begin(), Degrees.end(), cmp_degrees);
+            auto v = max_element(Degrees.begin(), Degrees.end(), cmp_degrees);
 
             (*v).second.second = -1;
             Ordering.push_back((*v).first);
 
             vector<unsigned int> neighbors;
             neighbors = neighbors::Distance2NeighborsRestricted(G_b, (*v).first);
-            for (vector<unsigned int>::iterator n_2 = neighbors.begin();
-                 n_2 != neighbors.end();
-                 ++n_2) {
+            for (const unsigned int & neighbor : neighbors) {
 
                 //Get the correct element of Degrees for n_2
-                if (*n_2 >= V.size()) {
-                    if (Degrees[*n_2 - V.size()].second.second != -1) {
-                        Degrees[*n_2 - V.size()].second.second++;
+                if (neighbor >= V.size()) {
+                    if (Degrees[neighbor - V.size()].second.second != -1) {
+                        Degrees[neighbor - V.size()].second.second++;
                     }
                 } else {
-                    if (Degrees[*n_2].second.second != -1) {
-                        Degrees[*n_2].second.second++;
+                    if (Degrees[neighbor].second.second != -1) {
+                        Degrees[neighbor].second.second++;
                     }
                 }
             }

@@ -17,9 +17,9 @@
  * @param line
  * @return
  */
-bool ExtractValueOfParameter(string NameOfParameter, string& line) {
-    if(line.find(NameOfParameter) != std::string::npos && line.find("=") != std::string::npos) {
-        line = line.substr(line.find("=") + 1);
+bool ExtractValueOfParameter(const string& NameOfParameter, string& line) {
+    if(line.find(NameOfParameter) != std::string::npos && line.find('=') != std::string::npos) {
+        line = line.substr(line.find('=') + 1);
         line.erase(remove(line.begin(), line.end(), ' '));
         return true;
     }
@@ -31,12 +31,12 @@ bool ExtractValueOfParameter(string NameOfParameter, string& line) {
  *
  * @param argc the number of arguments
  * @param argv the actual arguments
- * @return tuple<MatrixName,ColoringAlgorithm,ColoringOrder,SparsificationKind,BlockSize,PreconditioningOrder,
+ * @return tuple<MatrixName, ColoringAlgorithm, ColoringOrder, SparsificationKind, BlockSize, PreconditioningOrder,
                       EliminationParameter, IndependentSetAlgorithm, AlphaForBalancedColoring, Mode, Mode2>
  *
  */
 tuple<string, string, unique_ptr<Ordering>, KindOfSparsify, int, string, int, string, int, int, int>
-GetInputParametersForApplication(std::string FileName) {
+GetInputParametersForApplication(const std::string& FileName) {
 //    vector<string> iset = {"Best", "Variant"};
     ifstream InFile(FileName);
     std::string line;
@@ -45,7 +45,7 @@ GetInputParametersForApplication(std::string FileName) {
     int BlockSize, EliminationParameter, AlphaForBalancedColoring;
     double RhoIndependentSet;
     while (std::getline(InFile, line)) {
-        if(line.find("#") != std::string::npos || line.size() <= 3) {
+        if(line.find('#') != std::string::npos || line.size() <= 3) {
             // DO NOTHING
         } else if(ExtractValueOfParameter("MATRIX", line)) {
             MatrixName = line;
@@ -136,7 +136,7 @@ tuple<string,shared_ptr<Ordering>,string,int,int,string,int, int,string, int> Ge
     }
 
     string ord = argv[2];
-    size_t pos = ord.find("_");
+    size_t pos = ord.find('_');
     string col_ord = ord.substr(0,pos);
     string pre_ord = ord.substr(pos+1);
     shared_ptr<Ordering> col_ord_c = GetColoringOrder(col_ord);
@@ -146,22 +146,19 @@ tuple<string,shared_ptr<Ordering>,string,int,int,string,int, int,string, int> Ge
     if (string(argv[3]) == "Best") Mode = 3;
     else if (string(argv[3]) == "Variant") Mode = 0;
     if (Mode == 3) {
-        int rho = atoi(argv[4]);
-        if (rho != 0) {
+        if (int rho = atoi(argv[4]); rho != 0) {
             Mode = 2 * rho;
         }
     }
     if (Mode == 0) {
-        int rho = atoi(argv[4]);
-        if (rho != 0) {
+        if (int rho = atoi(argv[4]); rho != 0) {
             Mode2 = 2 * rho;
         }
     }
     string sparsify = argv[5];
     int blockSize = 0;
     if (sparsify == "BlockDiagonal") {
-        int bls = atoi(argv[6]);
-        if (bls != 0) blockSize = bls;
+        if (int bls = atoi(argv[6]); bls != 0) blockSize = bls;
     }
 
     int el = atoi(argv[7]);

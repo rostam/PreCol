@@ -16,7 +16,7 @@
 #include "GreedyColoringSimpleGraph.h"
 #include "GreedyColoringLimitedMaxColor.h"
 
-static vector<string> algs = {"D2Columns", "D2Rows", "GreedyColoring", "GreedyColoringBoost"
+static vector<string> algs = {"D2Columns", "D2Rows", "GreedyColoring","GreedyColoringBoost",
                        "D2RestrictedColumns", "D2RestrictedRows",
                        "D2RestrictedColumnsNonReq",
                        "PartialD2RestrictedColumnsNonReqDiag",

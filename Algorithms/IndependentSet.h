@@ -19,12 +19,14 @@ protected:
     Graph& G_b;
     double ratio;
 public:
+    virtual ~IndependentSet() = default;
+
     IndependentSet(Graph& g, vector<unsigned int>& Vr, vector<unsigned int>& Vc, int m, double r) :
-            G_b(g), V_r(Vr), V_c(Vc), mode(m), ratio(r) {}
+            mode(m), V_r(Vr), V_c(Vc), G_b(g), ratio(r) {}
     IndependentSet(Graph& g, vector<unsigned int>& Vr, vector<unsigned int>& Vc, double r) :
-            G_b(g), V_r(Vr), V_c(Vc), ratio(r) {}
+            V_r(Vr), V_c(Vc), G_b(g), ratio(r) {}
     IndependentSet(Graph& g, vector<unsigned int>& Vr, vector<unsigned int>& Vc, int m) :
-            G_b(g), V_r(Vr), V_c(Vc), mode(m) {}
+            mode(m), V_r(Vr), V_c(Vc), G_b(g) {}
     IndependentSet(Graph& g) : G_b(g) {}
 
     virtual vector<int> compute()=0;

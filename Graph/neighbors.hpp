@@ -43,7 +43,7 @@ namespace neighbors {
         });
 
         std::sort(neighbors.begin(), neighbors.end());
-        std::vector<unsigned int>::iterator new_end = unique(neighbors.begin(), neighbors.end());
+        auto new_end = unique(neighbors.begin(), neighbors.end());
         neighbors.resize(distance(neighbors.begin(), new_end));
         return neighbors;
     }
@@ -66,7 +66,7 @@ namespace neighbors {
         });
 
         std::sort(neighbors.begin(), neighbors.end());
-        std::vector<unsigned int>::iterator new_end = unique(neighbors.begin(), neighbors.end());
+        auto new_end = unique(neighbors.begin(), neighbors.end());
         neighbors.resize(distance(neighbors.begin(), new_end));
         return neighbors;
     }
