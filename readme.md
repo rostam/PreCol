@@ -47,25 +47,25 @@ LargestFirstOrderingDegrees, SAT. Moreover, another pre-ordering called AGO is a
 
 A categorization of these algorithms is given in the following Table:
 
-  --      | Full         | Partial 
-----------| ------------ | -------------
-One-sided | 1, 2, 3, 13, 14 | 4, 5, 6, 7, 8 
-Two-sided | 9 | 10, 11, 12 
+| --        | Full            | Partial       |
+|-----------|-----------------|---------------|
+| One-sided | 1, 2, 3, 13, 14 | 4, 5, 6, 7, 8 |
+| Two-sided | 9               | 10, 11, 12    |
 
 Coloring(Graph, GraphModel, OneSided/TwoSided, Full/Partial, Algorithm, ordering, RequiredElements, ExtraParameters, Coloring)
 
 
- Parameter | Possible values | Default value | Mandatory
-----------| ------------ | ------------- | -------
- Graph | A MTX file format, Adjacency list format |  MTX format | Yes 
-  GraphModel | Bipartite, Column-intersection Graph, Column Gain Graph |  Bipartite | No 
-  OneSided/TwoSided | OneSided, TwoSided | OneSided | No 
-  Full/Partial | Full, Partial | Full | No 
-  Algorithm | As in previous table | D2Columns | No 
-  Ordering | NaturalOrdering, LargestFirstOrderingDegrees, SAT, AGO | NaturalOrdering | No 
-  RequiredElements | A list of edges, Matrix nonzeros | No default value | No 
-  ExtraParameters | Algorithm-specific parameters, in a JSON format file | No default value | No 
-  Coloring | Coloring results, Array format | ... | ... 
+| Parameter         | Possible values                                         | Default value    | Mandatory |
+|-------------------|---------------------------------------------------------|------------------|-----------|
+| Graph             | A MTX file format, Adjacency list format                | MTX format       | Yes       |
+| GraphModel        | Bipartite, Column-intersection Graph, Column Gain Graph | Bipartite        | No        |
+| OneSided/TwoSided | OneSided, TwoSided                                      | OneSided         | No        |
+| Full/Partial      | Full, Partial                                           | Full             | No        |
+| Algorithm         | As in previous table                                    | D2Columns        | No        |
+| Ordering          | NaturalOrdering, LargestFirstOrderingDegrees, SAT, AGO  | NaturalOrdering  | No        |
+| RequiredElements  | A list of edges, Matrix nonzeros                        | No default value | No        |
+| ExtraParameters   | Algorithm-specific parameters, in a JSON format file    | No default value | No        |
+| Coloring          | Coloring results, Array format                          | ...              | ...       |
 
 ## Implementation
 Specifically, the software is designed employing concepts from object-oriented programming
