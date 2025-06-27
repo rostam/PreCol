@@ -50,7 +50,7 @@ jobs:
             sphinx-book-theme
 
       - name: Generate Doxygen XML
-        run:
+        run: |
           cd Documentation
           doxygen Doxyfile
 
