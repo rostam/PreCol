@@ -16,11 +16,11 @@
  * Output:
  * - G a simple graph with colors as weights vertex_color
  */
-class GreedyColoringSimpleGraph : public ColoringAlgorithms {
+class GreedyColoringSimpleGraph final : public ColoringAlgorithms {
 public:
     using ColoringAlgorithms::ColoringAlgorithms;
 
-    int color();
+    int color() override;
 };
 
 

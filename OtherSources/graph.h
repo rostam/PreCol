@@ -484,7 +484,7 @@
 ////
 ////                //Find first color which can be assigned to v
 ////                vector<unsigned int>::iterator result = find_if(forbiddenColors.begin(), forbiddenColors.end(),
-////                                                                bind1st(not_equal_to<int>(), v));
+////                                                                bind(not_equal_to<int>(), v, std::placeholders::_1));
 ////
 ////                //Color v
 ////                put(color, v, distance(forbiddenColors.begin(), result));

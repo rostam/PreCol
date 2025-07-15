@@ -46,7 +46,7 @@ public:
 
                     //Find first color which can be assigned to v
                     vector<unsigned int>::iterator result = find_if(forbiddenColors.begin(), forbiddenColors.end(),
-                                                                    std::bind1st(std::not_equal_to<int>(), v));
+                                                                    std::bind(std::not_equal_to<int>(), v, std::placeholders::_1));
 
                     //Color v
                     SetVertexColor(GraphInstance, v, distance(forbiddenColors.begin(), result));

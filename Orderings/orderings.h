@@ -37,14 +37,14 @@ static vector<string> ords = {"LargestFirstOrderingDegrees","SLO","IDO"};
  * @param col_ord the string value contains both coloring and ordering
  * @return the ordering
  */
-static std::unique_ptr<Ordering> GetColoringOrder(const string& ColoringOrdering) {
+static std::shared_ptr<Ordering> GetColoringOrder(const string& ColoringOrdering) {
     using std::make_unique;
     if (ColoringOrdering == "LargestFirstOrderingDegrees") return make_unique<LargestFirstOrderingDegrees>();
     if (ColoringOrdering == "SLO") return make_unique<SLO>();
     if (ColoringOrdering == "IDO") return make_unique<IDO>();
     if (ColoringOrdering == "NaturalOrdering") return make_unique<NaturalOrdering>();
     if (ColoringOrdering == "WeightOptimumOrdering") return make_unique<WeighOptimumOrdering>();
-    return make_unique<NaturalOrdering>();
+    return std::make_shared<NaturalOrdering>();
 }
 
 

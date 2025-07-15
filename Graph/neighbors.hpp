@@ -1,87 +1,65 @@
 #ifndef NEIGHBORS_HPP
 #define NEIGHBORS_HPP
 
-#include <iostream>
-#include <boost/config.hpp>
-#include "boost/graph/adjacency_list.hpp"
-#include "boost/graph/graph_utility.hpp"
+#include <unordered_set>
+#include <boost/graph/adjacency_list.hpp>
 #include "GraphDataType.hpp"
 
-/**
- * \namespace neighbors
- * \brief Contains functions to find the (IsRestrictedColoring) distance-2 neigbors of a vertex
- */
 namespace neighbors {
     using boost::out_edges;
+    using boost::target;
+    using boost::get;
     using boost::edge_weight;
 
-    //Compute the IsRestrictedColoring distance-2 neighbors of Vertex
-    /**
-     * \brief Find distance-2 neighbors of the given vertex with respect to required edges
-     *
-     * @param G_b the given bipartite graph
-     * @param Vertex the given vertex
-     * @return all distance-2 neighbors of the given vertex v
-     */
     static std::vector<unsigned int> Distance2NeighborsRestricted(const Graph& G_b, const unsigned int Vertex) {
-        std::vector<unsigned int> neighbors;
-        for_each(boost::out_edges(Vertex, G_b).first,out_edges(Vertex, G_b).second,[&](Edge e) {
-            for_each(out_edges(target(e,G_b), G_b).first,out_edges(target(e,G_b), G_b).second,[&](Edge e2) {
-                if(Vertex != target(e2, G_b)) {
-                    //Edge e_1 or e_2 must be in E_S
-                    //Is Edge e_1 in E_S
-                    if (get(edge_weight, G_b, e) == 1) {
-                        neighbors.push_back(target(e2, G_b));
-                    } else {
-                        //Is Edge e_1 in E_S
-                        if (get(edge_weight, G_b, e2) == 1) {
-                            neighbors.push_back(target(e2, G_b));
-                        }
+        std::unordered_set<unsigned int> neighbor_set;
+
+        auto [begin1, end1] = out_edges(Vertex, G_b);
+        for (auto e1 = begin1; e1 != end1; ++e1) {
+            auto u = target(*e1, G_b);
+            auto [begin2, end2] = out_edges(u, G_b);
+
+            for (auto e2 = begin2; e2 != end2; ++e2) {
+                unsigned int v2 = target(*e2, G_b);
+                if (v2 != Vertex) {
+                    if (get(edge_weight, G_b, *e1) == 1 || get(edge_weight, G_b, *e2) == 1) {
+                        neighbor_set.insert(v2);
                     }
                 }
-            });
-        });
-
-        std::sort(neighbors.begin(), neighbors.end());
-        auto new_end = unique(neighbors.begin(), neighbors.end());
-        neighbors.resize(distance(neighbors.begin(), new_end));
-        return neighbors;
-    }
-
-    /**
-     * \brief Find distance-2 neighbors of the given vertex
-     *
-     * @param G_b the given bipartite graph
-     * @param Vertex the given vertex
-     * @return all distance-2 neighbors of the given vertex v
-     */
-    static std::vector<unsigned int> Distance2Neighbors(const Graph& G_b, const unsigned int Vertex) {
-        std::vector<unsigned int> neighbors;
-        for_each(boost::out_edges(Vertex, G_b).first,out_edges(Vertex, G_b).second,[&](Edge e) {
-            for_each(out_edges(target(e,G_b), G_b).first,out_edges(target(e,G_b), G_b).second,[&](Edge e2) {
-                if(Vertex != target(e2, G_b)) {
-                    neighbors.push_back(target(e2, G_b));
-                }
-            });
-        });
-
-        std::sort(neighbors.begin(), neighbors.end());
-        auto new_end = unique(neighbors.begin(), neighbors.end());
-        neighbors.resize(distance(neighbors.begin(), new_end));
-        return neighbors;
-    }
-
-    static int IncidentToReqEdge(const Graph &G_b, const unsigned int v) {
-        bool incident = false;
-        std::for_each(out_edges(v, G_b).first, out_edges(v, G_b).second, [&](Edge e) {
-            if (boost::get(boost::edge_weight, G_b, e) == 1) {
-                incident = true;
-                return;
             }
-        });
-        return incident;
+        }
+
+        return std::vector<unsigned int>(neighbor_set.begin(), neighbor_set.end());
+    }
+
+    static std::vector<unsigned int> Distance2Neighbors(const Graph& G_b, const unsigned int Vertex) {
+        std::unordered_set<unsigned int> neighbor_set;
+
+        auto [begin1, end1] = out_edges(Vertex, G_b);
+        for (auto e1 = begin1; e1 != end1; ++e1) {
+            auto u = target(*e1, G_b);
+            auto [begin2, end2] = out_edges(u, G_b);
+
+            for (auto e2 = begin2; e2 != end2; ++e2) {
+                unsigned int v2 = target(*e2, G_b);
+                if (v2 != Vertex) {
+                    neighbor_set.insert(v2);
+                }
+            }
+        }
+
+        return std::vector<unsigned int>(neighbor_set.begin(), neighbor_set.end());
+    }
+
+    static bool IncidentToReqEdge(const Graph& G_b, const unsigned int v) {
+        auto [begin, end] = out_edges(v, G_b);
+        for (auto it = begin; it != end; ++it) {
+            if (get(edge_weight, G_b, *it) == 1) {
+                return true;
+            }
+        }
+        return false;
     }
 }
-
 
 #endif

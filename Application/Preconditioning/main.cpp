@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
     ColoringOrder->OrderGivenVertexSubset(G_b, V_r, ColoringAlgorithm.find("Restricted") != string::npos);
 //    ApplyColoringOrder(ColoringAlgorithm, ColoringOrder, GraphInstance, V_r, V_c);
     //Coloring of the vertices
-    int cols = getAlg(Mode2, ColoringAlgorithm, Mode, G_b, V_r, V_c, ColoringOrder, AlphaForBalancedColoring)->color();
+    int cols = getAlg(Mode2, ColoringAlgorithm, Mode, G_b, V_r, V_c, AlphaForBalancedColoring)->color();
     end = clock();
     //all edges A - \Rinit
     vector<Edge> edge_ordering;
