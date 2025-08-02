@@ -12,6 +12,7 @@ ordering_map = {
     "SLO": "SMALLEST_LAST"
 }
 
+
 method_map = {
     "D2RestrictedColumns": "DISTANCE_TWO",
     "D2Columns": "DISTANCE_TWO"

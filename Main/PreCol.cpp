@@ -49,7 +49,6 @@ int main(int argc, char *argv[]) {
                                 "NumOfRemainedNonzeros", "NumOfColors","Time"});
 
     for (const auto& params : allInputParams) {
-
         MatrixMarket mm(params.algorithm.c_str());
         mysymmetric = mm.issym();
 
