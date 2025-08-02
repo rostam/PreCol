@@ -8,6 +8,12 @@ ExampleMatrices/FloridaSparseMatrixCollection/bcsstk08.mtx,D2Columns,LargestFirs
 ExampleMatrices/FloridaSparseMatrixCollection/bcsstk09.mtx,D2Columns,LargestFirstOrderingDegrees,Full,0,Best,1,1
 ExampleMatrices/FloridaSparseMatrixCollection/bcsstm01.mtx,D2Columns,LargestFirstOrderingDegrees,Full,0,Best,1,1
 ExampleMatrices/FloridaSparseMatrixCollection/bcsstm13.mtx,D2Columns,LargestFirstOrderingDegrees,Full,0,Best,1,1
+ExampleMatrices/FloridaSparseMatrixCollection/bcsstm25.mtx,D2Columns,LargestFirstOrderingDegrees,Full,0,Best,1,1
+ExampleMatrices/FloridaSparseMatrixCollection/bcsstm27.mtx,D2Columns,LargestFirstOrderingDegrees,Full,0,Best,1,1
+ExampleMatrices/FloridaSparseMatrixCollection/bcsstk18.mtx,D2Columns,LargestFirstOrderingDegrees,Full,0,Best,1,1
+ExampleMatrices/FloridaSparseMatrixCollection/bcsstk29.mtx,D2Columns,LargestFirstOrderingDegrees,Full,0,Best,1,1
+ExampleMatrices/FloridaSparseMatrixCollection/bcsstk30.mtx,D2Columns,LargestFirstOrderingDegrees,Full,0,Best,1,1
+ExampleMatrices/FloridaSparseMatrixCollection/bcsstk32.mtx,D2Columns,LargestFirstOrderingDegrees,Full,0,Best,1,1
 ExampleMatrices/FloridaSparseMatrixCollection/bp_1400.mtx,D2Columns,LargestFirstOrderingDegrees,Full,0,Best,1,1
 ExampleMatrices/FloridaSparseMatrixCollection/bp_1600.mtx,D2Columns,LargestFirstOrderingDegrees,Full,0,Best,1,1
 ExampleMatrices/FloridaSparseMatrixCollection/ex33.mtx,D2Columns,LargestFirstOrderingDegrees,Full,0,Best,1,1

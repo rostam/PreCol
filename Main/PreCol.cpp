@@ -67,8 +67,10 @@ int main(int argc, char *argv[]) {
         int NumOfRemainedNonzeros = SparsifyBipartiteGraph(G_b, params.sparsificationKind, mm.nrows(), params.blockSize, "");
 
         params.coloringOrder->OrderGivenVertexSubset(G_b, V_r, params.coloringAlgorithm.find("Restricted") != std::string::npos);
+
+        auto alg = getAlg(params.mode2, params.coloringAlgorithm, params.mode, G_b, V_r, V_c, params.alpha);
         clock_t start = clock();
-        int cols = getAlg(params.mode2, params.coloringAlgorithm, params.mode, G_b, V_r, V_c, params.alpha)->color();
+        int cols = alg->color();
         clock_t end = clock();
 
         write_csv_line(OutputFile, {
