@@ -39,7 +39,7 @@ public:
                 N_2 = neighbors::Distance2NeighborsRestricted(GraphInstance, v);
                 forbiddenColors[0] = v;
                 //Iterate over distance-2 neighbors
-                for_each(N_2.begin(), N_2.end(), [&](unsigned int n_2) {
+                std::ranges::for_each(N_2, [&](unsigned int n_2) {
                     //Mark colors which are used by distance-2 neighbors in forbiddenColors
                     if (get(vertex_color, GraphInstance, n_2) > 0) {
                         forbiddenColors[get(vertex_color, GraphInstance, n_2)] = v;
@@ -47,8 +47,8 @@ public:
                 });
 
                 //Find the first color which can be assigned to v
-                auto result = find_if(forbiddenColors.begin(), forbiddenColors.end(),
-                                                                bind(not_equal_to<int>(), v, std::placeholders::_1));
+                auto result = std::ranges::find_if(forbiddenColors,
+                                                   bind(not_equal_to<int>(), v, std::placeholders::_1));
 
                 int col1 = distance(forbiddenColors.begin(), result);
 ///////////////////////////////////////////////////////////////////////////////////////

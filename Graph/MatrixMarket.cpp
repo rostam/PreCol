@@ -5,7 +5,7 @@
 #include "MatrixMarket.hpp"
 
 /**
- * \brief Constructor for making matrix from list of edges
+ * \brief Constructor for making matrix from a list of edges
  *
  * @param mat list of edges
  * @param m the number of rows
@@ -123,14 +123,14 @@ MatrixMarket::MatrixMarket(Graph &G_b, string tag, int m, int n, bool bipartite)
 /**
  * \brief Write the matrix into the file with format mtx
  *
- * @param filename the name of file
+ * @param filename the name of a file
  * @return true if it works correctly
  */
 bool MatrixMarket::writeToFile(char *filename) {
     const int size = nz;
     if(val.size() == 0) {
         double val[size];
-        std::fill(val, val + size, 1);
+        std::fill_n(val, size, 1);
         mm_write_mtx_crd(filename, M, N, nz, &I[0], &J[0], val, matcode);
     } else {
         mm_write_mtx_crd(filename, M, N, nz, &I[0], &J[0], &val[0], matcode);
@@ -167,12 +167,12 @@ MatrixMarket::MatrixMarket(const char *filename) {
         exit(1);
     }
 
-    /* find out size of sparse matrix .... */
+    /* find out the size of sparse matrix … */
 
     if ((ret_code = mm_read_mtx_crd_size(file, &M, &N, &nz)) != 0)
         exit(1);
 
-    /* reseve memory for matrices */
+    /* reserve memory for matrices */
     I = vector<int>(nz);
     J = vector<int>(nz);
 
@@ -354,12 +354,11 @@ bool MatrixMarket::MtXToColumnGainGraph(Graph& CGG, const boost::numeric::ublas:
         }
     }
 
-    sort(begin(edges), end(edges),
-         [&](std::tuple<int, int, int> t1, std::tuple<int, int, int> t2) { return get<2>(t1) > get<2>(t2); });
+    std::ranges::sort(edges,
+                      [&](const std::tuple<int, int, int>& t1, const std::tuple<int, int, int>& t2) { return get<2>(t1) > get<2>(t2); });
     for (int i = NumOfEdgesToBeRemoved; i < edges.size(); i++) {
         auto[v1, v2, w] = edges[i];
         add_edge(v1, v2, w, CGG);
     }
-//    std::cerr << "num of edges: " << g.num_e() << std::endl;
-    return 0;
+    return false;
 }

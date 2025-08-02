@@ -17,7 +17,8 @@ public:
      * @param restricted is the ordering IsRestrictedColoring or not?
      * @return
      */
-    bool OrderGivenVertexSubset(const Graph &G_b, vector<unsigned int> &V, bool restricted) {
+    bool OrderGivenVertexSubset(const Graph &G_b, vector<unsigned int> &V, bool restricted) override
+    {
         std::vector<std::tuple<int, int>> vertex_weight;
         ForEachVertexConst(G_b, [&](int v) {
             int sum = 0;

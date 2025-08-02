@@ -48,19 +48,16 @@ public:
                     });
 
                     //Find the first color which can be assigned to v
-                    vector<unsigned int>::iterator result = find_if(forbiddenColors.begin(),
-                        forbiddenColors.end(),
-                        std::bind(std::not_equal_to<int>(), v, std::placeholders::_1));
+                    const auto result = std::ranges::find_if(forbiddenColors,
+                                                       std::bind(std::not_equal_to<int>(), v, std::placeholders::_1));
 
                     //Color v
                     SetVertexColor(GraphInstance, v, distance(forbiddenColors.begin(), result));
-//                    put(color, v, distance(forbiddenColors.begin(), result));
 
                     /////////////////////////////////////////////////////////////////////////////
-                    /////////////////////////////////////////////////////////////////////////////
                     vector<unsigned int> non_neighbours;
-                    for_each(V_c.begin(), V_c.end(), [&](Ver vc) {
-                        if (find(N_2.begin(), N_2.end(), vc) == N_2.end())
+                    std::ranges::for_each(V_c, [&](Ver vc) {
+                        if (std::ranges::find(N_2, vc) == N_2.end())
                             if(get(vertex_color, GraphInstance, vc) == 0)
                                 non_neighbours.push_back(vc);
                     });
@@ -71,7 +68,7 @@ public:
                     //map from the positions to number of that nonrequired
                     map<unsigned int, int> pos_num;
                     //Iterate over distance-2 neighbors
-                    for_each(non_neighbours.begin(), non_neighbours.end(), [&](unsigned int nn) {
+                    std::ranges::for_each(non_neighbours, [&](unsigned int nn) {
                         int cnt_nreq_det = 0;
                         //Mark colors which are used by distance-2 neighbors in forbiddenColors
                         for_each(adjacent_vertices(nn, GraphInstance).first, adjacent_vertices(nn, GraphInstance).second,
@@ -102,12 +99,11 @@ public:
 
                     });
                     int cnt = 0;
-                    for_each(pos_num.begin(), pos_num.end(), [&](auto map_elem) {
+                    std::ranges::for_each(pos_num, [&](auto map_elem) {
                         if (cnt <= std::any_cast<int>(CustomParameters["alpha"])) {
                             if (map_elem.second == min_nreq_det) {
                                 cnt++;
                                 SetVertexColor(GraphInstance,map_elem.first, distance(forbiddenColors.begin(), result));
-//                                put(color, map_elem.first, distance(forbiddenColors.begin(), result));
                             }
                         }
                     });
@@ -117,12 +113,12 @@ public:
                     int min_pos = -1;
                     int max_req = 0;
                     int max_pos = -1;
-                    for_each(pos_num.begin(), pos_num.end(), [&](auto map_elem) {
+                    std::ranges::for_each(pos_num, [&](auto map_elem) {
                         if (map_elem.second == max_nreq_det) {
                             int cnt_req = 0;
                             for_each(adjacent_vertices(map_elem.first, GraphInstance).first,
                                      adjacent_vertices(map_elem.first, GraphInstance).second,
-                                     [&](Ver adj_) {
+                                     [&](const Ver adj_) {
                                          if (get(edge_weight, GraphInstance, edge(map_elem.first, adj_, GraphInstance).first) == 1) {
                                              cnt_req++;
                                          }
@@ -160,4 +156,4 @@ public:
 };
 
 
-#endif //PRECOL_ONESIDEDD2COLORING_H
+#endif //PRECOL_D2ColorNonReqBalanced

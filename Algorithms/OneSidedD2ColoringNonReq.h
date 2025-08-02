@@ -29,8 +29,8 @@ public:
         vector<unsigned int> N_2;
         vector<unsigned int> forbiddenColors(NumOfVertices(GraphInstance), -1);
         //All edges in E_S have edge_weight=1; otherwise edge_weight=0
-        //Iterate over all vertices which should be colored
-        for_each(V.begin(), V.end(), [&](unsigned int v) {
+        //Iterate over all vertices that should be colored
+        std::ranges::for_each(V, [&](unsigned int v) {
             if (get(vertex_color, GraphInstance, v) == 0) {
                 forbiddenColors[0] = v;
                 if (neighbors::IncidentToReqEdge(GraphInstance, v)) {
@@ -44,9 +44,9 @@ public:
                         }
                     });
 
-                    //Find first color which can be assigned to v
-                    vector<unsigned int>::iterator result = find_if(forbiddenColors.begin(), forbiddenColors.end(),
-                                                                    std::bind(std::not_equal_to<int>(), v, std::placeholders::_1));
+                    //Find the first color which can be assigned to v
+                    auto result = std::ranges::find_if(forbiddenColors,
+                                                       std::bind(std::not_equal_to<int>(), v, std::placeholders::_1));
 
                     //Color v
                     SetVertexColor(GraphInstance, v, distance(forbiddenColors.begin(), result));

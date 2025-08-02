@@ -118,19 +118,12 @@ public:
 
                 //Get distance-1 neighbors
                 graph_traits<Graph>::adjacency_iterator n_1, n_1_end;
-                for (tie(n_1, n_1_end) = adjacent_vertices(v_c, G_b); n_1 != n_1_end; n_1++) {
-
+                for (tie(n_1, n_1_end) = adjacent_vertices(v_c, G_b); n_1 != n_1_end; ++n_1) {
                     bool is_deleted = false;
-
                     //E_1 -> E_2
                     //Emulate reverse_iterator because of erase-operation
-                    for (list<graph_traits<Graph>::edge_iterator>::iterator e =
-                            E_1.begin();
-                         e != E_1.end();
-                         ++e) {
-
+                    for (auto e = E_1.begin();e != E_1.end();++e) {
                         if (source(**e, G_b) == *n_1 || target(**e, G_b) == *n_1) {
-
                             //Delete adjacent vertices
                             if (!is_deleted) {
                                 V_r.erase(find(V_r.begin(), V_r.end(), *n_1));
@@ -145,11 +138,7 @@ public:
 
                     //E_3 -> E_4
                     //Emulate reverse_iterator because of erase-operation
-                    for (list<graph_traits<Graph>::edge_iterator>::iterator e =
-                            E_3.begin();
-                         e != E_3.end();
-                         ++e) {
-
+                    for (auto e = E_3.begin();e != E_3.end();++e) {
                         if (source(**e, G_b) == *n_1 || target(**e, G_b) == *n_1) {
                             E_4.push_back(*e);
                             e = E_3.erase(e);
@@ -158,7 +147,7 @@ public:
                     }
                 }
 
-                V_c.erase(find(V_c.begin(), V_c.end(), v_c));
+                V_c.erase(std::ranges::find(V_c, v_c));
             }
         }
 
