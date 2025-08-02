@@ -6,62 +6,83 @@
 #include <iomanip>
 #include "../Graph/GraphDataType.hpp"
 #include "../Graph/ConvertGraph.hpp"
-#include "../Orderings/orderings.h"
 #include "../Graph/GraphOutput.hpp"
 #include "../Algorithms/algorithms.h"
 #include "../Graph/Sparsify.h"
 #include "../InputOutput/HandleInputOutput.h"
 #include "../Graph/MatrixMarket.hpp"
+#include <format>
+#include <boost/graph/sequential_vertex_coloring.hpp>
 
-//#include "../../Algorithms/exact_coloring.h"
 int main(int argc, char *argv[]) {
-//    auto [alg, ColoringOrdering, PreconditioningOrdering, Mode, Mode2, sparsify, BlockSize, EliminationParameter, MatrixFileName, Alpha]
-//         = GetInputParametersForApplication(argc, argv);
+    std::vector<InputParameters> allInputParams;
+    std::string output_file;
+    if (argc == 3 && std::string(argv[1]).find(".csv") != std::string::npos) {
+        allInputParams = GetInputParametersFromCSV(argv[1]);
+        output_file = argv[2];
+        std::string formatted_str = std::format("The program runs the algorithms on each row of the given csv file {} "
+                     "and writes the output table to {}.", argv[1], output_file);
+        std::cout << formatted_str << std::endl;
+    } else if (argc >= 10) {
+        CLIInputParameters cliParams = GetInputParametersForApplication(argc, argv);
+        InputParameters singleRun;
+        singleRun.algorithm = cliParams.matrixFilename;
+        singleRun.coloringAlgorithm = cliParams.algorithm;
+        singleRun.coloringOrder = cliParams.coloringOrder;
+        singleRun.sparsificationKind = StringToKindOfSparsify[cliParams.sparsify];
+        singleRun.blockSize = cliParams.blockSize;
+        singleRun.preconditioningOrder = cliParams.preconditioningOrder;
+        singleRun.eliminationLevel = cliParams.eliminationLevel;
+        singleRun.independentSetAlgorithm = argv[3];
+        singleRun.alpha = cliParams.alpha;
+        singleRun.mode = cliParams.mode;
+        singleRun.mode2 = cliParams.mode2;
+        allInputParams.push_back(std::move(singleRun));
+    } else {
+        allInputParams.push_back(GetInputParametersForApplication("Main/InputFile"));
+    }
 
-    auto [MatrixFileName, ColoringAlgorithm, ColoringOrder, SparsificationKind, BlockSize, PreconditioningOrder,
-    EliminationParameter, IndependentSetAlgorithm, AlphaForBalancedColoring, Mode, Mode2]
-    = GetInputParametersForApplication("Main/InputFile");
-
-    clock_t start, end;
-    start = clock();
-
-    //Initialize mm-object (matrixmarket)
-    MatrixMarket mm(MatrixFileName.c_str());
-    mysymmetric = mm.issym();
-
-    //Initialize graph-object (boost)
-    Graph G_b(2 * mm.nrows());
-    vector<unsigned int> V_r, V_c;
-    Graph G_ilu(mm.nrows());
-    //Add vertices to graph
-    ForEachVertex(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
-    //Add edges to graph
-    mm.MtxToBipGraph(G_b, 1);
-    Graph G_c;
-    BipartiteToColumnIntersectionGraph(G_b, V_c, G_c);
-
-//    graph2dot(GraphInstance);
-
-    //Initialize required pattern
-    //If edge e \in E_S then edge_property edge_weight=1 else
-    //edge_weight=0
-    int NumOfRemainedNonzeros = SparsifyBipartiteGraph(G_b, SparsificationKind, mm.nrows(), BlockSize, "");
-
-    ColoringOrder->OrderGivenVertexSubset(G_b, V_r, ColoringAlgorithm.find("Restricted") != string::npos);
-
-    int cols = getAlg(Mode2, ColoringAlgorithm, Mode, G_b, V_r, V_c, ColoringOrder, AlphaForBalancedColoring)->color();
-    end = clock();
-
-    ofstream OutputFile("OutputFile");
+    if (output_file.empty())
+        output_file = "OutputFile.csv";
+    std::ofstream OutputFile(output_file);
     write_csv_line(OutputFile, {"Matrix","NumOfRows","NumOfColumns","KindOfSparsification","BlockSize",
                                 "NumOfRemainedNonzeros", "NumOfColors","Time"});
-    write_csv_line(OutputFile, {MatrixFileName, std::to_string(mm.nrows()), std::to_string(mm.ncols()),
-                                KindOfSparsifyToString[SparsificationKind],
-                                std::to_string(BlockSize), std::to_string(NumOfRemainedNonzeros),
-                                std::to_string(cols),
-                                std::to_string((end - start) / double(CLOCKS_PER_SEC))});
+
+    for (const auto& params : allInputParams) {
+        MatrixMarket mm(params.algorithm.c_str());
+        mysymmetric = mm.issym();
+
+        Graph G_b(2 * mm.nrows());
+        std::vector<unsigned int> V_r, V_c;
+        Graph G_ilu(mm.nrows());
+
+        ForEachVertex(G_b, [&](const unsigned int vi) {
+            (vi < mm.nrows()) ? V_r.push_back(vi) : V_c.push_back(vi);
+        });
+
+        mm.MtxToBipGraph(G_b, 1);
+        // Graph G_c;
+        // BipartiteToColumnIntersectionGraph(G_b, V_c, G_c);
+
+        int NumOfRemainedNonzeros = SparsifyBipartiteGraph(G_b, params.sparsificationKind, mm.nrows(), params.blockSize, "");
+
+        params.coloringOrder->OrderGivenVertexSubset(G_b, V_r, params.coloringAlgorithm.find("Restricted") != std::string::npos);
+        clock_t start = clock();
+        int cols = getAlg(params.mode2, params.coloringAlgorithm, params.mode, G_b, V_r, V_c, params.alpha)->color();
+        clock_t end = clock();
+
+        write_csv_line(OutputFile, {
+            params.algorithm, std::to_string(mm.nrows()), std::to_string(mm.ncols()),
+            KindOfSparsifyToString[params.sparsificationKind],
+            std::to_string(params.blockSize), std::to_string(NumOfRemainedNonzeros),
+            std::to_string(cols), std::to_string((end - start) / double(CLOCKS_PER_SEC))
+        });
+    }
+    OutputFile.close();
+
+    std::string formatted_str = std::format("The program has with the code {} finished.", EXIT_SUCCESS);
+    std::cout << formatted_str << std::endl;
+
     return EXIT_SUCCESS;
 }
-
-
 

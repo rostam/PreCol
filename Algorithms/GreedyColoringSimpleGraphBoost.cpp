@@ -13,12 +13,17 @@
 int GreedyColoringSimpleGraphBoost::color() {
     Graph &g = GraphInstance;
     typedef graph_traits<Graph>::vertices_size_type vertices_size_type;
-    typedef property_map<Graph, boost::vertex_index_t>::const_type vertex_index_map;
     std::vector<vertices_size_type> color_vec(boost::num_vertices(g));
-    boost::iterator_property_map<vertices_size_type*, vertex_index_map> color(&color_vec.front(), get(boost::vertex_index, g));
-    auto num_colors = boost::sequential_vertex_coloring(g, color);
+    const boost::iterator_property_map color(&color_vec.front(), get(boost::vertex_index, g));
+    auto ordering = boost::copy_range<std::vector<Ver>>(boost::vertices(g));
+    std::ranges::sort(ordering, std::greater<>{},
+                          [&g](Ver v) { return degree(v, g); });
+    const auto index_map = get(boost::vertex_index, g);
+    const auto order_map = boost::make_safe_iterator_property_map(
+            ordering.begin(), ordering.size(), index_map);
+    const auto num_colors = boost::sequential_vertex_coloring(g, order_map, color);
     ForEachVertexConst(g, [&](Ver v) {
         boost::put(vertex_color, g, v, color[v]);
     });
-    return num_colors;
+    return static_cast<int>(num_colors);
 }

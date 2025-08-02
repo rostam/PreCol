@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
     BOOST_AUTO_TEST_CASE(ArrowShapedTest) {
         std::string alg = "D2Columns";
         std::string col_ord = "LargestFirstOrderingDegrees";
-        unique_ptr<Ordering> col_ord_c = GetColoringOrder(col_ord);
+        auto col_ord_c = GetColoringOrder(col_ord);
         std::string pre_ord = "NaturalOrdering";
         std::string filename = "ExampleMatrices/arrow-shaped.mtx";
         KindOfSparsify sparsify = Full;
@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         BOOST_CHECK_EQUAL(V_c.size(), 6);
         int entries_pattern = SparsifyBipartiteGraph(G_b, sparsify, mm.nrows(), blockSize, "");
         BOOST_CHECK_EQUAL(entries_pattern, 16);
-        shared_ptr<ColoringAlgorithms> ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
+        shared_ptr<ColoringAlgorithms> ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, alpha);
         int num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 6);
 
@@ -66,18 +66,18 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         BOOST_CHECK_EQUAL(num_of_colors, 4);
 
         alg = "D2RestrictedColumnsNonReq";
-        ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
+        ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, alpha);
         num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 4);
 
         alg = "D2RestrictedColumnsNonReqBalanced";
-        ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
+        ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, alpha);
         num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 4);
 
         alg = "D2Columns";
         sparsify = Diagonal;
-        ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
+        ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, alpha);
         entries_pattern = SparsifyBipartiteGraph(G_b, sparsify, mm.nrows(), blockSize, "");
         BOOST_CHECK_EQUAL(entries_pattern, 6);
         num_of_colors = ret->color();
@@ -88,7 +88,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         sparsify = Full;
         entries_pattern = SparsifyBipartiteGraph(G_b, sparsify, mm.nrows(), blockSize, "");
         BOOST_CHECK_EQUAL(entries_pattern, 16);
-        ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
+        ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, alpha);
         num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 2);
 
@@ -98,7 +98,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         blockSize = 3;
         entries_pattern = SparsifyBipartiteGraph(G_b, sparsify, mm.nrows(), blockSize, "");
         BOOST_CHECK_EQUAL(entries_pattern, 10);
-        ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
+        ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, alpha);
         num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 2);
 
@@ -112,17 +112,17 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         alg = "GreedyColoring";
         vector<unsigned int> order;
         ForEachVertex(G_CIG, [&](Ver v) { order.push_back(v); });
-        ret = getAlg(Mode2, alg, Mode, G_CIG, V_r, order, col_ord_c, alpha);
+        ret = getAlg(Mode2, alg, Mode, G_CIG, V_r, order, alpha);
         num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 6);
 
         alg = "GreedyColoringBoost";
-        ret = getAlg(Mode2, alg, Mode, G_CIG, V_r, V_c, col_ord_c, alpha);
+        ret = getAlg(Mode2, alg, Mode, G_CIG, V_r, V_c, alpha);
         num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 6);
 
         alg = "GreedyColoringLimitedMaxColor";
-        ret = getAlg(Mode2, alg, Mode, G_CIG, V_r, order, col_ord_c, alpha, 5);
+        ret = getAlg(Mode2, alg, Mode, G_CIG, V_r, order, alpha, 5);
         num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 5);
     }
@@ -130,7 +130,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
     BOOST_AUTO_TEST_CASE(ArrowShapedPlusOneTest) {
         std::string alg = "D2Columns";
         std::string col_ord = "LargestFirstOrderingDegrees";
-        unique_ptr<Ordering> col_ord_c = GetColoringOrder(col_ord);
+        auto col_ord_c = GetColoringOrder(col_ord);
         std::string pre_ord = "NaturalOrdering";
         std::string filename = "ExampleMatrices/arrow-shaped_plus_one.mtx";
         std::string custom_required_pattern = "ExampleMatrices/custom_required_pattern1";
@@ -151,7 +151,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         BOOST_CHECK_EQUAL(V_c.size(), 6);
         int entries_pattern = SparsifyBipartiteGraph(G_b, sparsify, mm.nrows(), blockSize, "");
         BOOST_CHECK_EQUAL(entries_pattern, 17);
-        shared_ptr<ColoringAlgorithms> ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
+        shared_ptr<ColoringAlgorithms> ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, alpha);
         int num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 6);
 
@@ -171,7 +171,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
     BOOST_AUTO_TEST_CASE(ArrowShapedPlusOneMinusOneTest) {
         std::string alg = "D2Columns";
         std::string col_ord = "LargestFirstOrderingDegrees";
-        unique_ptr<Ordering> col_ord_c = GetColoringOrder(col_ord);
+        auto col_ord_c = GetColoringOrder(col_ord);
         std::string pre_ord = "NaturalOrdering";
         std::string filename = "ExampleMatrices/arrow-shaped_plus_one_minus_one.mtx";
         KindOfSparsify sparsify = Full;
@@ -191,12 +191,12 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         BOOST_CHECK_EQUAL(V_c.size(), 6);
         int entries_pattern = SparsifyBipartiteGraph(G_b, sparsify, mm.nrows(), blockSize, "");
         BOOST_CHECK_EQUAL(entries_pattern, 16);
-        shared_ptr<ColoringAlgorithms> ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
+        shared_ptr<ColoringAlgorithms> ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, alpha);
         int num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 5);
 
         alg = "D2Rows";
-        ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
+        ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, alpha);
         num_of_colors = ret->color();
         BOOST_CHECK_EQUAL(num_of_colors, 6);
 
@@ -211,7 +211,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
     BOOST_AUTO_TEST_CASE(DifferentIndependentSet) {
         std::string alg = "D2Columns";
         std::string col_ord = "LargestFirstOrderingDegrees";
-        unique_ptr<Ordering> col_ord_c = GetColoringOrder(col_ord);
+        auto col_ord_c = GetColoringOrder(col_ord);
         std::string pre_ord = "NaturalOrdering";
         std::string filename = "ExampleMatrices/arrow-shaped.mtx";
         KindOfSparsify sparsify = Full;
@@ -223,7 +223,7 @@ BOOST_AUTO_TEST_SUITE(ColoringTestSuite)
         vector<unsigned int> V_r, V_c;
         ForEachVertex(G_b, [&](const unsigned int vi) { vi < mm.nrows() ? V_r.push_back(vi) : V_c.push_back(vi); });
         int entries_pattern = SparsifyBipartiteGraph(G_b, sparsify, mm.nrows(), blockSize, "");
-        shared_ptr<ColoringAlgorithms> ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, col_ord_c, alpha);
+        shared_ptr<ColoringAlgorithms> ret = getAlg(Mode2, alg, Mode, G_b, V_r, V_c, alpha);
         int num_of_colors = ret->color();
 
         mm.MtxToBipGraph(G_b, 1);

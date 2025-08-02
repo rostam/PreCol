@@ -31,5 +31,5 @@ static std::map<std::string, KindOfSparsify> StringToKindOfSparsify = {
  * @param custom File name for reading the custom sparsification
  * @return Number of remaining nonzero elements
  */
-int SparsifyBipartiteGraph(Graph& G_b, KindOfSparsify sparsify, int nrows, int blockSize, std::string custom);
+int SparsifyBipartiteGraph(Graph& G_b, KindOfSparsify sparsify, unsigned int nrows, int blockSize, std::string custom);
 #endif //PRECOL_SPARSIFY_H

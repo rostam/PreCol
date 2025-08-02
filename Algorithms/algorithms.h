@@ -36,21 +36,22 @@ static vector<string> algs = {"D2Columns", "D2Rows", "GreedyColoring","GreedyCol
  * @param G_b the input bipartite graph
  * @param V_r the row vertices
  * @param V_c the column vertices
- * @param order the ordering of vertices for coloring
+ * @param alpha
+ * @param MaxColor
  * @return
  */
-static shared_ptr<ColoringAlgorithms> getAlg(int Mode2, const string &alg,
-                                             int Mode, Graph &G_b, vector<unsigned int> &V_r,
-                                             vector<unsigned int> &V_c,
-                                             unique_ptr<Ordering>& order, int alpha, int MaxColor = 0) {
+static shared_ptr<ColoringAlgorithms> getAlg(int Mode2, const string& alg,
+                                             int Mode, Graph& G_b, vector<unsigned int>& V_r,
+                                             vector<unsigned int>& V_c,
+                                             int alpha, int MaxColor = 0) {
     if (alg == "D2Columns") {
-        return shared_ptr<ColoringAlgorithms>(new OneSidedD2Coloring(G_b, V_c, false));
+        return std::make_shared<OneSidedD2Coloring>(G_b, V_c, false);
     } else if (alg == "D2Rows") {
-        return shared_ptr<ColoringAlgorithms>(new OneSidedD2Coloring(G_b, V_r, false));
+        return std::make_shared<OneSidedD2Coloring>(G_b, V_r, false);
     } else if (alg == "D2RestrictedColumns") {
-        return shared_ptr<ColoringAlgorithms>(new OneSidedD2Coloring(G_b, V_c, true));
+        return std::make_shared<OneSidedD2Coloring>(G_b, V_c, true);
     } else if (alg == "D2RestrictedRows") {
-        return shared_ptr<ColoringAlgorithms>(new OneSidedD2Coloring(G_b, V_r, true));
+        return std::make_shared<OneSidedD2Coloring>(G_b, V_r, true);
     } else if (alg == "D2RestrictedColumnsNonReq") {
         return shared_ptr<ColoringAlgorithms>(new OneSidedD2ColoringNonReq(G_b, V_c, true, {{"alpha", alpha}}));
     } else if (alg == "D2RestrictedColumnsNonReqBalanced") {
@@ -67,9 +68,9 @@ static shared_ptr<ColoringAlgorithms> getAlg(int Mode2, const string &alg,
         return shared_ptr<ColoringAlgorithms>(new StarBicoloringVertexCoverNonReq(G_b, V_r, V_c, true,
                                                                                   {{"Mode", Mode},{"Mode2",Mode2},{"alpha",alpha}}));
     } else if (alg == "GreedyColoringBoost") {
-        return shared_ptr<ColoringAlgorithms>(new GreedyColoringSimpleGraphBoost(G_b));
+        return std::make_shared<GreedyColoringSimpleGraphBoost>(G_b);
     } else if (alg == "GreedyColoring") {
-        return shared_ptr<ColoringAlgorithms>(new GreedyColoringSimpleGraph(G_b, V_c));
+        return std::make_shared<GreedyColoringSimpleGraph>(G_b, V_c);
     } else if (alg == "GreedyColoringLimitedMaxColor") {
         return shared_ptr<ColoringAlgorithms>(new GreedyColoringLimitedMaxColor(G_b, V_c, false, {{"MaxColor", MaxColor}}));
     } else {

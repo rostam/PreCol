@@ -43,6 +43,7 @@ protected:
      */
     std::tuple<int, std::vector<int>> TupleNumOfColorAndColors();
 public:
+    virtual ~ColoringAlgorithms() = default;
     explicit ColoringAlgorithms(Graph &G_b) : GraphInstance(G_b) { SetAllColorsTo(0);};
 
     ColoringAlgorithms(Graph &G_b, vector<unsigned int> &V, bool restricted = false, map<string, any>&& pars = {})
@@ -89,11 +90,11 @@ public:
      *
      * @return Number of colors
      */
-    int NumOfColors() {
+    [[nodiscard]] int NumOfColors() const
+    {
         int max_color = 0;
-        ForEachVertex(GraphInstance, [&](Ver v) {
-            int color = get(vertex_color, GraphInstance, v);
-            if (max_color < color)
+        ForEachVertex(GraphInstance, [&](const Ver& v) {
+            if (const int color = get(vertex_color, GraphInstance, v); max_color < color)
                 max_color = color;
         });
         return max_color;
@@ -104,7 +105,8 @@ public:
      *
      * @param value the given value
      */
-    void SetAllColorsTo(int value) {
+    void SetAllColorsTo(const int value) const
+    {
         ForEachVertexConst(GraphInstance, [&](Ver v) {
             boost::put(vertex_color, GraphInstance, v, value);
         });

@@ -166,10 +166,10 @@ public:
                                     }
                                 }
                             }
-                            //Find first color which can be assigned to v_c
-                            vector<int>::iterator color_v_it = find_if(forbiddenColors.begin(),
+                            //Find the first color which can be assigned to v_c
+                            std::vector<int>::iterator color_v_it = find_if(forbiddenColors.begin(),
                                                                        forbiddenColors.end(),
-                                                                       bind1st(not_equal_to<int>(), *v)
+                                                                       bind(not_equal_to<int>(), *v, std::placeholders::_1)
                             );
                             SetVertexColor(GraphInstance, *v, distance(forbiddenColors.begin(), color_v_it));
 //                            put(color, *v, distance(forbiddenColors.begin(), color_v_it));
@@ -233,7 +233,7 @@ public:
                         //Find first color which can be assigned to v_c
                         vector<int>::iterator color_v_it = find_if(forbiddenColors.begin(),
                                                                    forbiddenColors.end(),
-                                                                   bind1st(not_equal_to<int>(), *v)
+                                                                   bind(not_equal_to<int>(), *v, std::placeholders::_1)
                         );
                         SetVertexColor(GraphInstance, *v, distance(forbiddenColors.begin(),color_v_it));
 //                        put(color,*v,distance(forbiddenColors.begin(),color_v_it));
@@ -503,7 +503,7 @@ public:
                         //Find first color which can be assigned to v_c
                         vector<int>::iterator color_v_it = find_if(forbiddenColors.begin(),
                                                                    forbiddenColors.end(),
-                                                                   bind1st(not_equal_to<int>(), *v)
+                                                                   bind(not_equal_to<int>(), *v, std::placeholders::_1)
                         );
                         SetVertexColor(GraphInstance, *v, distance(forbiddenColors.begin(), color_v_it));
 //                        put(color, *v, distance(forbiddenColors.begin(), color_v_it));
@@ -591,7 +591,7 @@ public:
                         //Find first color which can be assigned to v_c
                         vector<int>::iterator color_v_it = find_if(forbiddenColors.begin(),
                                                                    forbiddenColors.end(),
-                                                                   bind1st(not_equal_to<int>(), *v)
+                                                                   bind(not_equal_to<int>(), *v, std::placeholders::_1)
                         );
                         SetVertexColor(GraphInstance, *v, distance(forbiddenColors.begin(), color_v_it));
 //                        put(color, *v, distance(forbiddenColors.begin(), color_v_it));

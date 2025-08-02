@@ -12,6 +12,7 @@
 std::tuple<int, std::vector<int>> ColoringAlgorithms::TupleNumOfColorAndColors() {
     std::vector<int> colors;
     std::set<int> unique_colors;
+
     ForEachVertex(GraphInstance, [&](int v) {
         colors.push_back(get(vertex_color, GraphInstance, v));
         int the_color = get(vertex_color, GraphInstance, v) - 1;

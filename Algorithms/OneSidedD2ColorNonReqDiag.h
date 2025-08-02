@@ -48,7 +48,7 @@ public:
 
                 //Find the first color which can be assigned to v
                 auto result = find_if(forbiddenColors.begin(), forbiddenColors.end(),
-                                                                bind1st(not_equal_to<int>(), v));
+                                                                bind(not_equal_to<int>(), v, std::placeholders::_1));
 
                 int col1 = distance(forbiddenColors.begin(), result);
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -66,7 +66,7 @@ public:
 
                 //Find first color which can be assigned to v
                 result = find_if(forbiddenColors.begin(), forbiddenColors.end(),
-                                 bind1st(not_equal_to<int>(), v));
+                                 bind(not_equal_to<int>(), v, std::placeholders::_1));
 
 
                 int col2 = distance(forbiddenColors.begin(), result);

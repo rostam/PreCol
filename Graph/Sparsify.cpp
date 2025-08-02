@@ -15,7 +15,7 @@
  * @param custom File name for reading the custom sparsification
  * @return Number of remaining nonzero elements
  */
-int SparsifyBipartiteGraph(Graph& G_b, KindOfSparsify sparsify, int nrows, int blockSize, std::string custom) {
+int SparsifyBipartiteGraph(Graph& G_b, KindOfSparsify sparsify, unsigned int nrows, int blockSize, std::string custom) {
     property_map<Graph, edge_weight_t>::type weight = get(edge_weight, G_b);
     property_map<Graph, edge_name_t>::type name = get(edge_name, G_b);
 

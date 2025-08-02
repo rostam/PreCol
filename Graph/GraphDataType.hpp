@@ -273,19 +273,19 @@ namespace PreCol {
         }
     }
 
-    static inline int NumOfVertices(const Graph& g) {
+    static int NumOfVertices(const Graph& g) {
         return boost::num_vertices(g);
     }
 
-    static inline int NumOfEdges(const Graph& g) {
+    static int NumOfEdges(const Graph& g) {
         return boost::num_edges(g);
     }
 
-    static inline void SetVertexColor(Graph& g, Ver v, int color) {
+    static void SetVertexColor(Graph& g, const Ver& v, const unsigned int color) {
         boost::put(vertex_color, g, v, color);
     }
 
-    static inline int GetVertexColor(Graph& g, Ver v, int color) {
+    static int GetVertexColor(Graph& g, Ver v, int color) {
         return boost::get(vertex_color, g, v);
     }
 }

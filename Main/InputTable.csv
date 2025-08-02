@@ -1,0 +1,3 @@
+Matrix,COLORING_ALGORITHM,COLORING_ORDERING,KIND_OF_SPARSIFICATION,BLOCK_SIZE,INDEPENDENT_SET_ALGORITHM,ALPHA_FOR_BALANCED_COLORING,RHO_FOR_INDEPENDENT_SET_ALGORITHM
+ExampleMatrices/FloridaSparseMatrixCollection/ex33.mtx,D2RestrictedColumns,LargestFirstOrderingDegrees,BlockDiagonal,30,BEST,1,1
+ExampleMatrices/FloridaSparseMatrixCollection/ex33.mtx,D2RestrictedColumns,LargestFirstOrderingDegrees,BlockDiagonal,40,BEST,1,1
