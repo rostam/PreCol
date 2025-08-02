@@ -14,13 +14,14 @@
  * A specific preordering for the coloring
  */
 class SLO : public Ordering {
-    bool OrderGivenVertexSubset(const Graph &G_b, vector<unsigned int> &V, bool restricted) {
+    bool OrderGivenVertexSubset(const Graph &G_b, vector<unsigned int> &V, bool restricted) override
+    {
         if (restricted) return order_restricted(G_b, V);
         vector<pair<int, int> > VertexDegree;
         vector<unsigned int> Ordering;
 
         //Compute Distance2Neighbors-degree for all vertices in v
-        for (vector<unsigned int>::iterator v = V.begin(); v != V.end(); ++v) {
+        for (auto v = V.begin(); v != V.end(); ++v) {
             VertexDegree.push_back(make_pair(*v, neighbors::Distance2NeighborsRestricted(G_b, *v).size()));
         }
 
@@ -28,25 +29,21 @@ class SLO : public Ordering {
         for (unsigned int i = 0; i < V.size(); ++i) {
 
             //find vertex with lowest Distance2Neighbors-degree
-            vector<pair<int, int> >::iterator v =
-                    min_element(VertexDegree.begin(), VertexDegree.end(), lt_degree);
+            auto v = std::ranges::min_element(VertexDegree, lt_degree);
 
             //    int minElement = (*v).first;
 
-            (*v).second = NumOfEdges(G_b);
+            v->second = NumOfEdges(G_b);
 
             //Add vertex to Ordering
-            //    Ordering.insert(Ordering.begin(),(*v).first); ->
+            //    .insert(Ordering.begin(),(*v).first); ->
             Ordering.push_back((*v).first);
 
             //    VertexDegree.erase(minPair);
 
             //decrement degree of D_2-neighbors
             vector<unsigned int> neighbors = neighbors::Distance2NeighborsRestricted(G_b, (*v).first);
-            for (vector<unsigned int>::iterator n_2 = neighbors.begin();
-                 n_2 != neighbors.end();
-                 ++n_2) {
-
+            for (auto n_2 = neighbors.begin();n_2 != neighbors.end();++n_2) {
                 //Get the correct element of Degrees for n_2
                 if (*n_2 >= V.size()) {
                     if (VertexDegree[*n_2 - V.size()].second != -1) {
@@ -59,9 +56,6 @@ class SLO : public Ordering {
                 }
             }
 
-            if (i % 100 == 0) {
-//                cout << "i= " << i << endl;
-            }
 
 //     vector<unsigned int> neighbors = neighbors::Distance2Neighbors(GraphInstance, (*v).first);
 //     for (list<pair<unsigned int,unsigned int> >::iterator i = VertexDegree.begin();
@@ -74,7 +68,7 @@ class SLO : public Ordering {
 //     }
         }
 
-        reverse(Ordering.begin(), Ordering.end());
+        std::ranges::reverse(Ordering);
         V = Ordering;
 
         return EXIT_SUCCESS;
@@ -85,18 +79,16 @@ class SLO : public Ordering {
         vector<unsigned int> Ordering;
 
         //Compute Distance2Neighbors-degree for all vertices in v
-        for (vector<unsigned int>::iterator v = V.begin(); v != V.end(); ++v) {
-
+        for (auto v = V.begin(); v != V.end(); ++v) {
             VertexDegree.push_back(pair<int, int>(*v, neighbors::Distance2NeighborsRestricted(G_b, *v).size()));
         }
 
         while (!VertexDegree.empty()) {
 
             //find vertex with lowest Distance2Neighbors-degree
-            list<pair<unsigned int, unsigned int> >::iterator minPair =
-                    min_element(VertexDegree.begin(), VertexDegree.end(), lt_degree);
+            auto minPair = std::ranges::min_element(VertexDegree, lt_degree);
 
-            int minElement = (*minPair).first;
+            const int minElement = minPair->first;
 
             //Add vertex to Ordering
             Ordering.insert(Ordering.begin(), minElement);
@@ -104,12 +96,10 @@ class SLO : public Ordering {
 
             //decrement degree of D_2-neighbors
             vector<unsigned int> neighbors = neighbors::Distance2NeighborsRestricted(G_b, minElement);
-            for (list<pair<unsigned int, unsigned int> >::iterator i = VertexDegree.begin();
+            for (auto i = VertexDegree.begin();
                  i != VertexDegree.end(); ++i) {
-
-                vector<unsigned int>::iterator n_2 = find(neighbors.begin(), neighbors.end(), (*i).first);
-                if (n_2 != neighbors.end()) {
-                    (*i).second--;
+                if (auto n_2 = std::ranges::find(neighbors, (*i).first); n_2 != neighbors.end()) {
+                    i->second--;
                 }
             }
         }

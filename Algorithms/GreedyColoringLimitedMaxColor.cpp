@@ -23,7 +23,7 @@ int GreedyColoringLimitedMaxColor::color() {
     for (int v : order) {
         std::vector<unsigned int> forbiddenColors(boost::num_vertices(GraphInstance), -1);
         forbiddenColors[0] = v;
-        ForEachNeighbor(GraphInstance, v, [&](int n) {
+        ForEachNeighbor(GraphInstance, v, [&](const int n) {
             int c = boost::get(vertex_color, GraphInstance, n);
             if (c > 0)forbiddenColors[c] = v;
         });

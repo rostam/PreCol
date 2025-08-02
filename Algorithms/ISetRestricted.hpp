@@ -9,13 +9,13 @@ class ISetRestricted : public IndependentSet{
 public:
 	using IndependentSet::IndependentSet;
 
-    vector<int> compute() {
+    vector<int> compute() override
+    {
         vector<int> IS;
         list <graph_traits<Graph>::edge_iterator> E_1;
         list <graph_traits<Graph>::edge_iterator> E_2;
         list <graph_traits<Graph>::edge_iterator> E_3;
         list <graph_traits<Graph>::edge_iterator> E_4;
-        int NumVertices_V_r = V_r.size();
         int NumVertices = V_r.size() + V_c.size();
         double rho = mode / 2;
         if (rho == 0) rho = 1.5;
@@ -87,20 +87,16 @@ public:
 
                 //Get distance-1 neighbors
                 graph_traits<Graph>::adjacency_iterator n_1, n_1_end;
-                for (tie(n_1, n_1_end) = adjacent_vertices(v_r, G_b); n_1 != n_1_end; n_1++) {
+                for (tie(n_1, n_1_end) = adjacent_vertices(v_r, G_b); n_1 != n_1_end; ++n_1) {
 
                     bool is_deleted = false;
 
                     //E_1 -> E_3
                     //Emulate reverse_iterator because of erase-operation
-                    for (list<graph_traits<Graph>::edge_iterator>::iterator e = E_1.begin();
-                         e != E_1.end();
-                         ++e) {
-
+                    for (auto e = E_1.begin();e != E_1.end();++e) {
                         if (source(**e, G_b) == *n_1 || target(**e, G_b) == *n_1) {
-
                             if (!is_deleted) {
-                                V_c.erase(find(V_c.begin(), V_c.end(), *n_1));
+                                V_c.erase(std::ranges::find(V_c, *n_1));
                                 is_deleted = true;
                             }
 
@@ -112,9 +108,7 @@ public:
 
                     //E_2 -> E_4
                     //Emulate reverse_iterator because of erase-operation
-                    for (list<graph_traits<Graph>::edge_iterator>::iterator e = E_2.begin();
-                         e != E_2.end();
-                         ++e) {
+                    for (auto e = E_2.begin();e != E_2.end();++e) {
 
                         if (source(**e, G_b) == *n_1 || target(**e, G_b) == *n_1) {
                             E_4.push_back(*e);
@@ -123,7 +117,7 @@ public:
                         }
                     }
                 }
-                V_r.erase(find(V_r.begin(), V_r.end(), v_r));
+                V_r.erase(std::ranges::find(V_r, v_r));
 
             } else {
 
@@ -131,10 +125,8 @@ public:
 
                 //Get distance-1 neighbors
                 graph_traits<Graph>::adjacency_iterator n_1, n_1_end;
-                for (tie(n_1, n_1_end) = adjacent_vertices(v_c, G_b); n_1 != n_1_end; n_1++) {
-
+                for (tie(n_1, n_1_end) = adjacent_vertices(v_c, G_b); n_1 != n_1_end; ++n_1) {
                     bool is_deleted = false;
-
                     //E_1 -> E_2
                     //Emulate reverse_iterator because of erase-operation
                     for (auto e = E_1.begin();e != E_1.end();++e) {
@@ -143,7 +135,7 @@ public:
 
                             //Delete adjacent vertices
                             if (!is_deleted) {
-                                V_r.erase(find(V_r.begin(), V_r.end(), *n_1));
+                                V_r.erase(std::ranges::find(V_r, *n_1));
                                 is_deleted = true;
                             }
 
@@ -155,10 +147,7 @@ public:
 
                     //E_3 -> E_4
                     //Emulate reverse_iterator because of erase-operation
-                    for (list<graph_traits<Graph>::edge_iterator>::iterator e = E_3.begin();
-                         e != E_3.end();
-                         ++e) {
-
+                    for (auto e = E_3.begin();e != E_3.end();++e) {
                         if (source(**e, G_b) == *n_1 || target(**e, G_b) == *n_1) {
                             E_4.push_back(*e);
                             e = E_3.erase(e);
@@ -167,18 +156,18 @@ public:
                     }
                 }
 
-                V_c.erase(find(V_c.begin(), V_c.end(), v_c));
+                V_c.erase(std::ranges::find(V_c, v_c));
             }
         }
 
         if (!V_r.empty()) {
-            for (vector<unsigned int>::iterator v_r = V_r.begin(); v_r != V_r.end(); ++v_r) {
+            for (auto v_r = V_r.begin(); v_r != V_r.end(); ++v_r) {
                 IS.push_back(*v_r);
             }
         }
 
         if (!V_c.empty()) {
-            for (vector<unsigned int>::iterator v_c = V_c.begin(); v_c != V_c.end(); ++v_c) {
+            for (auto v_c = V_c.begin(); v_c != V_c.end(); ++v_c) {
                 IS.push_back(*v_c);
             }
         }

@@ -18,7 +18,7 @@ MATRIX = ExampleMatrices/FloridaSparseMatrixCollection/ex33.mtx
 COLORING_ALGORITHM = D2RestrictedColumns
 COLORING_ORDERING = LargestFirstOrderingDegrees
 
-### SPARSIFIFCATION
+### SPECIFICATION
 KIND_OF_SPARSIFICATION = BlockDiagonal
 BLOCK_SIZE = 30
 

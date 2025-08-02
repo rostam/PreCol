@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <set>
 #include <algorithm>
@@ -38,14 +39,13 @@ static void gen_ind_set(Graph g,Lambda func) {
 
 static int alpha(dynbit X, set<dynbit> F) {
     int cnt = 0;
-    for_each(F.begin(),F.end(),[&X,&cnt](dynbit db) {
-        dynbit tmp = db & X;
-        if(tmp.none()) cnt++;
+    ranges::for_each(F,[&X,&cnt](const dynbit& db) {
+        if(const dynbit tmp = db & X; tmp.none()) cnt++;
     });
     return cnt;
 }
 
-//F is actually the all independent set
+//F is actually the all-independent set
 static int c_k(set<dynbit> F, Graph g, int k) {
     int cnt = 0;
     power_set(NumOfVertices(g), [&](dynbit vi) {

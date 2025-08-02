@@ -17,16 +17,15 @@ bool step(const Graph& G_c,
           vector<unsigned int>& prev_vertices,
           int level) {
 
-    graph_traits<Graph>::adjacency_iterator ai, ai_ptr, ai_lt_vtx, ai_end;
+    graph_traits<Graph>::adjacency_iterator ai, ai_end;
     tie(ai, ai_end) = adjacent_vertices(Vertex, G_c);
-    ai_lt_vtx = ai;
-    for (vector<unsigned int>::iterator pv = prev_vertices.begin();
+    graph_traits<Graph>::adjacency_iterator ai_lt_vtx = ai;
+    for (auto pv = prev_vertices.begin();
          pv != prev_vertices.end();
          ++pv) {
 
-        bool exists = 0;
-
-        for (ai_ptr = ai; ai_ptr != ai_end; ++ai_ptr) {
+        bool exists = false;
+        for (graph_traits<Graph>::adjacency_iterator ai_ptr = ai; ai_ptr != ai_end; ++ai_ptr) {
 
             // all adjacent vertices are ordered ascending
             // for next step we need only larger vertices than Vertex
@@ -40,9 +39,7 @@ bool step(const Graph& G_c,
             }
         }
         if (!exists) {
-//       copy(prev_vertices.begin(), prev_vertices.end(),ostream_iterator<int>(cout, " "));
-//       cout << " " << Vertex << endl;
-            return 0;
+            return false;
         }
     }
     if (level == 1) {

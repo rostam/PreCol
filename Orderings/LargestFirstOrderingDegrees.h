@@ -15,10 +15,11 @@
  * A specific preordering for the coloring
  */
 class LargestFirstOrderingDegrees : public Ordering {
-    bool OrderGivenVertexSubset(const Graph &G_b, vector<unsigned int> &V, bool restricted) {
+    bool OrderGivenVertexSubset(const Graph &G_b, vector<unsigned int> &V, bool restricted) override
+    {
         list<pair<int, int>> VertexDegree;
         //Compute Distance2Neighbors-degree for all vertices in V
-        for (vector<unsigned int>::iterator v = V.begin(); v != V.end(); ++v) {
+        for (auto v = V.begin(); v != V.end(); ++v) {
                 VertexDegree.push_back(pair<int, int>(*v, neighbors::Distance2NeighborsRestricted(G_b, *v).size()));
         }
         //Sort after degree
