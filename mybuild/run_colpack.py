@@ -3,7 +3,7 @@ import subprocess
 import re
 
 input_csv = "input.csv"
-output_csv = "output.csv"
+output_csv = "Output/output_colpack.csv"
 colpack_executable = "./ColPack"
 
 # Mapping CSV values to command-line options
@@ -40,7 +40,7 @@ def parse_colpack_output(output_text):
 # Open output CSV
 with open(output_csv, mode='w', newline='') as out_csv:
     writer = csv.writer(out_csv)
-    writer.writerow(["Matrix", "ExitCode", "Ordering", "Method", "ColoringTime", "NumberOfColors"])
+    writer.writerow(["Matrix", "ExitCode", "Ordering", "Method", "ColoringTimeColpack", "NumberOfColors"])
 
     # Read input CSV
     with open(input_csv, mode='r') as in_csv:
