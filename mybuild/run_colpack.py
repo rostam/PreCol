@@ -6,6 +6,7 @@ input_csv = "input.csv"
 output_csv = "Output/output_colpack.csv"
 colpack_executable = "./ColPack"
 
+
 # Mapping CSV values to command-line options
 ordering_map = {
     "LargestFirstOrderingDegrees": "LARGEST_FIRST",
