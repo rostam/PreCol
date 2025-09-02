@@ -326,9 +326,11 @@ namespace PreCol {
 
         std::vector<std::vector<unsigned int>> adj;
         std::vector<std::vector<int>> weights;
+        std::vector<int> vertexColors;   // <- store colors directly
 
         explicit GraphWrapper(const Graph& g) : G(g) {
             build_fast_view();
+            vertexColors.assign(NumOfVertices(G), 0);
         }
 
         void build_fast_view() {
@@ -350,7 +352,26 @@ namespace PreCol {
                 }
             }
         }
+
+        void setColor(const unsigned int v, const int c) {
+            vertexColors[v] = c;
+        }
+
+        int getColor(const unsigned int v) const {
+            return vertexColors[v];
+        }
+
+        int NumberOfColors() const {
+            int max_color = 0;
+
+            for (int i = 0; i < vertexColors.size(); ++i)
+            {
+                max_color = std::max(max_color, vertexColors[i]);
+            }
+            return max_color + 1;
+        }
     };
+
 
 }
 

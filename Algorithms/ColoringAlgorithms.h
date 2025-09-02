@@ -93,7 +93,7 @@ public:
     }
 
     /**
-     * \brief Compute number of colors based on the vertex parameter
+     * \brief Compute the number of colors based on the vertex parameter
      *
      * @return Number of colors
      */
