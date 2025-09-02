@@ -13,6 +13,7 @@
 #include "../Graph/MatrixMarket.hpp"
 #include <format>
 #include <boost/graph/sequential_vertex_coloring.hpp>
+#include <chrono>
 
 int main(int argc, char *argv[]) {
     std::vector<InputParameters> allInputParams;
@@ -48,39 +49,71 @@ int main(int argc, char *argv[]) {
     write_csv_line(OutputFile, {"Matrix","NumOfRows","NumOfColumns","KindOfSparsification","BlockSize",
                                 "NumOfRemainedNonzeros", "NumOfColors","Time"});
 
-    for (const auto& params : allInputParams) {
-        MatrixMarket mm(params.algorithm.c_str());
-        mysymmetric = mm.issym();
 
-        Graph G_b(2 * mm.nrows());
-        std::vector<unsigned int> V_r, V_c;
-        Graph G_ilu(mm.nrows());
+for (const auto& params : allInputParams) {
+    std::cout << "Running " << params.algorithm << std::endl;
+    auto start_total = std::chrono::high_resolution_clock::now();
+    // --- 1. Time the file reading and graph creation ---
+    auto start_io = std::chrono::high_resolution_clock::now();
+    MatrixMarket mm(params.algorithm.c_str());
+    Graph G_b(mm.nrows() + mm.ncols());
+    std::vector<unsigned int> V_r, V_c;
+    ForEachVertex(G_b, [&](const unsigned int vi) {
+        if (vi < mm.nrows())
+            V_r.push_back(vi);
+        else
+            V_c.push_back(vi);
+    });
+    mm.MtxToBipGraph(G_b, 1);
+    auto end_io = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> io_duration = end_io - start_io;
 
-        ForEachVertex(G_b, [&](const unsigned int vi) {
-            (vi < mm.nrows()) ? V_r.push_back(vi) : V_c.push_back(vi);
-        });
+    // --- 2. Time the sparsification ---
+    auto start_sparsify = std::chrono::high_resolution_clock::now();
+    int NumOfRemainedNonzeros = SparsifyBipartiteGraph(G_b, params.sparsificationKind, mm.nrows(), params.blockSize, "");
+    auto end_sparsify = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> sparsify_duration = end_sparsify - start_sparsify;
 
-        mm.MtxToBipGraph(G_b, 1);
-        // Graph G_c;
-        // BipartiteToColumnIntersectionGraph(G_b, V_c, G_c);
+    // --- 3. Time the ordering ---
+    auto start_order = std::chrono::high_resolution_clock::now();
+    params.coloringOrder->OrderGivenVertexSubset(G_b, V_r, params.coloringAlgorithm.find("Restricted") != std::string::npos);
+    auto end_order = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> order_duration = end_order - start_order;
+    auto alg = getAlg(params.mode2, params.coloringAlgorithm, params.mode, G_b, V_r, V_c, params.alpha);
+    // --- 4. Time the main coloring algorithm ---
+    auto start_color = std::chrono::high_resolution_clock::now();
+    int cols = alg->color();
+    auto end_color = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> color_duration = end_color - start_color;
 
-        int NumOfRemainedNonzeros = SparsifyBipartiteGraph(G_b, params.sparsificationKind, mm.nrows(), params.blockSize, "");
+    auto end_total = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> total_duration = end_total - start_total;
 
-        params.coloringOrder->OrderGivenVertexSubset(G_b, V_r, params.coloringAlgorithm.find("Restricted") != std::string::npos);
+    // std::cout << "--- Timings for " << params.algorithm << " ---" << std::endl;
+    // std::cout << "File I/O & Graph Creation: " << io_duration.count() << " s" << std::endl;
+    // std::cout << "Sparsification:            " << sparsify_duration.count() << " s" << std::endl;
+    // std::cout << "Ordering:                  " << order_duration.count() << " s" << std::endl;
+    // std::cout << "Coloring Algorithm:        " << color_duration.count() << " s" << std::endl;
+    // std::cout << "------------------------------------------" << std::endl;
 
-        auto alg = getAlg(params.mode2, params.coloringAlgorithm, params.mode, G_b, V_r, V_c, params.alpha);
-        clock_t start = clock();
-        int cols = alg->color();
-        clock_t end = clock();
+    write_csv_line(OutputFile, {
+        params.algorithm, std::to_string(mm.nrows()), std::to_string(mm.ncols()),
+        KindOfSparsifyToString[params.sparsificationKind],
+        std::to_string(params.blockSize), std::to_string(NumOfRemainedNonzeros),
+        std::to_string(cols),
+        std::to_string(color_duration.count())
+    });
 
-        write_csv_line(OutputFile, {
-            params.algorithm, std::to_string(mm.nrows()), std::to_string(mm.ncols()),
-            KindOfSparsifyToString[params.sparsificationKind],
-            std::to_string(params.blockSize), std::to_string(NumOfRemainedNonzeros),
-            std::to_string(cols), std::to_string((end - start) / double(CLOCKS_PER_SEC))
-        });
-    }
+    // std::string where = "/home/rostam/kara/PreCol/mybuild/colors_out/" + params.algorithm + "colors";
+    // std:: cout << "Writing colors to " << where << std::endl;
+    // std::cout << V_c.size();
+    // std::ofstream colors_out(where);
+    // colors_out << GetVertexColorsForColumnsAsText(G_b, V_c,'-');
+    // colors_out << std::endl;
+    // colors_out.close();
+}
     OutputFile.close();
+
 
     std::string formatted_str = std::format("The program has with the code {} finished.", EXIT_SUCCESS);
     std::cout << formatted_str << std::endl;

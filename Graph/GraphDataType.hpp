@@ -288,6 +288,70 @@ namespace PreCol {
     static int GetVertexColor(Graph& g, Ver v, int color) {
         return boost::get(vertex_color, g, v);
     }
+
+    /**
+     * \brief Get a list of colors assigned to vertices
+     *
+     * @param g The given graph
+     * @return std::vector<int> containing vertex colors
+     */
+    static std::vector<int> GetVertexColors(const Graph& g) {
+        std::vector<int> colors;
+        colors.reserve(num_vertices(g));
+
+        ForEachVertexConst(g, [&](Ver v) {
+            colors.push_back(boost::get(vertex_color, g, v));
+        });
+
+        return colors;
+    }
+
+    /**
+     * \brief Get a list of colors assigned to vertices
+     *
+     * @param g The given graph
+     * @param V_c
+     * @param separator
+     * @return std::vector<int> containing vertex colors
+     */
+    static string GetVertexColorsForColumnsAsText(const Graph& g, const std::vector<unsigned int>& V_c, const char separator)
+    {
+        string ret;
+        for (auto v : V_c) ret += std::to_string(boost::get(vertex_color, g, v)) + separator;
+        return ret;
+    }
+
+    struct GraphWrapper {
+        Graph G;
+
+        std::vector<std::vector<unsigned int>> adj;
+        std::vector<std::vector<int>> weights;
+
+        explicit GraphWrapper(const Graph& g) : G(g) {
+            build_fast_view();
+        }
+
+        void build_fast_view() {
+            const unsigned int n = NumOfVertices(G);
+            adj.assign(n, {});
+            weights.assign(n, {});
+
+            const auto weightmap = get(boost::edge_weight, G);
+
+            for (unsigned int v = 0; v < n; ++v) {
+                auto [nb_begin, nb_end] = adjacent_vertices(v, G);
+                for (auto it = nb_begin; it != nb_end; ++it) {
+                    unsigned int u = *it;
+                    auto [e, ok] = edge(v, u, G);
+                    if (ok) {
+                        adj[v].push_back(u);
+                        weights[v].push_back(get(weightmap, e));
+                    }
+                }
+            }
+        }
+    };
+
 }
 
 using namespace PreCol;

@@ -42,7 +42,7 @@ class SLO : public Ordering {
             //    VertexDegree.erase(minPair);
 
             //decrement degree of D_2-neighbors
-            vector<unsigned int> neighbors = neighbors::Distance2NeighborsRestricted(G_b, (*v).first);
+            auto neighbors = neighbors::Distance2NeighborsRestricted(G_b, (*v).first);
             for (auto n_2 = neighbors.begin();n_2 != neighbors.end();++n_2) {
                 //Get the correct element of Degrees for n_2
                 if (*n_2 >= V.size()) {
@@ -95,7 +95,7 @@ class SLO : public Ordering {
             VertexDegree.erase(minPair);
 
             //decrement degree of D_2-neighbors
-            vector<unsigned int> neighbors = neighbors::Distance2NeighborsRestricted(G_b, minElement);
+            auto neighbors = neighbors::Distance2NeighborsRestricted(G_b, minElement);
             for (auto i = VertexDegree.begin();
                  i != VertexDegree.end(); ++i) {
                 if (auto n_2 = std::ranges::find(neighbors, (*i).first); n_2 != neighbors.end()) {

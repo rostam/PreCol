@@ -29,10 +29,7 @@ class IDO : public Ordering {
             (*v).second.second = -1;
             Ordering.push_back((*v).first);
 
-            vector<unsigned int> neighbors;
-            neighbors = neighbors::Distance2NeighborsRestricted(G_b, (*v).first);
-            for (const unsigned int & neighbor : neighbors) {
-
+            for (auto neighbors = neighbors::Distance2NeighborsRestricted(G_b, (*v).first); const unsigned int & neighbor : neighbors) {
                 //Get the correct element of Degrees for n_2
                 if (neighbor >= V.size()) {
                     if (Degrees[neighbor - V.size()].second.second != -1) {

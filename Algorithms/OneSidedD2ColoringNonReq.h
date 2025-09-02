@@ -26,7 +26,6 @@ public:
     int color() {
         vector<unsigned int> V = V_c;
         property_map<Graph, vertex_color_t>::type color = get(vertex_color, GraphInstance);
-        vector<unsigned int> N_2;
         vector<unsigned int> forbiddenColors(NumOfVertices(GraphInstance), -1);
         //All edges in E_S have edge_weight=1; otherwise edge_weight=0
         //Iterate over all vertices that should be colored
@@ -35,9 +34,9 @@ public:
                 forbiddenColors[0] = v;
                 if (neighbors::IncidentToReqEdge(GraphInstance, v)) {
                     //Get the distance-2 neighbors
-                    N_2 = neighbors::Distance2NeighborsRestricted(GraphInstance, v);
+                    auto N_2 = neighbors::Distance2NeighborsRestricted(GraphInstance, v);
                     //Iterate over distance-2 neighbors
-                    for_each(N_2.begin(), N_2.end(), [&](unsigned int n_2) {
+                    std::ranges::for_each(N_2.begin(), N_2.end(), [&](unsigned int n_2) {
                         //Mark colors which are used by distance-2 neighbors in forbiddenColors
                         if (get(vertex_color, GraphInstance, n_2) > 0) {
                             forbiddenColors[get(vertex_color, GraphInstance, n_2)] = v;
@@ -56,7 +55,7 @@ public:
                     /////////////////////////////////////////////////////////////////////////////
                     vector<unsigned int> non_neighbours;
                     for_each(V_c.begin(), V_c.end(), [&](Ver vc) {
-                        if (find(N_2.begin(), N_2.end(), vc) == N_2.end())
+                        if (std::ranges::find(N_2.begin(), N_2.end(), vc) == N_2.end())
                             if(get(vertex_color, GraphInstance, vc) == 0)
                                 non_neighbours.push_back(vc);
                     });

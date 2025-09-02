@@ -30,13 +30,12 @@ public:
     {
         vector<unsigned int> V = V_c;
         property_map<Graph, vertex_color_t>::type color = get(vertex_color, GraphInstance);
-        vector<unsigned int> N_2;
         vector<unsigned int> forbiddenColors(NumOfVertices(GraphInstance), -1);
         //All edges in E_S have edge_weight=1; otherwise edge_weight=0
         ForEachEdge(GraphInstance, [&](Edge e) {
             if (get(edge_weight, GraphInstance, e) == 1) {
                 unsigned int v = source(e, GraphInstance);
-                N_2 = neighbors::Distance2NeighborsRestricted(GraphInstance, v);
+                auto N_2 = neighbors::Distance2NeighborsRestricted(GraphInstance, v);
                 forbiddenColors[0] = v;
                 //Iterate over distance-2 neighbors
                 std::ranges::for_each(N_2, [&](unsigned int n_2) {
@@ -57,14 +56,14 @@ public:
                 N_2 = neighbors::Distance2NeighborsRestricted(GraphInstance, v);
                 forbiddenColors[0] = v;
                 //Iterate over distance-2 neighbors
-                for_each(N_2.begin(), N_2.end(), [&](unsigned int n_2) {
+                std::ranges::for_each(N_2.begin(), N_2.end(), [&](unsigned int n_2) {
                     //Mark colors which are used by distance-2 neighbors in forbiddenColors
                     if (get(vertex_color, GraphInstance, n_2) > 0) {
                         forbiddenColors[get(vertex_color, GraphInstance, n_2)] = v;
                     }
                 });
 
-                //Find first color which can be assigned to v
+                //Find the first color which can be assigned to v
                 result = find_if(forbiddenColors.begin(), forbiddenColors.end(),
                                  bind(not_equal_to<int>(), v, std::placeholders::_1));
 

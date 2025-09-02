@@ -21,6 +21,7 @@ method_map = {
 
 # Function to extract metrics from ColPack output
 def parse_colpack_output(output_text):
+    print(output_text)
     ordering = method = coloring_time = num_colors = "N/A"
 
     for line in output_text.splitlines():
@@ -29,9 +30,10 @@ def parse_colpack_output(output_text):
         elif line.startswith("methd:"):
             method = line.split(":")[1].strip()
         elif "order+color time" in line:
-            match = re.search(r"order\+color time = ([0-9.]+)", line)
-            if match:
-                coloring_time = match.group(1)
+            coloring_time = line[line.rindex("+")+1:]
+            # match = re.search(r"order\+color time = ([0-9.]+)", line)
+            # if match:
+            #     coloring_time = match.group(1)
         elif "number of colors" in line:
             match = re.search(r"number of colors: (\d+)", line)
             if match:
@@ -41,7 +43,7 @@ def parse_colpack_output(output_text):
 # Open output CSV
 with open(output_csv, mode='w', newline='') as out_csv:
     writer = csv.writer(out_csv)
-    writer.writerow(["Matrix", "ExitCode", "Ordering", "Method", "ColoringTimeColpack", "NumberOfColors"])
+    writer.writerow(["Matrix", "ExitCode", "Ordering", "Method", "ColoringTimeColpack", "NumberOfColorsColpack"])
 
     # Read input CSV
     with open(input_csv, mode='r') as in_csv:

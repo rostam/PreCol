@@ -6,6 +6,7 @@
 #define PRECOL_ONESIDEDD2COLORING_H
 
 #include "ColoringAlgorithms.h"
+#include <chrono>
 
 /**
  * \brief One-sided distance-2 coloring for bipartite graphs.
@@ -24,35 +25,35 @@ class OneSidedD2Coloring final : public ColoringAlgorithms {
 public:
     using ColoringAlgorithms::ColoringAlgorithms;
 
+
     int color() override {
         const std::vector<unsigned int>& V = V_c;
         std::vector forbiddenColors(NumOfVertices(GraphInstance), static_cast<unsigned int>(-1));
 
         for (unsigned int v : V) {
-            // Reset forbidden color tracking for current vertex
             forbiddenColors[0] = v;
 
             if (neighbors::IncidentToReqEdge(GraphInstance, v)) {
-                for (std::vector<unsigned int> N2 = neighbors::Distance2NeighborsRestricted(GraphInstance, v); unsigned int n2 : N2) {
+                for (auto N2 = neighbors::Distance2NeighborsRestricted(GW, v); unsigned int n2 : N2) {
                     if (const unsigned int n2_color = get(vertex_color, GraphInstance, n2); n2_color > 0) {
                         forbiddenColors[n2_color] = v;
                     }
                 }
 
-                // Find the first color not forbidden for this vertex
-                const auto available_color = std::ranges::find_if(forbiddenColors,
+                const auto available_color = std::ranges::find_if(
+                    forbiddenColors,
                     [v](const unsigned int c) { return c != v; });
-
                 const unsigned int assigned_color = std::distance(forbiddenColors.begin(), available_color);
+
                 SetVertexColor(GraphInstance, v, assigned_color);
             } else {
-                // Assign color 0 if no restriction
                 SetVertexColor(GraphInstance, v, 0);
             }
         }
 
         return NumOfColors();
     }
+
 };
 
 #endif // PRECOL_ONESIDEDD2COLORING_H

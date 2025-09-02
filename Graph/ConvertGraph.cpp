@@ -12,7 +12,7 @@
 bool BipartiteToColumnIntersectionGraph(const Graph& G_b, const vector<unsigned int>& V_c, Graph& ColumnIntersectionGraph)
 {
     std::ranges::for_each(V_c,[&](const unsigned int vc){
-        vector<unsigned int> N_2 = neighbors::Distance2Neighbors(G_b, vc);
+        auto N_2 = neighbors::Distance2Neighbors(G_b, vc);
         std::ranges::for_each(N_2,[&](const unsigned int n2){
             add_edge(vc - V_c.size(), n2 - V_c.size(), 1, ColumnIntersectionGraph);
         });

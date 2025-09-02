@@ -35,6 +35,7 @@ protected:
     std::shared_ptr<IndependentSet> IndependentSetInstance;
     bool IsRestrictedColoring{};
     map<string, std::any> CustomParameters;
+    GraphWrapper GW;
 
     /**
      * \brief Return a pair of number of colors and the list of colors
@@ -44,10 +45,16 @@ protected:
     std::tuple<int, std::vector<int>> TupleNumOfColorAndColors();
 public:
     virtual ~ColoringAlgorithms() = default;
-    explicit ColoringAlgorithms(Graph &G_b) : GraphInstance(G_b) { SetAllColorsTo(0);};
+    explicit ColoringAlgorithms(Graph &G_b) : GraphInstance(G_b), GW(GraphWrapper(G_b))
+    {
+        SetAllColorsTo(0);
+    };
 
     ColoringAlgorithms(Graph &G_b, vector<unsigned int> &V, bool restricted = false, map<string, any>&& pars = {})
-            : V_c(V), GraphInstance(G_b), IsRestrictedColoring(restricted), CustomParameters(std::move(pars)) { SetAllColorsTo(0);};
+        : V_c(V), GraphInstance(G_b), IsRestrictedColoring(restricted), CustomParameters(std::move(pars)), GW(GraphWrapper(G_b))
+    {
+        SetAllColorsTo(0);
+    };
 
     ColoringAlgorithms(Graph &G_b, vector<unsigned int> &V_r, vector<unsigned int> &V_c,
                        bool restricted, map<string, any>&& pars = {});

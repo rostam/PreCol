@@ -35,22 +35,34 @@ std::tuple<int, std::vector<int>> ColoringAlgorithms::TupleNumOfColorAndColors()
  */
 ColoringAlgorithms::ColoringAlgorithms(Graph &G_b, vector<unsigned int> &V_r, vector<unsigned int> &V_c,
 bool restricted, map<string, any>&& pars)
-: V_c(V_c), V_r(V_r), GraphInstance(G_b), IsRestrictedColoring(restricted), CustomParameters(pars) {
+    : V_c(V_c), V_r(V_r), GraphInstance(G_b), IsRestrictedColoring(restricted), CustomParameters(pars), GW(GraphWrapper(G_b))
+{
     SetAllColorsTo(0);
     //Compute independent set
-    if (restricted) {
-        if (any_cast<int>(pars["Mode"]) == 1) {
-            IndependentSetInstance = shared_ptr<IndependentSet>(new ISetRestricted(G_b, V_r, V_c, any_cast<int>(pars["Mode2"])));
-        } else if (any_cast<int>(pars["Mode"]) == 2) {
+    if (restricted)
+    {
+        if (any_cast<int>(pars["Mode"]) == 1)
+        {
             IndependentSetInstance = shared_ptr<IndependentSet>(
-                    new ISetVariantRestricted(G_b, V_r, V_c, any_cast<int>(pars["Mode"]) / 2.0));
+                new ISetRestricted(G_b, V_r, V_c, any_cast<int>(pars["Mode2"])));
         }
-    } else {
-        if (std::any_cast<int>(pars["Mode"]) == 1) {
+        else if (any_cast<int>(pars["Mode"]) == 2)
+        {
             IndependentSetInstance = shared_ptr<IndependentSet>(
-                    new ISet(G_b, V_r, V_c, any_cast<int>(pars["Mode2"]))); //ISet = IS_Coleman(G_b,V_r,V_c);
-        } else {
-            IndependentSetInstance = shared_ptr<IndependentSet>(new ISetVariant(G_b, V_r, V_c, any_cast<int>(pars["Mode"]) / 2.0));
+                new ISetVariantRestricted(G_b, V_r, V_c, any_cast<int>(pars["Mode"]) / 2.0));
+        }
+    }
+    else
+    {
+        if (std::any_cast<int>(pars["Mode"]) == 1)
+        {
+            IndependentSetInstance = shared_ptr<IndependentSet>(
+                new ISet(G_b, V_r, V_c, any_cast<int>(pars["Mode2"]))); //ISet = IS_Coleman(G_b,V_r,V_c);
+        }
+        else
+        {
+            IndependentSetInstance = shared_ptr<IndependentSet>(
+                new ISetVariant(G_b, V_r, V_c, any_cast<int>(pars["Mode"]) / 2.0));
         }
     }
 };
