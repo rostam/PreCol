@@ -5,7 +5,6 @@
 #include "boost/graph/adjacency_list.hpp"
 #include "boost/cstdlib.hpp"
 #include <memory>
-#include <iostream>
 #include <fstream>
 #include <boost/dynamic_bitset.hpp>
 
@@ -69,8 +68,7 @@ namespace PreCol {
      */
     template<typename Lambda>
     static void ForEachVertexConst(const Graph &g, Lambda func) {
-        V_iter vi, vi_end;
-        std::tie(vi, vi_end) = vertices(g);
+        auto [vi, vi_end] = vertices(g);
         std::for_each(vi, vi_end, func);
     }
 
@@ -239,6 +237,7 @@ namespace PreCol {
     * \brief Get the suitable color based on the given maximum color and the current color
     *
     *
+    * @param GraphInstance
     * @param res_color
     * @param max_color
     * @param v
@@ -254,7 +253,7 @@ namespace PreCol {
             ForEachOutEdgesConst(GraphInstance, v, [&](Edge ei) {
                 double w = get(boost::edge_weight_t(), GraphInstance, ei);
                 auto source = boost::source(ei, GraphInstance);
-                auto target = boost::target(ei, GraphInstance);
+                const auto target = boost::target(ei, GraphInstance);
                 if (w > max_w) {
                     if (boost::get(vertex_color, GraphInstance, nv) != -1) {
                         max_w = w;

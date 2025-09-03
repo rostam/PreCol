@@ -6,10 +6,7 @@
 #define PRECOL_COLORINGALGORITHMS_H
 
 #include "../Graph/GraphDataType.hpp"
-#include "../Orderings/Ordering.h"
-#include <boost/config.hpp>
 #include "boost/graph/adjacency_list.hpp"
-#include "boost/graph/graph_utility.hpp"
 #include "boost/graph/filtered_graph.hpp"
 #include "boost/graph/copy.hpp"
 #include "isets.h"
@@ -38,7 +35,7 @@ protected:
     GraphWrapper GW;
 
     /**
-     * \brief Return a pair of number of colors and the list of colors
+     * \brief Return a pair of a number of colors and the list of colors
      *
      * @return a pair of number of colors and the list of colors
      */
@@ -50,7 +47,7 @@ public:
         SetAllColorsTo(0);
     };
 
-    ColoringAlgorithms(Graph &G_b, vector<unsigned int> &V, bool restricted = false, map<string, any>&& pars = {})
+    ColoringAlgorithms(Graph &G_b, const vector<unsigned int> &V, const bool restricted = false, map<string, any>&& pars = {})
         : V_c(V), GraphInstance(G_b), IsRestrictedColoring(restricted), CustomParameters(std::move(pars)), GW(GraphWrapper(G_b))
     {
         SetAllColorsTo(0);
@@ -114,7 +111,7 @@ public:
      */
     void SetAllColorsTo(const int value) const
     {
-        ForEachVertexConst(GraphInstance, [&](Ver v) {
+        ForEachVertexConst(GraphInstance, [&](const Ver v) {
             boost::put(vertex_color, GraphInstance, v, value);
         });
     }

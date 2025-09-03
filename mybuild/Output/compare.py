@@ -90,3 +90,4 @@ plt.grid(axis='y')
 plt.tight_layout()
 plt.savefig("comparison_times_all.png", dpi=300, bbox_inches="tight")
 plt.show()
+

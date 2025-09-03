@@ -212,9 +212,9 @@ public:
         }
 
         for(auto di : Degree_V_r_aux) IS.push_back(di.first);
-        for(auto di : Degree_V_c_aux) IS.push_back(di.first);
+        for(auto di : Degree_V_c_aux) IS.push_back(di);
 
-        //Color vertices in independent set with color 0
+        //Color vertices in an independent set with color 0
         for(auto IS_it : IS) SetVertexColor(GraphInstance, IS_it, 0);//put(color, IS_it, 0);
 
         return ColoringAlgorithms::NumOfColors();

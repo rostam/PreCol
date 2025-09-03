@@ -1,57 +1,52 @@
 //
-// Created by rostam on 20.07.16
+// Optimized OneSidedD2Coloring
 //
 
 #ifndef PRECOL_ONESIDEDD2COLORING_H
 #define PRECOL_ONESIDEDD2COLORING_H
 
 #include "ColoringAlgorithms.h"
-#include <chrono>
+#include <vector>
 
-/**
- * \brief One-sided distance-2 coloring for bipartite graphs using GraphWrapper.
- *
- * Uses GraphWrapper’s cached adjacency lists to efficiently compute distance-2 neighbors.
- * Colors are assigned to vertices in GraphInstance via vertex_color property.
- */
 class OneSidedD2Coloring final : public ColoringAlgorithms {
 public:
     using ColoringAlgorithms::ColoringAlgorithms;
 
     int color() override {
         const std::vector<unsigned int>& V = V_c;
-        std::vector<unsigned int> forbiddenColors(GW.adj.size(), static_cast<unsigned int>(-1));
+        const unsigned int n = GW.adj.size();
 
-        for (unsigned int v : V) {
-            forbiddenColors[0] = v;  // reserve color 0
+        // "forbiddenColors[c] == stamp" means color c is forbidden
+        std::vector<unsigned int> forbiddenColors(n, 0);
+        unsigned int stamp = 1;
 
+        for (const unsigned int v : V) {
             if (neighbors::IncidentToReqEdge(GW.G, v)) {
-                // distance-2 via GraphWrapper
-                for (unsigned int n1 : GW.adj[v]) {
-                    for (unsigned int n2 : GW.adj[n1]) {
+                // mark reserved color 0 as forbidden
+                forbiddenColors[0] = stamp;
+
+                // mark distance-2 neighbors' colors
+                for (const unsigned int n1 : GW.adj[v]) {
+                    for (const unsigned int n2 : GW.adj[n1]) {
                         if (n2 == v) continue;
-                        if (int n2_color = GW.getColor(n2); n2_color > 0) {
-                            forbiddenColors[n2_color] = v;
-                        }
+                        if (const int c = GW.getColor(n2); c > 0) forbiddenColors[c] = stamp;
                     }
                 }
 
-                // first available color
-                const auto available_color = std::ranges::find_if(
-                    forbiddenColors,
-                    [v](unsigned int c) { return c != v; });
+                // find the first available color
+                int assigned_color = 1; // skip reserved 0
+                while (assigned_color < n && forbiddenColors[assigned_color] == stamp)
+                    ++assigned_color;
 
-                const unsigned int assigned_color = std::distance(forbiddenColors.begin(), available_color);
                 GW.setColor(v, assigned_color);
-
             } else {
                 GW.setColor(v, 0);
             }
+            ++stamp; // increment for next vertex
         }
 
         return GW.NumberOfColors();
     }
 };
-
 
 #endif // PRECOL_ONESIDEDD2COLORING_H
