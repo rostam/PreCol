@@ -15,8 +15,10 @@ ordering_map = {
 
 
 method_map = {
-    "D2RestrictedColumns": "DISTANCE_TWO",
-    "D2Columns": "DISTANCE_TWO"
+    "D2RestrictedColumns": "COLUMN_PARTIAL_DISTANCE_TWO",
+    "D2RestrictedRows": "ROW_PARTIAL_DISTANCE_TWO",
+    "D2Columns": "COLUMN_PARTIAL_DISTANCE_TWO",
+    "D2Rows": "ROW_PARTIAL_DISTANCE_TWO",
 }
 
 # Function to extract metrics from ColPack output

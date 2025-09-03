@@ -6,7 +6,6 @@
 #define PRECOL_STAR_BICOLORING_VERTEX_COVER_NON_REQ_M_H
 
 #include "ColoringAlgorithms.h"
-#include "isets.h"
 
 /**
  * \brief Compute a star bicoloring of a bipartite graph GraphInstance (this version
@@ -615,7 +614,7 @@ public:
 
             IS.push_back((*di).first);
         }
-        //Color vertices in independent set with color 0
+        //Color vertices in an independent set with color 0
         for (vector<int>::iterator IS_it = IS.begin();
              IS_it != IS.end();
              ++IS_it) {
