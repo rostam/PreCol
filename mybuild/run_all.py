@@ -34,30 +34,55 @@ def run(label, cmd, cwd=MYBUILD, timeout=3600):
     print(f"\n  [{status}]  elapsed: {elapsed:.1f}s", flush=True)
     return result.returncode == 0
 
+HEARTBEAT_INTERVAL = 10  # seconds between status lines
+
 def run_parallel(tools):
     """
-    Launch all tools simultaneously, stream their output, wait for all.
+    Launch all tools simultaneously, poll until all finish, print a
+    heartbeat every HEARTBEAT_INTERVAL seconds so it's obvious which
+    process is still running.
     tools: list of (label, cmd, cwd) tuples.
     Returns dict {label: ok}.
     """
     banner(f"Launching {len(tools)} tools in parallel")
-    procs = []
-    t0 = time.time()
-    for label, cmd, cwd in tools:
-        print(f"  starting : {label}")
-        print(f"    cmd    : {' '.join(cmd)}", flush=True)
-        p = subprocess.Popen(cmd, cwd=cwd)
-        procs.append((label, p))
+    print(f"  {'LABEL':<12}  COMMAND", flush=True)
+    print(f"  {'-'*12}  {'-'*44}")
+    for label, cmd, _ in tools:
+        print(f"  {label:<12}  {' '.join(cmd)}", flush=True)
 
-    print(f"\n  Waiting for all {len(tools)} processes to finish...", flush=True)
+    t0 = time.time()
+    procs = {}  # label -> (Popen, start_time)
+    for label, cmd, cwd in tools:
+        procs[label] = (subprocess.Popen(cmd, cwd=cwd), time.time())
+    print(f"\n  All {len(tools)} processes started.\n", flush=True)
+
     results = {}
-    for label, p in procs:
-        p.wait()
-        elapsed = time.time() - t0
-        ok = p.returncode == 0
-        status = "OK" if ok else f"FAILED (exit {p.returncode})"
-        print(f"  [{status}]  {label}  (wall time so far: {elapsed:.1f}s)", flush=True)
-        results[label] = ok
+    last_heartbeat = time.time()
+
+    while procs:
+        # Check for newly finished processes
+        for label in list(procs):
+            p, t_start = procs[label]
+            if p.poll() is not None:
+                elapsed = time.time() - t_start
+                ok = p.returncode == 0
+                status = "DONE  ✓" if ok else f"FAILED ✗ (exit {p.returncode})"
+                print(f"  [{status}]  {label:<12}  {elapsed:.1f}s", flush=True)
+                results[label] = ok
+                del procs[label]
+
+        # Periodic heartbeat: show still-running processes
+        if procs and time.time() - last_heartbeat >= HEARTBEAT_INTERVAL:
+            still = ", ".join(
+                f"{lbl} ({time.time()-ts:.0f}s)"
+                for lbl, (_, ts) in procs.items()
+            )
+            print(f"  [running]  {still}", flush=True)
+            last_heartbeat = time.time()
+
+        if procs:
+            time.sleep(1)
+
     return results
 
 def main():
