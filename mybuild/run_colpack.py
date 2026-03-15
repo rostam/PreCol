@@ -60,6 +60,7 @@ with open(output_csv, mode='w', newline='') as out_csv:
                 "-f", matrix_path,
                 "-o", ordering,
                 "-m", method,
+                "-nT", "1",
                 "-v"
             ]
 

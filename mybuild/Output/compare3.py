@@ -4,8 +4,6 @@ import seaborn as sns
 from matplotlib.pyplot import pause
 
 df_precol = pd.read_csv('output_precol.csv')
-#df_precol = pd.read_csv('results.csv')
-
 df_colpack = pd.read_csv('output_colpack.csv')
 df_julia = pd.read_csv('output_julia.csv')
 df_dsjm = pd.read_csv('output_dsjm.csv')
