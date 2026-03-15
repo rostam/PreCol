@@ -100,7 +100,7 @@ def main():
     # ── Phase 1: run all four tools in parallel ────────────────────
     tools = []
     if not args.skip_precol:
-        tools.append(("PreCol",  ["./PreCol", "input.csv", "Output/output_precol.csv"], MYBUILD))
+        tools.append(("PreCol",  [sys.executable, "run_precol.py"],                     MYBUILD))
     if not args.skip_julia:
         tools.append(("Julia",   ["/home/rostam/.juliaup/bin/julia", "test_time.jl"],   MYBUILD))
     if not args.skip_colpack:
