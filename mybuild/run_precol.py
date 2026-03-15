@@ -7,12 +7,11 @@ and a stuck matrix doesn't block the rest.
 import csv
 import os
 import subprocess
-import sys
 import tempfile
 import time
 
 SCRIPT_DIR  = os.path.dirname(os.path.abspath(__file__))
-PRECOL      = os.path.join(SCRIPT_DIR, "./PreCol")
+PRECOL      = os.path.join(SCRIPT_DIR, "/home/rostam/kara/PreCol/cmake-build-release/PreCol")
 INPUT_CSV   = os.path.join(SCRIPT_DIR, "input.csv")
 OUTPUT_CSV  = os.path.join(SCRIPT_DIR, "Output/output_precol.csv")
 TIMEOUT_SEC = 120   # kill a single matrix run after this many seconds
@@ -28,7 +27,7 @@ with open(INPUT_CSV) as f:
 output_header_written = False
 
 with open(OUTPUT_CSV, "w", newline="") as out_f:
-    out_writer = None  # initialised after first successful run
+    out_writer = None  # initialized after the first successful run
 
     for i, row in enumerate(rows, 1):
         matrix = row["Matrix"]
