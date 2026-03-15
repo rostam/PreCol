@@ -1,7 +1,11 @@
+import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from matplotlib.pyplot import pause
+
+FIGURES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "figures")
+os.makedirs(FIGURES, exist_ok=True)
 
 df_precol = pd.read_csv('output_precol.csv')
 df_colpack = pd.read_csv('output_colpack.csv')
@@ -68,7 +72,7 @@ plt.title("Comparison of Number of Colors (PreCol vs ColPack vs Julia vs DSJM)")
 plt.legend(title="Source")
 plt.grid(axis='y')
 plt.tight_layout()
-plt.savefig("comparison_colors_all.png", dpi=300, bbox_inches="tight")
+plt.savefig(os.path.join(FIGURES, "comparison_colors_all.png"), dpi=300, bbox_inches="tight")
 plt.show()
 
 
@@ -103,5 +107,5 @@ plt.title("Comparison of Coloring Times (PreCol vs ColPack vs Julia vs DSJM)")
 plt.legend(title="Source")
 plt.grid(axis='y', which='both', linestyle='--', alpha=0.6)  # Log-friendly grid
 plt.tight_layout()
-plt.savefig("comparison_times_all_log.png", dpi=300, bbox_inches="tight")
+plt.savefig(os.path.join(FIGURES, "comparison_times_all_log.png"), dpi=300, bbox_inches="tight")
 plt.show()

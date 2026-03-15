@@ -1,6 +1,10 @@
+import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+
+FIGURES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "figures")
+os.makedirs(FIGURES, exist_ok=True)
 
 # Read CSVs
 df_precol = pd.read_csv('output_precol.csv')
@@ -45,4 +49,5 @@ plt.title('Coloring Time Relative to Julia')
 plt.ylabel('Relative Time (Method / Julia)')
 plt.xlabel('Matrix (filename)')
 plt.tight_layout()
+plt.savefig(os.path.join(FIGURES, "relative_times.png"), dpi=300, bbox_inches="tight")
 plt.show()
