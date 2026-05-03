@@ -19,19 +19,9 @@ public:
         list<pair<unsigned int,unsigned int> > Degree_V_r;
         list<pair<unsigned int,unsigned int> > Degree_V_c;
 
-        for (vector<unsigned int>::iterator v_r = V_r.begin();
-             v_r != V_r.end();
-             ++v_r) {
+        for (auto v_r : V_r) Degree_V_r.emplace_back(v_r, degree(v_r, G_b));
 
-            Degree_V_r.push_back(make_pair(*v_r,degree(*v_r,G_b)));
-        }
-
-        for (vector<unsigned int>::iterator v_c = V_c.begin();
-             v_c != V_c.end();
-             ++v_c) {
-
-            Degree_V_c.push_back(make_pair(*v_c,degree(*v_c,G_b)));
-        }
+        for (auto v_c : V_c) Degree_V_c.emplace_back(v_c, degree(v_c, G_b));
 
         while(num_edges(G_b)>0) {
 
@@ -88,134 +78,12 @@ public:
             }
         }
 
-        for (list<pair<unsigned int,unsigned int> >::iterator di =
-                Degree_V_r.begin();
-             di != Degree_V_r.end();
-             ++di) {
+        for (auto di : Degree_V_r) IS.push_back(di.first);
 
-            IS.push_back((*di).first);
-        }
-
-        for (list<pair<unsigned int,unsigned int> >::iterator di =
-                Degree_V_c.begin();
-             di != Degree_V_c.end();
-             ++di) {
-
-            IS.push_back((*di).first);
-        }
+        for (auto di : Degree_V_c) IS.push_back(di.first);
 
         return IS;
     }
-
-// vector<int> VC(Graph GraphInstance,
-// 	       const vector<unsigned int>& V_r,
-// 	       const vector<unsigned int>& V_c)
-// {
-//   vector<int> IS;
-
-//   list<pair<unsigned int,pair<unsigned int,unsigned int> > >
-//     Vertices(V_r.size()+V_c.size());
-
-//   int i = 0;
-//   for (list<pair<unsigned int,pair<unsigned int,unsigned int> > >::iterator v =
-// 	 Vertices.begin();
-//        v != Vertices.end();
-//        ++v) {
-
-//     (*v).first=i;
-//     i++;
-//   }
-
-//   while(num_edges(GraphInstance)>0) {
-
-//     vector<list<pair<unsigned int,pair<unsigned int,unsigned int> > >::iterator> temp_V_r;
-//     vector<list<pair<unsigned int,pair<unsigned int,unsigned int> > >::iterator> temp_V_c;
-//     unsigned int max_degree_n1=0;
-//     unsigned int max_degree_n2=0;
-
-//     for (list<pair<unsigned int,pair<unsigned int,unsigned int> > >::iterator v =
-// 	   Vertices.begin();
-// 	 v != Vertices.end();
-// 	 ++v) {
-
-//       (*v).second.first = degree((*v).first,GraphInstance);
-//       vector<unsigned int> N2 = neighbors::Distance2Neighbors(GraphInstance,(*v).first);
-//       (*v).second.second = N2.size();
-
-//       if ((*v).second.second>max_degree_n2) {
-// 	temp_V_r.clear(); temp_V_c.clear();
-// 	if ((*v).first<V_r.size()) {
-// 	  temp_V_r.push_back(v);
-// 	} else {
-// 	  temp_V_c.push_back(v);
-// 	}
-// 	max_degree_n2=(*v).second.second;
-//       } else if ((*v).second.second==max_degree_n2 &&
-// 		 (*v).second.first>max_degree_n1) {
-// 	temp_V_r.clear(); temp_V_c.clear();
-// 	if ((*v).first<V_r.size()) {
-// 	  temp_V_r.push_back(v);
-// 	} else {
-// 	  temp_V_c.push_back(v);
-// 	}
-// 	max_degree_n1=(*v).second.first;
-//       } else if ((*v).second.second==max_degree_n2 &&
-// 		 (*v).second.first==max_degree_n1) {
-// 	if ((*v).first<V_r.size()) {
-// 	  temp_V_r.push_back(v);
-// 	} else {
-// 	  temp_V_c.push_back(v);
-// 	}
-//       }
-//     }
-
-//     if(!temp_V_c.empty()) {
-//       cout << "TEST: V_c" << endl;
-//       for (vector<list<pair<unsigned int,pair<unsigned int,unsigned int> > >::iterator>::iterator vi =
-// 	     temp_V_c.begin();
-// 	   vi != temp_V_c.end();
-// 	   ++vi) {
-
-// 	clear_vertex((**vi).first,GraphInstance);
-// 	Vertices.erase(*vi);
-//       }
-//     } else {
-//       cout << "TEST: V_r" << endl;
-//       for (vector<list<pair<unsigned int,pair<unsigned int,unsigned int> > >::iterator>::iterator vi =
-// 	     temp_V_r.begin();
-// 	   vi != temp_V_r.end();
-// 	   ++vi) {
-
-// 	clear_vertex((**vi).first,GraphInstance);
-// 	Vertices.erase(*vi);
-//       }
-//     }
-
-// //     list<pair<unsigned int,pair<unsigned int,unsigned int> > >::iterator v =
-// //       max_element(Vertices.begin(),Vertices.end(),cmp_degrees);
-
-// //     clear_vertex((*v).first,GraphInstance);
-// //     Vertices.erase(v);
-
-
-//   }
-
-//   for (list<pair<unsigned int,pair<unsigned int,unsigned int> > >::iterator v =
-// 	 Vertices.begin();
-//        v != Vertices.end();
-//        ++v) {
-
-//     IS.push_back((*v).first);
-//   }
-
-//   return IS;
-// }
-
-// bool cmp_degrees(pair<unsigned int,pair<unsigned int,unsigned int> > t1,
-// 		 pair<unsigned int,pair<unsigned int,unsigned int> > t2)
-// {
-//   return t1.second.second <= t2.second.second && t1.second.first <= t2.second.first;
-// }
 
 };
 

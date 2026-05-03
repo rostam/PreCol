@@ -20,16 +20,12 @@
  * - GraphInstance bipartite graph with colors as weights vertex_color
  */
 class OneSidedD2ColorNonReqDiag : public ColoringAlgorithms {
-    //int alpha = 0;
 public:
     using ColoringAlgorithms::ColoringAlgorithms;
 
-//    OneSidedD2ColoringNonReq(Graph &GraphInstance, vector<unsigned int> &V, bool IsRestrictedColoring, int alpha)
-//            : ColoringAlgorithms(GraphInstance, V, IsRestrictedColoring),alpha(alpha) {}
     int color() override
     {
         vector<unsigned int> V = V_c;
-        property_map<Graph, vertex_color_t>::type color = get(vertex_color, GraphInstance);
         vector<unsigned int> forbiddenColors(NumOfVertices(GraphInstance), -1);
         //All edges in E_S have edge_weight=1; otherwise edge_weight=0
         ForEachEdge(GraphInstance, [&](Edge e) {
@@ -47,7 +43,7 @@ public:
 
                 //Find the first color which can be assigned to v
                 auto result = std::ranges::find_if(forbiddenColors,
-                                                   bind(not_equal_to<int>(), v, std::placeholders::_1));
+                                                   bind(std::not_equal_to<int>(), v, std::placeholders::_1));
 
                 int col1 = distance(forbiddenColors.begin(), result);
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -65,16 +61,13 @@ public:
 
                 //Find the first color which can be assigned to v
                 result = find_if(forbiddenColors.begin(), forbiddenColors.end(),
-                                 bind(not_equal_to<int>(), v, std::placeholders::_1));
+                                 bind(std::not_equal_to<int>(), v, std::placeholders::_1));
 
 
                 int col2 = distance(forbiddenColors.begin(), result);
-//                cerr << source(e,GraphInstance) << " " << target(e,GraphInstance) <<  " ";
-//                cerr << col1 << " " << col2 << endl;
                 //   Color v
-//                int random_ = rand()%100;
-                if (col1 < col2) SetVertexColor(GraphInstance, source(e, GraphInstance), col1);//put(color, source(e, GraphInstance), col1);
-                else SetVertexColor(GraphInstance, target(e, GraphInstance), col2);//put(color, target(e, GraphInstance), col2);
+                if (col1 < col2) SetVertexColor(GraphInstance, source(e, GraphInstance), col1);
+                else SetVertexColor(GraphInstance, target(e, GraphInstance), col2);
             }
         });
         return NumOfColors();

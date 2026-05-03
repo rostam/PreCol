@@ -27,22 +27,6 @@ class StarBicoloringVertexCoverNonReq : public ColoringAlgorithms{
 public:
     using ColoringAlgorithms::ColoringAlgorithms;
 
-/**
- * Compute a star bicoloring of a bipartite graph GraphInstance (this version
- * was implemented for Alexandru Calotoiu's diploma thesis)
- *
- * Combined means that a vertex is directly colored after its selection
- *
- * Input:
- * - GraphInstance   bipartite graph
- * - V_r   contained row vertices are colored in the given ordering v_1, ..., v_n
- * - V_c   contained column vertices are colored in the given ordering v_1, ..., v_n
- * - Mode  parameter \rho (\rho=Mode/2)
- * - Mode2 parameter \rho if using independent set algorithm of Coleman (Mode==1)
- *
- * Output:
- * - GraphInstance bipartite graph with colors given as weights vertex_color
- */
     int color()
     {
         if(IsRestrictedColoring) {
@@ -50,8 +34,6 @@ public:
             return NumOfColors();
         }
         vector<int> IS;
-        property_map<Graph, vertex_color_t>::type color = get(vertex_color, GraphInstance);
-        vector<int> num_colors;
         vector<unsigned int> V_r_aux(V_r.size());
         vector<unsigned int> V_c_aux(V_c.size());
         Graph G_b_aux;
@@ -168,10 +150,9 @@ public:
                             //Find the first color which can be assigned to v_c
                             std::vector<int>::iterator color_v_it = find_if(forbiddenColors.begin(),
                                                                        forbiddenColors.end(),
-                                                                       bind(not_equal_to<int>(), *v, std::placeholders::_1)
+                                                                       bind(std::not_equal_to<int>(), *v, std::placeholders::_1)
                             );
                             SetVertexColor(GraphInstance, *v, distance(forbiddenColors.begin(), color_v_it));
-//                            put(color, *v, distance(forbiddenColors.begin(), color_v_it));
                         }
                     }
                 }
@@ -232,10 +213,9 @@ public:
                         //Find first color which can be assigned to v_c
                         vector<int>::iterator color_v_it = find_if(forbiddenColors.begin(),
                                                                    forbiddenColors.end(),
-                                                                   bind(not_equal_to<int>(), *v, std::placeholders::_1)
+                                                                   bind(std::not_equal_to<int>(), *v, std::placeholders::_1)
                         );
                         SetVertexColor(GraphInstance, *v, distance(forbiddenColors.begin(),color_v_it));
-//                        put(color,*v,distance(forbiddenColors.begin(),color_v_it));
 
                     }
                 }
@@ -263,7 +243,6 @@ public:
              ++IS_it) {
 
             SetVertexColor(GraphInstance, *IS_it, 0);
-//            put(color,*IS_it,0);
         }
 
         return ColoringAlgorithms::NumOfColors();
@@ -271,8 +250,6 @@ public:
 
     int color_restricted() {
         vector<int> IS;
-        property_map<Graph, vertex_color_t>::type color = get(vertex_color, GraphInstance);
-        vector<int> num_colors;
         vector<unsigned int> V_r_aux(V_r.size());
         vector<unsigned int> V_c_aux(V_c.size());
         Graph G_b_aux;
@@ -502,11 +479,9 @@ public:
                         //Find first color which can be assigned to v_c
                         vector<int>::iterator color_v_it = find_if(forbiddenColors.begin(),
                                                                    forbiddenColors.end(),
-                                                                   bind(not_equal_to<int>(), *v, std::placeholders::_1)
+                                                                   bind(std::not_equal_to<int>(), *v, std::placeholders::_1)
                         );
                         SetVertexColor(GraphInstance, *v, distance(forbiddenColors.begin(), color_v_it));
-//                        put(color, *v, distance(forbiddenColors.begin(), color_v_it));
-
 
                     }
                 }
@@ -534,23 +509,6 @@ public:
                         clear_vertex((*di).first, G_b_aux);
                         di = Degree_V_c_aux.erase(di);
                         --di;
-
-//                    cnt++;
-//                    if(cnt == 1) first_v = *v;
-//                    if(cnt > 1) {
-//                        int cnt_nreq =0;
-//                        for_each(adjacent_vertices(first_v, GraphInstance).first,
-//                                 adjacent_vertices(first_v, GraphInstance).second,
-//                                 [&](Ver adj_nn) {
-//                                     if (get(edge_weight, GraphInstance, edge(first_v, adj_nn, GraphInstance).first) != 1) {
-//                                         if (!edge(adj_nn, *v, GraphInstance).second) {
-//                                             cnt_nreq++;
-//                                         }
-//                                     }
-//                                 });
-//                        //cerr << "salam " << cnt_nreq << endl;
-//                        //if(cnt_nreq == 8) continue;
-//                    }
 
                         forbiddenColors[0] = *v;
 
@@ -590,10 +548,9 @@ public:
                         //Find first color which can be assigned to v_c
                         vector<int>::iterator color_v_it = find_if(forbiddenColors.begin(),
                                                                    forbiddenColors.end(),
-                                                                   bind(not_equal_to<int>(), *v, std::placeholders::_1)
+                                                                   bind(std::not_equal_to<int>(), *v, std::placeholders::_1)
                         );
                         SetVertexColor(GraphInstance, *v, distance(forbiddenColors.begin(), color_v_it));
-//                        put(color, *v, distance(forbiddenColors.begin(), color_v_it));
                     }
                 }
             }
@@ -620,7 +577,6 @@ public:
              ++IS_it) {
 
             SetVertexColor(GraphInstance, *IS_it, 0);
-//            put(color, *IS_it, 0);
         }
 
         return EXIT_SUCCESS;

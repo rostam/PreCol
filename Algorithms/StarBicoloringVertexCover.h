@@ -28,26 +28,8 @@ class StarBicoloringVertexCover : public ColoringAlgorithms {
 public:
     using ColoringAlgorithms::ColoringAlgorithms;
 
-/**
- * Compute a star bicoloring of a bipartite graph GraphInstance (this version
- * was implemented for Alexandru Calotoiu's diploma thesis)
- *
- * Combined means that a vertex is directly colored after its selection
- *
- * Input:
- * - GraphInstance   bipartite graph
- * - V_r   contained row vertices are colored in the given ordering v_1, ..., v_n
- * - V_c   contained column vertices are colored in the given ordering v_1, ..., v_n
- * - Mode  parameter \rho (\rho=Mode/2)
- * - Mode2 parameter \rho if using independent set algorithm of Coleman (Mode==1)
- *
- * Output:
- * - GraphInstance bipartite graph with colors given as weights vertex_color
- */
     int color() override {
         vector<int> IS;
-        property_map<Graph, vertex_color_t>::type color = get(vertex_color, GraphInstance);
-        vector<int> num_colors;
         vector<unsigned int> V_r_aux(V_r.size());
         vector<unsigned int> V_c_aux(V_c.size());
         Graph G_b_aux;
@@ -145,11 +127,9 @@ public:
                         //Find the first color which can be assigned to v_c
                         vector<int>::iterator color_v_it = find_if(forbiddenColors.begin(),
                                                                    forbiddenColors.end(),
-                                                                   bind(not_equal_to<int>(), *v, std::placeholders::_1)
+                                                                   bind(std::not_equal_to<int>(), *v, std::placeholders::_1)
                         );
                         SetVertexColor(GraphInstance, *v, distance(forbiddenColors.begin(), color_v_it));
-//                        put(color, *v, distance(forbiddenColors.begin(), color_v_it));
-
 
                     }
                 }
@@ -203,19 +183,17 @@ public:
                         }
                         //Find first color which can be assigned to v_c
                         auto color_v_it = find_if(forbiddenColors.begin(), forbiddenColors.end(),
-                                                  bind(not_equal_to<int>(), *v, std::placeholders::_1));
+                                                  bind(std::not_equal_to<int>(), *v, std::placeholders::_1));
                         SetVertexColor(GraphInstance, *v, distance(forbiddenColors.begin(), color_v_it));
-//                        put(color, *v, distance(forbiddenColors.begin(), color_v_it));
                     }
                 }
             }
         }
 
         for(auto di : Degree_V_r_aux) IS.push_back(di.first);
-        //for(auto di : Degree_V_c_aux) IS.push_back(di);
 
         //Color vertices in an independent set with color 0
-        for(auto IS_it : IS) SetVertexColor(GraphInstance, IS_it, 0);//put(color, IS_it, 0);
+        for (auto IS_it : IS) SetVertexColor(GraphInstance, IS_it, 0);
 
         return ColoringAlgorithms::NumOfColors();
     }

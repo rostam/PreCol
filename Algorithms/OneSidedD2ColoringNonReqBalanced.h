@@ -19,19 +19,15 @@
  * Output:
  * - GraphInstance bipartite graph with colors as weights vertex_color
  */
-using std::bind1st;
-using std::not_equal_to;
 class OneSidedD2ColoringNonReqBalanced : public ColoringAlgorithms {
-    //int alpha = 0;
 public:
     using ColoringAlgorithms::ColoringAlgorithms;
     int color() {
         vector<unsigned int> V = V_c;
-        property_map<Graph, vertex_color_t>::type color = get(vertex_color, GraphInstance);
         vector<unsigned int> forbiddenColors(NumOfVertices(GraphInstance), -1);
         //All edges in E_S have edge_weight=1; otherwise edge_weight=0
         //Iterate over all vertices that should be colored
-        for_each(V.begin(), V.end(), [&](unsigned int v) {
+        std::ranges::for_each(V, [&](unsigned int v) {
             if (get(vertex_color, GraphInstance, v) == 0) {
                 forbiddenColors[0] = v;
                 if (neighbors::IncidentToReqEdge(GraphInstance, v)) {
@@ -106,47 +102,13 @@ public:
                             }
                         }
                     });
-                    int cnt_max = 0;
-                    int mx = 0;
-                    int min_req = 10000;
-                    int min_pos = -1;
-                    int max_req = 0;
-                    int max_pos = -1;
-                    std::ranges::for_each(pos_num, [&](auto map_elem) {
-                        if (map_elem.second == max_nreq_det) {
-                            int cnt_req = 0;
-                            for_each(adjacent_vertices(map_elem.first, GraphInstance).first,
-                                     adjacent_vertices(map_elem.first, GraphInstance).second,
-                                     [&](const Ver adj_) {
-                                         if (get(edge_weight, GraphInstance, edge(map_elem.first, adj_, GraphInstance).first) == 1) {
-                                             cnt_req++;
-                                         }
-                                     });
-                            if (cnt_req < min_req) {
-                                min_req = cnt_req;
-                                min_pos = map_elem.first;
-                            }
-                            if (cnt_req > max_req) {
-                                max_req = cnt_req;
-                                max_pos = map_elem.first;
-                            }
-                        }
-                    });
-                    if (min_pos != -1) {
-                        if (std::any_cast<int>(CustomParameters["alpha"]) == -1) {
-                            //put(color, min_pos, distance(forbiddenColors.begin(), result));
-                        }
-                        //put(color, max_pos, distance(forbiddenColors.begin(), result));
-                    }
                     if (max_nreq_pos != -1) {
                         if (std::any_cast<int>(CustomParameters["alpha"]) != -1) {
                             SetVertexColor(GraphInstance,max_nreq_pos, distance(forbiddenColors.begin(), result));
-//                            put(color, max_nreq_pos, distance(forbiddenColors.begin(), result));
                         }
                     }
                 } else {
                     SetVertexColor(GraphInstance, v, 0);
-//                    put(color, v, 0);
                 }
             }
         });
